@@ -1,0 +1,3 @@
+bottle
+psycopg2
+dataclasses_json
