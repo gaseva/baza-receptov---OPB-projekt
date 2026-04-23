@@ -1,0 +1,1 @@
+-- to je datoteka za ustvarjanje baze podatkov in tabel

@@ -1,0 +1,1 @@
+-- tukaj bova dodali podatke v bazo
