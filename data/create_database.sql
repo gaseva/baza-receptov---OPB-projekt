@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS oseba
     uporabnisko_ime TEXT NOT NULL UNIQUE,
     geslo TEXT NOT NULL
 );
+-- komentar
 
 CREATE TABLE IF NOT EXISTS sladica
 (
