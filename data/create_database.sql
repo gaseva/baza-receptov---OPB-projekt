@@ -16,11 +16,17 @@ CREATE TABLE IF NOT EXISTS sladica
     id INTEGER PRIMARY KEY,
     ime TEXT NOT NULL,
     cas_priprave INTEGER NOT NULL,
-    tezavnost () NOT NULL, -- text ali integer?
+    -- tezavnost INTEGER napisi requirements, 
     postopek TEXT NOT NULL,
     kratek_opis TEXT NOT NULL
 )
 --komentar 2
+
+CREATE TABLE IF NOT EXISTS tezavnost
+(
+    id INTEGER PRIMARY KEY,
+    tezavnost TEXT NOT NULL
+)
 
 CREATE TABLE IF NOT EXISTS kategorija
 (
