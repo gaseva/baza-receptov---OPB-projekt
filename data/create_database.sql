@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS sladica
     postopek TEXT NOT NULL,
     kratek_opis TEXT NOT NULL
 )
+--komentar 2
 
 CREATE TABLE IF NOT EXISTS kategorija
 (
