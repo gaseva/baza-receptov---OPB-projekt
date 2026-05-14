@@ -1,5 +1,7 @@
 # za osebne podatke
 auth_private.py
+auth_private_ana.py
+auth_private_eva.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
