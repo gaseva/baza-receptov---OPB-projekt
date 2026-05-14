@@ -1,7 +1,11 @@
 import os
 import bottle
 from bottle import *
+from bottle import TEMPLATE_PATH
 
+#potrebujemo, če želimo, da imamo html datoteke v podmapi
+
+TEMPLATE_PATH.append('/Presentation/views')
 
 class Route(bottle.Route):
     """
