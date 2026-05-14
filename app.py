@@ -1,0 +1,1 @@
+# tu so pol def neke funkcije, pa še nekaj dalje
