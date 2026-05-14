@@ -21,3 +21,5 @@ df = pd.DataFrame(all_desserts)
 df.to_csv("C:\\Users\\uporabnik\\Documents\\1_faks\\OPB\\projekt\\baza-receptov---OPB-projekt\\data\\podatki.csv", index=False, encoding="utf-8")
 
 print("CSV shranjen!")
+
+
