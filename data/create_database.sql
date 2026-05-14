@@ -40,8 +40,7 @@ CREATE TABLE IF NOT EXISTS kategorija
 CREATE TABLE IF NOT EXISTS sestavina
 (
     id INTEGER PRIMARY KEY,
-    ime TEXT NOT NULL,
-    enota TEXT
+    ime TEXT NOT NULL
 )
 
 
