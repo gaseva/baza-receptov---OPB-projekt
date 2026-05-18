@@ -1,7 +1,6 @@
 %rebase('osnova.html', naslov='Dodaj recept')
 
 <style>
-
 .form-wrapper {
     max-width: 1000px;
     margin: auto;
@@ -11,16 +10,13 @@
     display: grid;
     grid-template-columns: 250px 1fr;
     gap: 40px;
-
     padding: 20px 0;
-
     border-bottom: 1px solid #e5e5e5;
 }
 
 .left-side {
     font-weight: bold;
     font-size: 17px;
-
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
@@ -44,9 +40,7 @@ h2 {
 .pripomocek-blok {
     margin-bottom: 15px;
 }
-
 </style>
-
 
 <div class="form-wrapper">
 
@@ -54,157 +48,81 @@ h2 {
 
     <form method="post" action="{{url('dodaj_recept')}}">
 
-        <!-- IME -->
         <div class="form-row">
-
-            <div class="left-side">
-                Ime sladice
-            </div>
-
+            <div class="left-side">Ime sladice</div>
             <div class="right-side">
-                <input type="text"
-                       class="form-control"
-                       id="ime"
-                       name="ime"
-                       required
-                       placeholder="Vnesi ime sladice">
+                <input type="text" class="form-control" id="ime" name="ime" required placeholder="Vnesi ime sladice">
             </div>
-
         </div>
 
-        <!-- ČAS -->
         <div class="form-row">
-
-            <div class="left-side">
-                Čas priprave
-            </div>
-
+            <div class="left-side">Čas priprave</div>
             <div class="right-side">
-                <input type="time"
-                       class="form-control"
-                       id="cas_priprave"
-                       name="cas_priprave"
-                       required>
+                <input type="time" class="form-control" id="cas_priprave" name="cas_priprave" required>
             </div>
-
         </div>
 
-        <!-- TEŽAVNOST -->
         <div class="form-row">
-
-            <div class="left-side">
-                Težavnost
-            </div>
-
+            <div class="left-side">Težavnost</div>
             <div class="right-side">
-
-                <select class="form-select"
-                        id="tezavnost"
-                        name="tezavnost"
-                        required>
-
+                <select class="form-select" id="tezavnost" name="tezavnost" required>
                     <option value="">Izberite težavnost</option>
                     <option value="lahko">Enostavno</option>
                     <option value="srednje">Srednje</option>
                     <option value="tezko">Zahtevno</option>
-
                 </select>
-
             </div>
-
         </div>
 
-        <!-- KATEGORIJA -->
         <div class="form-row">
-
-            <div class="left-side">
-                Kategorija
-            </div>
-
+            <div class="left-side">Kategorija</div>
             <div class="right-side">
-
-                <select class="form-select"
-                        id="kategorija"
-                        name="kategorija"
-                        required>
-
+                <select class="form-select" id="kategorija" name="kategorija" required>
                     <option value="">Izberite kategorijo</option>
                     <option value="torte">Torte</option>
                     <option value="piskoti">Piškoti</option>
                     <option value="drobno_pecivo">Drobno pecivo</option>
                     <option value="sladoled">Sladoled</option>
                     <option value="ostalo">Ostalo</option>
-
                 </select>
-
             </div>
-
         </div>
 
-        <!-- KRATEK OPIS -->
         <div class="form-row">
-
-            <div class="left-side">
-                Kratek opis
-            </div>
-
+            <div class="left-side">Kratek opis</div>
             <div class="right-side">
-
-                <textarea class="form-control"
-                          id="kratek_opis"
-                          name="kratek_opis"
-                          rows="3"
-                          required
-                          placeholder="Vnesi kratek opis"></textarea>
-
+                <textarea class="form-control" id="kratek_opis" name="kratek_opis" rows="3" required placeholder="Vnesi kratek opis"></textarea>
             </div>
-
         </div>
 
-        <!-- SESTAVINE -->
         <div class="form-row">
-
-        <div class="left-side">
-            Sestavine
-        </div>
-
-        <div class="right-side">
-            <div id="sestavine-vsebnik">
-
-            
-            
-                <div class="sestavina-blok">
-                    <select class="form-select mb-2" name="sestavine" onchange="preveriKolicino(this)">
-                      <option value="">Izberite sestavino</option>
-                      <option value="jajca">Jajca</option>
-                      <option value="mleko">Mleko</option>
-                      <option value="maslo">Maslo</option>
-                      <option value="sladkor">Sladkor</option>
-                    </select>
-                    <input type="number" class="form-control" name="količina" min="0" placeholder="Vnesi količino">
-                    <span class="input-group-text enota-oznaka">-</span>
+            <div class="left-side">Sestavine</div>
+            <div class="right-side">
+                <div id="sestavine-vsebnik">
+                    <div class="sestavina-blok">
+                        <select class="form-select mb-2" name="sestavine">
+                            <option value="">Izberite sestavino</option>
+                            <option value="jajca">Jajca</option>
+                            <option value="mleko">Mleko</option>
+                            <option value="maslo">Maslo</option>
+                            <option value="sladkor">Sladkor</option>
+                        </select>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="kolicina" min="0" placeholder="Vnesi količino">
+                            <span class="input-group-text enota-oznaka">-</span>
+                        </div>
+                    </div>
                 </div>
 
+                <button type="button" id="gumb-dodaj-sestavino" class="btn btn-secondary btn-sm mt-2">
+                    + Dodaj sestavino
+                </button>
             </div>
-
-            <button type="button" id="gumb-dodaj-sestavino" class="btn btn-secondary btn-sm mt-2">
-            + Dodaj sestavino
-            </button>
-
         </div>
 
-        
-        </div>
-
-        <!-- PRIPOMOČKI -->
         <div class="form-row">
-
-            <div class="left-side">
-                Pripomočki
-            </div>
-
+            <div class="left-side">Pripomočki</div>
             <div class="right-side">
-
                 <div class="pripomocek-blok">
                     <select class="form-select" name="pripomocki">
                         <option value="pekac">Pekač</option>
@@ -213,7 +131,6 @@ h2 {
                         <option value="posoda">Posoda</option>
                     </select>
                 </div>
-
                 <div class="pripomocek-blok">
                     <select class="form-select" name="pripomocki">
                         <option value="pekac">Pekač</option>
@@ -222,7 +139,6 @@ h2 {
                         <option value="posoda">Posoda</option>
                     </select>
                 </div>
-
                 <div class="pripomocek-blok">
                     <select class="form-select" name="pripomocki">
                         <option value="pekac">Pekač</option>
@@ -231,80 +147,39 @@ h2 {
                         <option value="posoda">Posoda</option>
                     </select>
                 </div>
-
             </div>
-
         </div>
 
-        <!-- POSTOPEK -->
         <div class="form-row">
-
-            <div class="left-side">
-                Postopek
-            </div>
-
+            <div class="left-side">Postopek</div>
             <div class="right-side">
-
-                <textarea class="form-control"
-                          id="postopek"
-                          name="postopek"
-                          rows="6"
-                          required
-                          placeholder="Vnesi postopek"></textarea>
-
+                <textarea class="form-control" id="postopek" name="postopek" rows="6" required placeholder="Vnesi postopek"></textarea>
             </div>
-
         </div>
 
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary">
-                Dodaj recept
-            </button>
+            <button type="submit" class="btn btn-primary">Dodaj recept</button>
         </div>
 
     </form>
 
-    <script>
-    document.getElementById('gumb-dodaj-sestavino').addEventListener('click', function() {
-        // Poiščemo vsebnik, kamor bomo dodali novo sestavino
-        const vsebnik = document.getElementById('sestavine-vsebnik');
-
-        // Ustvarimo nov div element z razredom 'sestavina-blok'
-        const novBlok = document.createElement('div');
-        novBlok.className = 'sestavina-blok mt-3'; // mt-3 doda malo razmaka na vrhu
-
-        // Vstavimo HTML strukturo za izbiro in količino
-        novBlok.innerHTML = `
-            <select class="form-select mb-2" name="sestavine">
-                <option value="">Izberite sestavino</option>
-                <option value="jajca">Jajca</option>
-                <option value="mleko">Mleko</option>
-                <option value="maslo">Maslo</option>
-                <option value="sladkor">Sladkor</option>
-            </select>
-            <input type="number" class="form-control" name="količina" min="0" placeholder="Vnesi količino">
-        `;
-
-        // Nov blok dodamo v vsebnik
-        vsebnik.appendChild(novBlok);
-    });
-</script>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // 1. Definicija merskih enot za posamezne sestavine
+    // 1. Slovar merskih enot
     const merskeEnote = {
         'jajca': 'kos',
         'mleko': 'ml',
         'maslo': 'g',
         'sladkor': 'g',
-        '': '-' // privzeta vrednost, če nič ni izbrano
+        '': '-'
     };
 
     const gumb = document.getElementById('gumb-dodaj-sestavino');
     const vsebnik = document.getElementById('sestavine-vsebnik');
     
-    // 2. Logika za dodajanje novih vrstic (gumb)
+    // 2. Samo EDEN poslušalec za gumb, ki doda točno EN pravilen blok
     if (gumb) {
         gumb.addEventListener('click', function() {
             const novBlok = document.createElement('div');
@@ -328,29 +203,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 3. AVTOMATSKO POSODABLJANJE ENOT (Delegacija dogodkov)
-    // Poslušamo spremembe ('change') kjerkoli znotraj celotnega vsebnika sestavin
+    // 3. Posodabljanje enot ob spremembi izbire
     if (vsebnik) {
         vsebnik.addEventListener('change', function(e) {
-            // Preverimo, ali je uporabnik spremenil ravno spustni seznam za sestavine
             if (e.target && e.target.name === 'sestavine') {
                 const izbranaSestavina = e.target.value;
-                
-                // Poiščemo ustrezno enoto iz našega slovarja (če je ni, damo '-')
                 const enota = merskeEnote[izbranaSestavina] || '-';
                 
-                // Poiščemo pripadajoč element 'enota-oznaka' znotraj istega bloka
-                const starševskiBlok = e.target.closest('.sestavina-blok');
-                const oznakaEnoten = starševskiBlok.querySelector('.enota-oznaka');
+                const starsevskiBlok = e.target.closest('.sestavina-blok');
+                const oznakaEnote = starsevskiBlok.querySelector('.enota-oznaka');
                 
-                // Posodobimo tekst v znački
-                if (oznakaEnoten) {
-                    oznakaEnoten.textContent = enota;
+                if (oznakaEnote) {
+                    oznakaEnote.textContent = enota;
                 }
             }
         });
     }
 });
 </script>
-
-</div>
