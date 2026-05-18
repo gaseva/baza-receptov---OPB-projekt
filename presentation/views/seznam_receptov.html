@@ -1,0 +1,23 @@
+%rebase('osnova.html', naslov='Seznam sladic')
+<div>
+    %for sladica in sladica
+    <h1>{{sladica.ime}}</h1>
+
+    <table>
+        <tr>
+            <td>
+                <p><strong>Kategorija:</strong> {{sladica.kategorija}}</p>
+                <p><strong>Čas priprave:</strong> {{sladica.čas_priprave}}</p>
+                <p><strong>Težavnost:</strong> {{sladica.težavnost}}</p>
+            </td>
+
+            <td style="padding-left: 40px;">
+                <p>
+                    {{sladica.kratek_opis}}
+                </p>
+            </td>
+        </tr>
+    </table>
+    %endfor
+
+</div>
