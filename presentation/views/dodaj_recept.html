@@ -181,7 +181,8 @@ h2 {
                       <option value="maslo">Maslo</option>
                       <option value="sladkor">Sladkor</option>
                     </select>
-                    <input type="number" class="form-control" name="količina" min="0" placeholder="Vnesi količino">  
+                    <input type="number" class="form-control" name="količina" min="0" placeholder="Vnesi količino">
+                    <span class="input-group-text enota-oznaka">-</span>
                 </div>
 
             </div>
@@ -287,6 +288,69 @@ h2 {
         // Nov blok dodamo v vsebnik
         vsebnik.appendChild(novBlok);
     });
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Definicija merskih enot za posamezne sestavine
+    const merskeEnote = {
+        'jajca': 'kos',
+        'mleko': 'ml',
+        'maslo': 'g',
+        'sladkor': 'g',
+        '': '-' // privzeta vrednost, če nič ni izbrano
+    };
+
+    const gumb = document.getElementById('gumb-dodaj-sestavino');
+    const vsebnik = document.getElementById('sestavine-vsebnik');
+    
+    // 2. Logika za dodajanje novih vrstic (gumb)
+    if (gumb) {
+        gumb.addEventListener('click', function() {
+            const novBlok = document.createElement('div');
+            novBlok.className = 'sestavina-blok mt-3';
+
+            novBlok.innerHTML = `
+                <select class="form-select mb-2" name="sestavine">
+                    <option value="">Izberite sestavino</option>
+                    <option value="jajca">Jajca</option>
+                    <option value="mleko">Mleko</option>
+                    <option value="maslo">Maslo</option>
+                    <option value="sladkor">Sladkor</option>
+                </select>
+                <div class="input-group">
+                    <input type="number" class="form-control" name="kolicina" min="0" placeholder="Vnesi količino">
+                    <span class="input-group-text enota-oznaka">-</span>
+                </div>
+            `;
+
+            vsebnik.appendChild(novBlok);
+        });
+    }
+
+    // 3. AVTOMATSKO POSODABLJANJE ENOT (Delegacija dogodkov)
+    // Poslušamo spremembe ('change') kjerkoli znotraj celotnega vsebnika sestavin
+    if (vsebnik) {
+        vsebnik.addEventListener('change', function(e) {
+            // Preverimo, ali je uporabnik spremenil ravno spustni seznam za sestavine
+            if (e.target && e.target.name === 'sestavine') {
+                const izbranaSestavina = e.target.value;
+                
+                // Poiščemo ustrezno enoto iz našega slovarja (če je ni, damo '-')
+                const enota = merskeEnote[izbranaSestavina] || '-';
+                
+                // Poiščemo pripadajoč element 'enota-oznaka' znotraj istega bloka
+                const starševskiBlok = e.target.closest('.sestavina-blok');
+                const oznakaEnoten = starševskiBlok.querySelector('.enota-oznaka');
+                
+                // Posodobimo tekst v znački
+                if (oznakaEnoten) {
+                    oznakaEnoten.textContent = enota;
+                }
+            }
+        });
+    }
+});
 </script>
 
 </div>
