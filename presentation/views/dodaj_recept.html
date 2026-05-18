@@ -1,0 +1,109 @@
+%rebase('osnova.html', naslov='Dodaj recept')
+<div>
+    <h2>Vnesi potrebne podatke o receptu</h2>
+</div>
+<div>
+    <form method="post" action="{{url('dodaj_recept')}}">
+        <div class="form-group">
+            <label for="ime" class="form-label">Ime sladice:</label>
+            <input type="text" class="form-control" id="ime" name="ime" required placeholder="Vnesi ime sladice">
+        </div>
+
+        <div class="form-group">
+            <label for="cas_priprave" class="form-label">Čas priprave:</label>
+            <input type="time" class="form-control" id="cas_priprave" name="cas_priprave" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="tezavnost" class="form-label">Težavnost:</label>
+            <select class="form-select" id="tezavnost" name="tezavnost" required >
+                <option value="">Izberite težavnost</option>
+                <option value="lahko">Enostavno</option>
+                <option value="srednje">Srednje</option>
+                <option value="težko">Zahtevno</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="kategorija" class="form-label">Kategorija:</label>
+            <select class="form-select" id="kategorija" name="kategorija" required>
+                <option value="">Izberite kategorijo</option>
+                <option value="torte">Torte</option>
+                <option value="piškoti">Piškoti</option>
+                <option value="kremne">Drobno pecivo</option>
+                <option value="sadne">Sladoled</option>
+                <option value="ostalo">Ostalo</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="kratek_opis" class="form-label">Kratek opis:</label>
+            <textarea class="form-control" id="kratek_opis" name="kratek_opis" rows="3" required placeholder="Vnesi kratek opis"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="sestavine" class="form-label">Sestavine:</label>
+            <select class="form-select" id="sestavine" name="sestavine"  required>
+                <option value="jajca">Jajca</option>
+                <option value="mleko">Mleko</option>
+                <option value="maslo">Maslo</option>
+                <option value="sladkor">Sladkor</option>
+            </select>             <label for="količina" class="form-label">Količina:</label>
+            <input type="number" class="form-control" id="količina" name="količina" required placeholder="Vnesi količino">
+            <br>
+            <select class="form-select" id="sestavine" name="sestavine" >
+                <option value="jajca">Jajca</option>
+                <option value="mleko">Mleko</option>
+                <option value="maslo">Maslo</option>
+                <option value="sladkor">Sladkor</option>
+            </select>             <label for="količina" class="form-label">Količina:</label>
+            <input type="number" class="form-control" id="količina" name="količina" required placeholder="Vnesi količino">
+ <br>
+            <select class="form-select" id="sestavine" name="sestavine" >
+                <option value="jajca">Jajca</option>
+                <option value="mleko">Mleko</option>
+                <option value="maslo">Maslo</option>
+                <option value="sladkor">Sladkor</option>
+            </select>             <label for="količina" class="form-label">Količina:</label>
+            <input type="number" class="form-control" id="količina" name="količina" required placeholder="Vnesi količino">
+
+        </div>
+
+        <div class="form-group">
+
+    <label class="form-label">Sestavine:</label>
+
+    <div id="sestavine-container">
+
+        <div class="sestavina-row mb-3">
+
+            <select class="form-select mb-2" name="sestavine[]" required>
+                <option value="jajca">Jajca</option>
+                <option value="mleko">Mleko</option>
+                <option value="maslo">Maslo</option>
+                <option value="sladkor">Sladkor</option>
+            </select>
+
+            <input 
+                type="number"
+                class="form-control"
+                name="kolicina[]"
+                required
+                placeholder="Vnesi količino">
+
+        </div>
+
+    </div>
+
+    <button type="button"
+            class="btn btn-primary"
+            onclick="dodajSestavino()">
+
+        + Dodaj sestavino
+
+    </button>
+
+</div>
+
+
+
+        <button type="submit" class="btn btn-primary">Dodaj recept</button>
+    </form>
+</div>
