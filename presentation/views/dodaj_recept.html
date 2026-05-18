@@ -1,111 +1,293 @@
 %rebase('osnova.html', naslov='Dodaj recept')
 
+<style>
+
+.form-wrapper {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 40px;
+
+    padding: 20px 0;
+
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.left-side {
+    font-weight: bold;
+    font-size: 17px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.right-side {
+    width: 100%;
+}
+
+.right-side input,
+.right-side textarea,
+.right-side select {
+    width: 100%;
+}
+
+h2 {
+    margin-bottom: 40px;
+}
+
+.sestavina-blok,
+.pripomocek-blok {
+    margin-bottom: 15px;
+}
+
+</style>
 
 
+<div class="form-wrapper">
 
-<div>
     <h2>Vnesi potrebne podatke o receptu</h2>
-</div>
-<div>
+
     <form method="post" action="{{url('dodaj_recept')}}">
-        <div class="form-group">
-            <label for="ime" class="form-label">Ime sladice:</label>
-            <input type="text" class="form-control" id="ime" name="ime" required placeholder="Vnesi ime sladice">
-        </div>
 
-        <div class="form-group">
-            <label for="cas_priprave" class="form-label">Čas priprave:</label>
-            <input type="time" class="form-control" id="cas_priprave" name="cas_priprave" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="tezavnost" class="form-label">Težavnost:</label>
-            <select class="form-select" id="tezavnost" name="tezavnost" required >
-                <option value="">Izberite težavnost</option>
-                <option value="lahko">Enostavno</option>
-                <option value="srednje">Srednje</option>
-                <option value="težko">Zahtevno</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="kategorija" class="form-label">Kategorija:</label>
-            <select class="form-select" id="kategorija" name="kategorija" required>
-                <option value="">Izberite kategorijo</option>
-                <option value="torte">Torte</option>
-                <option value="piškoti">Piškoti</option>
-                <option value="kremne">Drobno pecivo</option>
-                <option value="sadne">Sladoled</option>
-                <option value="ostalo">Ostalo</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="kratek_opis" class="form-label">Kratek opis:</label>
-            <textarea class="form-control" id="kratek_opis" name="kratek_opis" rows="3" required placeholder="Vnesi kratek opis"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="sestavine" class="form-label">Sestavine:</label>
-            <select class="form-select" name="sestavine"  required>
-                <option value="jajca">Jajca</option>
-                <option value="mleko">Mleko</option>
-                <option value="maslo">Maslo</option>
-                <option value="sladkor">Sladkor</option>
-            </select>             <label for="količina" class="form-label">Količina:</label>
-            <input type="number" class="form-control" name="količina" required placeholder="Vnesi količino">
-            <br>
-            <select class="form-select" name="sestavine" >
-                <option value="jajca">Jajca</option>
-                <option value="mleko">Mleko</option>
-                <option value="maslo">Maslo</option>
-                <option value="sladkor">Sladkor</option>
-            </select>             <label for="količina" class="form-label">Količina:</label>
-            <input type="number" class="form-control" name="količina" placeholder="Vnesi količino">
-            <br>
-            <select class="form-select"  name="sestavine" >
-                <option value="jajca">Jajca</option>
-                <option value="mleko">Mleko</option>
-                <option value="maslo">Maslo</option>
-                <option value="sladkor">Sladkor</option>
-            </select>             <label for="količina" class="form-label">Količina:</label>
-            <input type="number" class="form-control" name="količina" placeholder="Vnesi količino">
+        <!-- IME -->
+        <div class="form-row">
+
+            <div class="left-side">
+                Ime sladice
+            </div>
+
+            <div class="right-side">
+                <input type="text"
+                       class="form-control"
+                       id="ime"
+                       name="ime"
+                       required
+                       placeholder="Vnesi ime sladice">
+            </div>
 
         </div>
 
-        <div class="form-group">
-            <label for="pripomočki" class="form-label">Pripomočki:</label>
-            <select class="form-select" name="pripomočki" required>
-                <option value="pekač">Pekač</option>
-                <option value="metlica">Metlica</option>
-                <option value="žlica">Žlica</option>
-                <option value="Posoda">Posoda</option>
-            </select>
-            <br>
-             <select class="form-select" name="pripomočki" required>
-                <option value="pekač">Pekač</option>
-                <option value="metlica">Metlica</option>
-                <option value="žlica">Žlica</option>
-                <option value="Posoda">Posoda</option>
-            </select>
-            <br>
-            <select class="form-select" name="pripomočki" required>
-                <option value="pekač">Pekač</option>
-                <option value="metlica">Metlica</option>
-                <option value="žlica">Žlica</option>
-                <option value="Posoda">Posoda</option>
-            </select>
-            
+        <!-- ČAS -->
+        <div class="form-row">
 
+            <div class="left-side">
+                Čas priprave
+            </div>
 
+            <div class="right-side">
+                <input type="time"
+                       class="form-control"
+                       id="cas_priprave"
+                       name="cas_priprave"
+                       required>
+            </div>
 
         </div>
 
-        
-        <div class="form-group">
-            <label for="postopek" class="form-label">Postopek:</label>
-            <textarea class="form-control" id="postopek" name="postopek" rows="5" required placeholder="Vnesi postopek"></textarea>
+        <!-- TEŽAVNOST -->
+        <div class="form-row">
+
+            <div class="left-side">
+                Težavnost
+            </div>
+
+            <div class="right-side">
+
+                <select class="form-select"
+                        id="tezavnost"
+                        name="tezavnost"
+                        required>
+
+                    <option value="">Izberite težavnost</option>
+                    <option value="lahko">Enostavno</option>
+                    <option value="srednje">Srednje</option>
+                    <option value="tezko">Zahtevno</option>
+
+                </select>
+
+            </div>
+
         </div>
 
-        <button type="submit" class="btn btn-primary">Dodaj recept</button>
+        <!-- KATEGORIJA -->
+        <div class="form-row">
+
+            <div class="left-side">
+                Kategorija
+            </div>
+
+            <div class="right-side">
+
+                <select class="form-select"
+                        id="kategorija"
+                        name="kategorija"
+                        required>
+
+                    <option value="">Izberite kategorijo</option>
+                    <option value="torte">Torte</option>
+                    <option value="piskoti">Piškoti</option>
+                    <option value="drobno_pecivo">Drobno pecivo</option>
+                    <option value="sladoled">Sladoled</option>
+                    <option value="ostalo">Ostalo</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <!-- KRATEK OPIS -->
+        <div class="form-row">
+
+            <div class="left-side">
+                Kratek opis
+            </div>
+
+            <div class="right-side">
+
+                <textarea class="form-control"
+                          id="kratek_opis"
+                          name="kratek_opis"
+                          rows="3"
+                          required
+                          placeholder="Vnesi kratek opis"></textarea>
+
+            </div>
+
+        </div>
+
+        <!-- SESTAVINE -->
+        <div class="form-row">
+
+            <div class="left-side">
+                Sestavine
+            </div>
+
+            <div class="right-side">
+
+                <div class="sestavina-blok">
+
+                    <select class="form-select mb-2" name="sestavine">
+                        <option value="jajca">Jajca</option>
+                        <option value="mleko">Mleko</option>
+                        <option value="maslo">Maslo</option>
+                        <option value="sladkor">Sladkor</option>
+                    </select>
+
+                    <input type="number"
+                           class="form-control"
+                           name="kolicina"
+                           placeholder="Vnesi količino">
+
+                </div>
+
+                <div class="sestavina-blok">
+
+                    <select class="form-select mb-2" name="sestavine">
+                        <option value="jajca">Jajca</option>
+                        <option value="mleko">Mleko</option>
+                        <option value="maslo">Maslo</option>
+                        <option value="sladkor">Sladkor</option>
+                    </select>
+
+                    <input type="number"
+                           class="form-control"
+                           name="kolicina"
+                           placeholder="Vnesi količino">
+
+                </div>
+
+                <div class="sestavina-blok">
+
+                    <select class="form-select mb-2" name="sestavine">
+                        <option value="jajca">Jajca</option>
+                        <option value="mleko">Mleko</option>
+                        <option value="maslo">Maslo</option>
+                        <option value="sladkor">Sladkor</option>
+                    </select>
+
+                    <input type="number"
+                           class="form-control"
+                           name="kolicina"
+                           placeholder="Vnesi količino">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- PRIPOMOČKI -->
+        <div class="form-row">
+
+            <div class="left-side">
+                Pripomočki
+            </div>
+
+            <div class="right-side">
+
+                <div class="pripomocek-blok">
+                    <select class="form-select" name="pripomocki">
+                        <option value="pekac">Pekač</option>
+                        <option value="metlica">Metlica</option>
+                        <option value="zlica">Žlica</option>
+                        <option value="posoda">Posoda</option>
+                    </select>
+                </div>
+
+                <div class="pripomocek-blok">
+                    <select class="form-select" name="pripomocki">
+                        <option value="pekac">Pekač</option>
+                        <option value="metlica">Metlica</option>
+                        <option value="zlica">Žlica</option>
+                        <option value="posoda">Posoda</option>
+                    </select>
+                </div>
+
+                <div class="pripomocek-blok">
+                    <select class="form-select" name="pripomocki">
+                        <option value="pekac">Pekač</option>
+                        <option value="metlica">Metlica</option>
+                        <option value="zlica">Žlica</option>
+                        <option value="posoda">Posoda</option>
+                    </select>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- POSTOPEK -->
+        <div class="form-row">
+
+            <div class="left-side">
+                Postopek
+            </div>
+
+            <div class="right-side">
+
+                <textarea class="form-control"
+                          id="postopek"
+                          name="postopek"
+                          rows="6"
+                          required
+                          placeholder="Vnesi postopek"></textarea>
+
+            </div>
+
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">
+                Dodaj recept
+            </button>
+        </div>
+
     </form>
+
 </div>
-
-
