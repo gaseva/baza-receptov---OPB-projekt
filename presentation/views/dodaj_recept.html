@@ -164,62 +164,35 @@ h2 {
         <!-- SESTAVINE -->
         <div class="form-row">
 
-            <div class="left-side">
-                Sestavine
-            </div>
+        <div class="left-side">
+            Sestavine
+        </div>
 
-            <div class="right-side">
+        <div class="right-side">
+            <div id="sestavine-vsebnik">
 
+            
+            
                 <div class="sestavina-blok">
-
-                    <select class="form-select mb-2" name="sestavine">
-                        <option value="jajca">Jajca</option>
-                        <option value="mleko">Mleko</option>
-                        <option value="maslo">Maslo</option>
-                        <option value="sladkor">Sladkor</option>
+                    <select class="form-select mb-2" name="sestavine" onchange="preveriKolicino(this)">
+                      <option value="">Izberite sestavino</option>
+                      <option value="jajca">Jajca</option>
+                      <option value="mleko">Mleko</option>
+                      <option value="maslo">Maslo</option>
+                      <option value="sladkor">Sladkor</option>
                     </select>
-
-                    <input type="number"
-                           class="form-control"
-                           name="kolicina"
-                           placeholder="Vnesi količino">
-
-                </div>
-
-                <div class="sestavina-blok">
-
-                    <select class="form-select mb-2" name="sestavine">
-                        <option value="jajca">Jajca</option>
-                        <option value="mleko">Mleko</option>
-                        <option value="maslo">Maslo</option>
-                        <option value="sladkor">Sladkor</option>
-                    </select>
-
-                    <input type="number"
-                           class="form-control"
-                           name="kolicina"
-                           placeholder="Vnesi količino">
-
-                </div>
-
-                <div class="sestavina-blok">
-
-                    <select class="form-select mb-2" name="sestavine">
-                        <option value="jajca">Jajca</option>
-                        <option value="mleko">Mleko</option>
-                        <option value="maslo">Maslo</option>
-                        <option value="sladkor">Sladkor</option>
-                    </select>
-
-                    <input type="number"
-                           class="form-control"
-                           name="kolicina"
-                           placeholder="Vnesi količino">
-
+                    <input type="number" class="form-control" name="količina" min="0" placeholder="Vnesi količino">  
                 </div>
 
             </div>
 
+            <button type="button" id="gumb-dodaj-sestavino" class="btn btn-secondary btn-sm mt-2">
+            + Dodaj sestavino
+            </button>
+
+        </div>
+
+        
         </div>
 
         <!-- PRIPOMOČKI -->
@@ -289,5 +262,31 @@ h2 {
         </div>
 
     </form>
+
+    <script>
+    document.getElementById('gumb-dodaj-sestavino').addEventListener('click', function() {
+        // Poiščemo vsebnik, kamor bomo dodali novo sestavino
+        const vsebnik = document.getElementById('sestavine-vsebnik');
+
+        // Ustvarimo nov div element z razredom 'sestavina-blok'
+        const novBlok = document.createElement('div');
+        novBlok.className = 'sestavina-blok mt-3'; // mt-3 doda malo razmaka na vrhu
+
+        // Vstavimo HTML strukturo za izbiro in količino
+        novBlok.innerHTML = `
+            <select class="form-select mb-2" name="sestavine">
+                <option value="">Izberite sestavino</option>
+                <option value="jajca">Jajca</option>
+                <option value="mleko">Mleko</option>
+                <option value="maslo">Maslo</option>
+                <option value="sladkor">Sladkor</option>
+            </select>
+            <input type="number" class="form-control" name="količina" min="0" placeholder="Vnesi količino">
+        `;
+
+        // Nov blok dodamo v vsebnik
+        vsebnik.appendChild(novBlok);
+    });
+</script>
 
 </div>
