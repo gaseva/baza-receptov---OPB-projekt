@@ -19,6 +19,8 @@ df = pd.DataFrame(all_desserts)
 
 # Shrani v CSV
 df.to_csv("C:\\Users\\uporabnik\\Documents\\1_faks\\OPB\\projekt\\baza-receptov---OPB-projekt\\data\\podatki\\recepti.csv", index=False, encoding="utf-8")
+# data/podatki/recepti.csv
+
 
 print("CSV shranjen!")
 
