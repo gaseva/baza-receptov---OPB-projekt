@@ -1,45 +1,45 @@
 %rebase('osnova.html', naslov='Dodaj recept')
 
 <style>
-.form-wrapper {
-    max-width: 1000px;
-    margin: auto;
-}
+    .form-wrapper {
+        max-width: 1000px;
+        margin: auto;
+    }
 
-.form-row {
-    display: grid;
-    grid-template-columns: 250px 1fr;
-    gap: 40px;
-    padding: 20px 0;
-    border-bottom: 1px solid #e5e5e5;
-}
+    .form-row {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 40px;
+        padding: 20px 0;
+        border-bottom: 1px solid #e5e5e5;
+    }
 
-.left-side {
-    font-weight: bold;
-    font-size: 17px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-}
+    .left-side {
+        font-weight: bold;
+        font-size: 17px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
 
-.right-side {
-    width: 100%;
-}
+    .right-side {
+        width: 100%;
+    }
 
-.right-side input,
-.right-side textarea,
-.right-side select {
-    width: 100%;
-}
+    .right-side input,
+    .right-side textarea,
+    .right-side select {
+        width: 100%;
+    }
 
-h2 {
-    margin-bottom: 40px;
-}
+    h2 {
+        margin-bottom: 40px;
+    }
 
-.sestavina-blok,
-.pripomocek-blok {
-    margin-bottom: 15px;
-}
+    .sestavina-blok,
+    .pripomocek-blok {
+        margin-bottom: 15px;
+    }
 </style>
 
 <div class="form-wrapper">
@@ -91,7 +91,8 @@ h2 {
         <div class="form-row">
             <div class="left-side">Kratek opis</div>
             <div class="right-side">
-                <textarea class="form-control" id="kratek_opis" name="kratek_opis" rows="3" required placeholder="Vnesi kratek opis"></textarea>
+                <textarea class="form-control" id="kratek_opis" name="kratek_opis" rows="3" required
+                    placeholder="Vnesi kratek opis"></textarea>
             </div>
         </div>
 
@@ -108,7 +109,8 @@ h2 {
                             <option value="sladkor">Sladkor</option>
                         </select>
                         <div class="input-group">
-                            <input type="number" class="form-control" name="kolicina" min="0" placeholder="Vnesi količino">
+                            <input type="number" class="form-control" name="kolicina" min="0"
+                                placeholder="Vnesi količino">
                             <span class="input-group-text enota-oznaka">-</span>
                         </div>
                     </div>
@@ -153,7 +155,8 @@ h2 {
         <div class="form-row">
             <div class="left-side">Postopek</div>
             <div class="right-side">
-                <textarea class="form-control" id="postopek" name="postopek" rows="6" required placeholder="Vnesi postopek"></textarea>
+                <textarea class="form-control" id="postopek" name="postopek" rows="6" required
+                    placeholder="Vnesi postopek"></textarea>
             </div>
         </div>
 
@@ -166,26 +169,26 @@ h2 {
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // 1. Slovar merskih enot
-    const merskeEnote = {
-        'jajca': 'kos',
-        'mleko': 'ml',
-        'maslo': 'g',
-        'sladkor': 'g',
-        '': '-'
-    };
+    document.addEventListener('DOMContentLoaded', function () {
+        // 1. Slovar merskih enot
+        const merskeEnote = {
+            'jajca': 'kos',
+            'mleko': 'ml',
+            'maslo': 'g',
+            'sladkor': 'g',
+            '': '-'
+        };
 
-    const gumb = document.getElementById('gumb-dodaj-sestavino');
-    const vsebnik = document.getElementById('sestavine-vsebnik');
-    
-    // 2. Samo EDEN poslušalec za gumb, ki doda točno EN pravilen blok
-    if (gumb) {
-        gumb.addEventListener('click', function() {
-            const novBlok = document.createElement('div');
-            novBlok.className = 'sestavina-blok mt-3';
+        const gumb = document.getElementById('gumb-dodaj-sestavino');
+        const vsebnik = document.getElementById('sestavine-vsebnik');
 
-            novBlok.innerHTML = `
+        // 2. Samo EDEN poslušalec za gumb, ki doda točno EN pravilen blok
+        if (gumb) {
+            gumb.addEventListener('click', function () {
+                const novBlok = document.createElement('div');
+                novBlok.className = 'sestavina-blok mt-3';
+
+                novBlok.innerHTML = `
                 <select class="form-select mb-2" name="sestavine">
                     <option value="">Izberite sestavino</option>
                     <option value="jajca">Jajca</option>
@@ -199,25 +202,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
 
-            vsebnik.appendChild(novBlok);
-        });
-    }
+                vsebnik.appendChild(novBlok);
+            });
+        }
 
-    // 3. Posodabljanje enot ob spremembi izbire
-    if (vsebnik) {
-        vsebnik.addEventListener('change', function(e) {
-            if (e.target && e.target.name === 'sestavine') {
-                const izbranaSestavina = e.target.value;
-                const enota = merskeEnote[izbranaSestavina] || '-';
-                
-                const starsevskiBlok = e.target.closest('.sestavina-blok');
-                const oznakaEnote = starsevskiBlok.querySelector('.enota-oznaka');
-                
-                if (oznakaEnote) {
-                    oznakaEnote.textContent = enota;
+        // 3. Posodabljanje enot ob spremembi izbire
+        if (vsebnik) {
+            vsebnik.addEventListener('change', function (e) {
+                if (e.target && e.target.name === 'sestavine') {
+                    const izbranaSestavina = e.target.value;
+                    const enota = merskeEnote[izbranaSestavina] || '-';
+
+                    const starsevskiBlok = e.target.closest('.sestavina-blok');
+                    const oznakaEnote = starsevskiBlok.querySelector('.enota-oznaka');
+
+                    if (oznakaEnote) {
+                        oznakaEnote.textContent = enota;
+                    }
                 }
-            }
-        });
-    }
-});
+            });
+        }
+    });
 </script>
