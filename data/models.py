@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from datetime import datetime
 ## import bcrypt 
 import csv
-from psycopg import connect, sql 
+from psycopg2 import connect, sql 
 ## from psycopg.errors import IntegrityError 
 ## from auth import auth
 
