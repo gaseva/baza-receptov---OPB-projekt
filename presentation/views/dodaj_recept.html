@@ -66,7 +66,7 @@
             <div class="left-side">Težavnost</div>
             <div class="right-side">
                 <select class="form-select" id="tezavnost" name="tezavnost" required>
-                    <option value="">Izberite težavnost</option>
+                    <option value="">Izberi težavnost</option>
                     <option value="lahko">Enostavno</option>
                     <option value="srednje">Srednje</option>
                     <option value="tezko">Zahtevno</option>
@@ -78,15 +78,21 @@
             <div class="left-side">Kategorija</div>
             <div class="right-side">
                 <select class="form-select" id="kategorija" name="kategorija" required>
-                    <option value="">Izberite kategorijo</option>
-                    <option value="torte">Torte</option>
-                    <option value="piskoti">Piškoti</option>
-                    <option value="drobno_pecivo">Drobno pecivo</option>
-                    <option value="sladoled">Sladoled</option>
-                    <option value="ostalo">Ostalo</option>
+                    <option value="">Izberi kategorijo</option>
+                    <option value="1">Torte</option>
+                    <option value="2">Piškoti</option>
+                    <option value="3">Mafini</option>
+                    <option value="4">Drobno pecivo</option>
+                    <option value="5">Sladoled</option>
+                    <option value="6">Kreme</option>
+                    <option value="7">Napitki</option>
+                    <option value="8">Pite</option>
+                    <option value="9">Zavitki</option>
+                    <option value="10">Ostalo</option>
                 </select>
             </div>
         </div>
+    
 
         <div class="form-row">
             <div class="left-side">Kratek opis</div>
@@ -102,7 +108,7 @@
                 <div id="sestavine-vsebnik">
                     <div class="sestavina-blok">
                         <select class="form-select mb-2" name="sestavine">
-                            <option value="">Izberite sestavino</option>
+                            <option value="">Izberi sestavino</option>
                             <option value="jajca">Jajca</option>
                             <option value="mleko">Mleko</option>
                             <option value="maslo">Maslo</option>
@@ -121,36 +127,39 @@
                 </button>
             </div>
         </div>
+<div class="form-row">
+    <div class="left-side">Pripomočki</div>
 
-        <div class="form-row">
-            <div class="left-side">Pripomočki</div>
-            <div class="right-side">
-                <div class="pripomocek-blok">
-                    <select class="form-select" name="pripomocki">
-                        <option value="pekac">Pekač</option>
-                        <option value="metlica">Metlica</option>
-                        <option value="zlica">Žlica</option>
-                        <option value="posoda">Posoda</option>
-                    </select>
-                </div>
-                <div class="pripomocek-blok">
-                    <select class="form-select" name="pripomocki">
-                        <option value="pekac">Pekač</option>
-                        <option value="metlica">Metlica</option>
-                        <option value="zlica">Žlica</option>
-                        <option value="posoda">Posoda</option>
-                    </select>
-                </div>
-                <div class="pripomocek-blok">
-                    <select class="form-select" name="pripomocki">
-                        <option value="pekac">Pekač</option>
-                        <option value="metlica">Metlica</option>
-                        <option value="zlica">Žlica</option>
-                        <option value="posoda">Posoda</option>
-                    </select>
-                </div>
+    <div class="right-side">
+
+        <div id="pripomocki-vsebnik">
+
+            <div class="pripomocek-blok mb-2">
+
+                <select class="form-select" name="pripomocki">
+                    <option value="">Izberi pripomoček</option>
+                    <option value="pekac">Pekač</option>
+                    <option value="metlica">Metlica</option>
+                    <option value="zlica">Žlica</option>
+                    <option value="posoda">Posoda</option>
+                    <option value="mikser">Mikser</option>
+                    <option value="valjar">Valjar</option>
+                </select>
+
             </div>
+
         </div>
+
+        <button type="button"
+                id="gumb-dodaj-pripomocek"
+                class="btn btn-secondary btn-sm mt-2">
+
+            + Dodaj pripomoček
+
+        </button>
+
+    </div>
+</div>
 
         <div class="form-row">
             <div class="left-side">Postopek</div>
@@ -223,4 +232,33 @@
             });
         }
     });
+
+
+document.getElementById("gumb-dodaj-pripomocek")
+.addEventListener("click", function () {
+
+    const vsebnik = document.getElementById("pripomocki-vsebnik");
+
+    const novBlok = document.createElement("div");
+
+    novBlok.classList.add("pripomocek-blok", "mb-2");
+
+    novBlok.innerHTML = `
+        <select class="form-select" name="pripomocki">
+
+            <option value="">Izberite pripomoček</option>
+            <option value="pekac">Pekač</option>
+            <option value="metlica">Metlica</option>
+            <option value="zlica">Žlica</option>
+            <option value="posoda">Posoda</option>
+            <option value="mikser">Mikser</option>
+            <option value="valjar">Valjar</option>
+
+        </select>
+    `;
+
+    vsebnik.appendChild(novBlok);
+
+});
+
 </script>
