@@ -11,6 +11,18 @@ CREATE TABLE IF NOT EXISTS oseba
 );
 -- komentar
 
+CREATE TABLE IF NOT EXISTS tezavnost
+(
+    id INTEGER PRIMARY KEY,
+    tezavnost TEXT NOT NULL
+)
+
+CREATE TABLE IF NOT EXISTS kategorija
+(
+    id INTEGER PRIMARY KEY,
+    ime TEXT NOT NULL
+)
+
 CREATE TABLE IF NOT EXISTS sladica
 (
     id INTEGER PRIMARY KEY,
@@ -25,17 +37,7 @@ CREATE TABLE IF NOT EXISTS sladica
 )
 --komentar 2
 
-CREATE TABLE IF NOT EXISTS tezavnost
-(
-    id INTEGER PRIMARY KEY,
-    tezavnost TEXT NOT NULL
-)
 
-CREATE TABLE IF NOT EXISTS kategorija
-(
-    id INTEGER PRIMARY KEY,
-    ime TEXT NOT NULL
-)
 
 CREATE TABLE IF NOT EXISTS sestavina
 (
@@ -70,4 +72,13 @@ CREATE TABLE IF NOT EXISTS priljubljeno
     sladica INTEGER NOT NULL REFERENCES sladica(id),
     oseba INTEGER NOT NULL REFERENCES oseba(id),
     PRIMARY KEY(sladica, oseba)
+)
+
+
+CREATE TABLE IF NOT EXISTS public.uporabniki
+(
+    username text PRIMARY KEY,
+    role text not null,
+    password text not null,
+    last_login timestamp
 )

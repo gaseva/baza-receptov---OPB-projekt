@@ -1,0 +1,48 @@
+%rebase('osnova.html', naslov='Registracija', stran='registracija')
+
+
+<div class="form-wrapper">
+
+    <h2>Registracija</h2>
+
+    <form method="post" action="{{url('registracija_uporabnika')}}">
+
+        <div class="form-row">
+            <div class="left-side">Ime</div>
+            <div class="right-side">
+                <input type="text" class="form-control" id="ime" name="ime" required placeholder="Vnesi svoje ime">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="left-side">Priimek</div>
+            <div class="right-side">
+                <input type="text" class="form-control" id="priimek" name="priimek" required placeholder="Vnesi svoj priimek">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="left-side">Elektronski naslov</div>
+            <div class="right-side">
+                <input type="email" class="form-control" id="elektronski_naslov" name="elektronski_naslov" required placeholder="Vnesi elektronski naslov" unique>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="left-side">Uporabniško ime</div>
+            <div class="right-side">
+                <input type="text" class="form-control" id="uporabnisko_ime" name="uporabnisko_ime" required placeholder="Vnesi uporabniško ime" unique>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="left-side">Geslo</div>
+            <div class="right-side">
+                <input type="password" class="form-control" id="geslo" name="geslo" required placeholder="Vnesi geslo" unique>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Registracija</button>
+
+    </form>
+</div>
