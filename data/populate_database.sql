@@ -1,3 +1,36 @@
+conn = psycopg2.connect(
+    host="baza.fmf.uni-lj.si",
+    database="sem2026_anabar",
+    user="postgres",
+    password="tvoje_geslo"
+)
+
+cur = conn.cursor()
+
+with open("data/podatki.csv", encoding="utf-8-sig", newline="") as datoteka:
+    reader = csv.DictReader(datoteka)
+
+    for vrstica in reader:
+        cur.execute(
+            """
+            INSERT INTO oseba (id, ime, priimek, uporabnisko_ime, geslo, elektronski_naslov)
+            VALUES (%s, %s, %s, %s, %s, %s)
+            ON CONFLICT DO NOTHING
+            """,
+            (
+                vrstica["id"],
+                vrstica["ime"],
+                vrstica["priimek"],
+                vrstica["uporabnisko_ime"],
+                vrstica["geslo"],
+                vrstica["elektronski_naslov"]
+            )
+        )
+
+conn.commit()
+cur.close()
+conn.close()
+
 INSERT INTO tezavnost (id, tezavnost)
 VALUES
 (1, 'enostavno'),
