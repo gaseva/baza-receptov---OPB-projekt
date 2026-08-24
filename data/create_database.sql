@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS vsebuje
     sladica INTEGER NOT NULL REFERENCES sladica(id),
     sestavina INTEGER NOT NULL REFERENCES sestavina(id),
     kolicina_sestavine TEXT NOT NULL,
+    enota TEXT NOT NULL,
     PRIMARY KEY(sladica, sestavina)
 );
 
