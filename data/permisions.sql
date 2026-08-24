@@ -15,9 +15,11 @@ GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost;
 -- dodatne pravice za uporabo aplikacije
 GRANT INSERT ON oseba, sladica TO javnost;
 GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO javnost;
+GRANT INSERT ON vsebuje, potrebujes, priljubljeno TO javnost;
+GRANT DELETE ON priljubljeno TO javnost;
 
 -- privzete pravice za OBJEKTE, ki jih boš ustvaril v prihodnje
-
+    
 -- nove tabele/pogledi v shemi public
 ALTER DEFAULT PRIVILEGES IN SCHEMA public
 GRANT ALL ON TABLES TO evagas WITH GRANT OPTION;
