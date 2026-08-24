@@ -14,8 +14,9 @@ CREATE TABLE IF NOT EXISTS oseba
 CREATE TABLE IF NOT EXISTS tezavnost
 (
     id INTEGER PRIMARY KEY,
-    tezavnost TEXT NOT NULL
+    ime TEXT NOT NULL
 );
+
 
 CREATE TABLE IF NOT EXISTS kategorija
 (
