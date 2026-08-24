@@ -33,12 +33,12 @@ ON CONFLICT (id) DO UPDATE SET
 -- select * from oseba;
 
 
-INSERT INTO tezavnost (id, tezavnost)
+INSERT INTO tezavnost (id, ime)
 VALUES
 (1, 'enostavno'),
 (2, 'srednje'),
 (3, 'zahtevno')
-ON CONFLICT (id) DO UPDATE SET tezavnost = EXCLUDED.tezavnost;
+ON CONFLICT (id) DO UPDATE SET ime = EXCLUDED.ime;
 
 -- select * from tezavnost;
 
