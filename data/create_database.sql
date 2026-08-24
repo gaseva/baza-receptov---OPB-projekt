@@ -15,13 +15,13 @@ CREATE TABLE IF NOT EXISTS tezavnost
 (
     id INTEGER PRIMARY KEY,
     tezavnost TEXT NOT NULL
-)
+);
 
 CREATE TABLE IF NOT EXISTS kategorija
 (
     id INTEGER PRIMARY KEY,
     ime TEXT NOT NULL
-)
+);
 
 CREATE TABLE IF NOT EXISTS sladica
 (
@@ -31,10 +31,10 @@ CREATE TABLE IF NOT EXISTS sladica
     -- tezavnost INTEGER napisi requirements, 
     postopek TEXT NOT NULL,
     kratek_opis TEXT NOT NULL,
-    avtor INTEGER NOT NULL UNIQUE REFERENCES oseba(id),
+    avtor INTEGER NOT NULL REFERENCES oseba(id),
     tezavnost INTEGER NOT NULL REFERENCES tezavnost(id),
     kategorija INTEGER NOT NULL REFERENCES kategorija(id)
-)
+);
 --komentar 2
 
 
@@ -43,14 +43,14 @@ CREATE TABLE IF NOT EXISTS sestavina
 (
     id INTEGER PRIMARY KEY,
     ime TEXT NOT NULL
-)
+);
 
 
 CREATE TABLE IF NOT EXISTS pripomocek
 (
     id INTEGER PRIMARY KEY,
     ime TEXT NOT NULL
-)
+);
 
 CREATE TABLE IF NOT EXISTS vsebuje
 (
@@ -58,21 +58,21 @@ CREATE TABLE IF NOT EXISTS vsebuje
     sestavina INTEGER NOT NULL REFERENCES sestavina(id),
     kolicina_sestavine TEXT NOT NULL,
     PRIMARY KEY(sladica, sestavina)
-)
+);
 
 CREATE TABLE IF NOT EXISTS potrebujes
 (
     sladica INTEGER NOT NULL REFERENCES sladica(id),
     pripomocek INTEGER NOT NULL REFERENCES pripomocek(id),
     PRIMARY KEY(sladica, pripomocek)
-)
+);
 
 CREATE TABLE IF NOT EXISTS priljubljeno
 (
     sladica INTEGER NOT NULL REFERENCES sladica(id),
     oseba INTEGER NOT NULL REFERENCES oseba(id),
     PRIMARY KEY(sladica, oseba)
-)
+);
 
 
 CREATE TABLE IF NOT EXISTS public.uporabniki
@@ -81,4 +81,4 @@ CREATE TABLE IF NOT EXISTS public.uporabniki
     role text not null,
     password text not null,
     last_login timestamp
-)
+);
