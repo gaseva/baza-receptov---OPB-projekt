@@ -1,15 +1,16 @@
-# tukaj bova vpisali classe
+"""Podatkovni razredi, ki jih uporablja aplikacija.
+
+Razredi v tej datoteki samo opisujejo obliko podatkov. Ne odpirajo povezave
+z bazo in ne izvajajo SQL-poizvedb; za to skrbi razred Repository.
+"""
+
 from dataclasses import dataclass
-from datetime import datetime
-## import bcrypt 
-import csv
-from psycopg2 import connect, sql 
-## from psycopg.errors import IntegrityError 
-## from auth import auth
 
 
 @dataclass
-class oseba:
+class Oseba:
+    """Uporabnik aplikacije oziroma ena vrstica tabele oseba."""
+
     id: int
     ime: str
     priimek: str
@@ -17,75 +18,72 @@ class oseba:
     uporabnisko_ime: str
     geslo: str
 
+@dataclass
+class Tezavnost:
+    """Stopnja težavnosti priprave sladice."""
 
-   # @classmethod
-   # def uvozi_podatke(cls):
-   #     with conn.transaction():
-   #         with conn.cursor() as cur:
-   #             with open('podatki.csv') as f:
-   #                 rd = csv.reader(f)
-   #                 stolpci = next(rd)
-   #                 for vrstica in rd:
-   #                     podatki = dict(zip(stolpci, vrstica))
-   #                     #if podatki['geslo']:
-   #                     #    podatki['geslo'] = Oseba._nastavi_geslo(podatki['geslo'])
-   #                     #else:
-   #                     #    podatki['geslo'] = None
-   #                     cur.execute(
-   #                         """
-   #                         INSERT INTO oseba (id, ime, priimek, elektronski_naslov, uporabnisko_ime, geslo))
-   #                         VALUES (%(id)s, %(ime)s, %(priimek)s, %(elektronski_naslov)s, %(uporabnisko_ime)s, %(geslo)s)
-#
-   #                         
-   #                         """, podatki
-   #                     )
+    id: int
+    tezavnost: str
+    
+    
+@dataclass
+class Kategorija:
+    """Kategorija sladice, na primer torta ali piškoti."""
+
+    id: int
+    ime: str
+
 
 @dataclass
-class sladica:
+class Sladica:
+    """Sladica z berljivimi podatki za prikaz v spletni predlogi.
+
+    Poleg osnovnih podatkov vsebuje ID-je in imena povezanega avtorja,
+    težavnosti ter kategorije. Te vrednosti Repository pridobi z JOIN-i.
+    """
+
     id: int
     ime: str
     cas_priprave: int
     postopek: str
     kratek_opis: str
-#
-    #@classmethod
-    #def uvozi_podatke(cls):
-    #    with conn.transaction():
-    #        with conn.cursor() as cur:
-    #            with open('podatki.csv') as f:
-    #                rd = csv.reader(f)
-    #                stolpci = next(rd)
-    #                for vrstica in rd:
-    #                    podatki = dict(zip(stolpci, vrstica))
-    #                    cur.execute(
-    #                        """
-    #                        INSERT INTO sladica (id, ime, cas_priprave, postopek, kratek_opis, avtor, tezavnost, kategorija)
-    #                        VALUES (%(id)s, %(ime)s, %(cas_priprave)s, %(postopek)s, %(kratek_opis)s, %(avtor)s, %(tezavnost)s, %(kategorija)s)
-#
-    #                        %to še je treba popravit in prilagodit glede na najin csv
-    #                        """, podatki
-    #                    )
-#
-@dataclass
-class tezavnost:
-    id: int
+    avtor_id: int
+    avtor: str
+    tezavnost_id: int
     tezavnost: str
+    kategorija_id: int
+    kategorija: str
 
 
 @dataclass
-class kategorija:
+class Sestavina:
+    """Sestavina in njena običajna merska enota."""
+
     id: int
     ime: str
-
+    enota: str
 
 @dataclass
-class sestavina:
+class Pripomocek:
+    """Kuhinjski pripomoček, potreben za pripravo sladice."""
+
     id: int
     ime: str
-
-
 
 @dataclass
-class pripomocek:
+class SestavinaRecepta:
+    """Sestavina skupaj s količino, ki jo zahteva določen recept.
+
+    ID, ime in enota pridejo iz tabele sestavina, količina pa iz
+    povezovalne tabele vsebuje.
+    """
+
     id: int
     ime: str
+    kolicina: str
+    enota: str
+
+
+
+
+
