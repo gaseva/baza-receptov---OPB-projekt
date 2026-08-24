@@ -30,7 +30,7 @@ ON CONFLICT (id) DO UPDATE SET
     geslo = EXCLUDED.geslo;
 
 
-select * from sladica;
+-- select * from oseba;
 
 
 INSERT INTO tezavnost (id, tezavnost)
@@ -39,6 +39,9 @@ VALUES
 (2, 'srednje'),
 (3, 'zahtevno')
 ON CONFLICT (id) DO UPDATE SET tezavnost = EXCLUDED.tezavnost;
+
+-- select * from tezavnost;
+
 
 INSERT INTO kategorija (id, ime)
 VALUES
@@ -53,6 +56,8 @@ VALUES
 (9, 'zavitki'),
 (10, 'ostalo')
 ON CONFLICT (id) DO UPDATE SET ime = EXCLUDED.ime;
+
+-- select * from kategorija;
 
 INSERT INTO sladica
 (id, ime, cas_priprave, postopek, kratek_opis, avtor, tezavnost, kategorija)
@@ -287,10 +292,12 @@ ON CONFLICT (id) DO UPDATE SET
     kategorija = EXCLUDED.kategorija;
 
 
-drop table if exists oseba cascade;
-drop table if exists tezavnost cascade;
-drop table if exists kategorija cascade;
-drop table if exists sladica cascade;
+-- select * from sladica;
+
+
+
+-- drop table if exists oseba cascade;
+
 
 
 
@@ -315,6 +322,9 @@ ON CONFLICT (id) DO UPDATE SET
     ime = EXCLUDED.ime,
     enota = EXCLUDED.enota;
 
+
+-- select * from sestavina;
+
 INSERT INTO pripomocek (id, ime)
 VALUES
     (1, 'pečica'), (2, 'mešalnik'), (3, 'tortni model'),
@@ -322,6 +332,8 @@ VALUES
     (7, 'blender'), (8, 'dresirna vrečka'),
     (9, 'model za pito'), (10, 'zamrzovalnik')
 ON CONFLICT (id) DO UPDATE SET ime = EXCLUDED.ime;
+
+-- select * from pripomocek;
 
 INSERT INTO vsebuje (sladica, sestavina, kolicina_sestavine)
 VALUES
@@ -348,6 +360,8 @@ VALUES
 ON CONFLICT (sladica, sestavina) DO UPDATE SET
     kolicina_sestavine = EXCLUDED.kolicina_sestavine;
 
+-- select * from vsebuje;
+
 INSERT INTO potrebujes (sladica, pripomocek)
 VALUES
     (1,1),(1,2),(1,3), (2,1),(2,2),(2,4), (3,1),(3,2),(3,3),
@@ -358,8 +372,15 @@ VALUES
     (17,1),(17,6), (18,7), (19,5),(19,6), (20,1),(20,4)
 ON CONFLICT (sladica, pripomocek) DO NOTHING;
 
+-- SELECT * from potrebujes;
+
+-- drop table if exists priljubljeno cascade;
+
+
 INSERT INTO priljubljeno (sladica, oseba)
 VALUES
-    (1,7), (1,34), (3,12), (5,23), (7,58),
-    (9,84), (12,16), (14,91), (18,49), (20,3)
+    (1,7), (1,20), (3,12), (5,13), (7,5),
+    (9,8), (12,6), (14,9), (18,19), (20,3)
 ON CONFLICT (sladica, oseba) DO NOTHING;
+
+-- SELECT * from priljubljeno;

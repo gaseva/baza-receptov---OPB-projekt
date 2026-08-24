@@ -39,10 +39,13 @@ CREATE TABLE IF NOT EXISTS sladica
 
 
 
+-- drop table if exists sestavina cascade;
+
 CREATE TABLE IF NOT EXISTS sestavina
 (
     id INTEGER PRIMARY KEY,
-    ime TEXT NOT NULL
+    ime TEXT NOT NULL,
+    enota TEXT NOT NULL
 );
 
 
@@ -57,7 +60,6 @@ CREATE TABLE IF NOT EXISTS vsebuje
     sladica INTEGER NOT NULL REFERENCES sladica(id),
     sestavina INTEGER NOT NULL REFERENCES sestavina(id),
     kolicina_sestavine TEXT NOT NULL,
-    enota TEXT NOT NULL,
     PRIMARY KEY(sladica, sestavina)
 );
 
@@ -76,10 +78,10 @@ CREATE TABLE IF NOT EXISTS priljubljeno
 );
 
 
-CREATE TABLE IF NOT EXISTS public.uporabniki
-(
-    username text PRIMARY KEY,
-    role text not null,
-    password text not null,
-    last_login timestamp
-);
+-- CREATE TABLE IF NOT EXISTS public.uporabniki
+-- (
+--     username text PRIMARY KEY,
+--     role text not null,
+--     password text not null,
+--     last_login timestamp
+-- );
