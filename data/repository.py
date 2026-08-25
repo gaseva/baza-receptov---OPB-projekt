@@ -1,11 +1,7 @@
-"""Dostop do podatkov v PostgreSQL bazi.
-
-Razred Repository na enem mestu zbere SQL-poizvedbe aplikacije. Datoteki
-app.py in poznejši servisi zato ne potrebujejo neposrednega dela s psycopg2.
-Koda je usklajena z dogovorjeno shemo podatkovne baze.
-"""
+"""Dostop do podatkov v PostgreSQL bazi."""
 
 import psycopg2
+import psycopg2.extras
 
 from . import auth_public as auth
 
@@ -31,9 +27,7 @@ class Repository:
     Ko se blok with konča, se povezava samodejno zapre.
     """
 
-    # Osnovni SELECT za sladice uporabljamo v več metodah. JOIN poveže
-    # tabelo sladica s tabelami oseba, tezavnost in kategorija.
-    # Vrstni red stolpcev se mora ujemati z razredom Sladica iz models.py.
+    # Osnovni SELECT za pridobivanje vseh podatkov o sladicah
     SQL_SLADICE = """
         SELECT
             s.id,
@@ -53,16 +47,7 @@ class Repository:
         JOIN kategorija AS k ON k.id = s.kategorija
     """
 
-
-    def dobi_sladice(self) -> List[Sladica]:
-        self.cur.execute(self.SQL_SLADICE)
-        sladice = [Sladica.from_dict(s) for s in self.cur.fetchall()]
-        return sladice
-
-
     def __init__(self):
-        """Odpre povezavo s podatki iz auth_public.py."""
-
         self.conn = psycopg2.connect(
             dbname=auth.db,
             host=auth.host,
@@ -70,24 +55,12 @@ class Repository:
             password=auth.password,
             port=auth.port,
         )
-        self.cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-
-
-    def zapri(self):
-        """Zapre povezavo, če je ta še odprta."""
-
-        if self.conn is not None and not self.conn.closed:
-            self.conn.close()
 
     def __enter__(self):
-        """Omogoči uporabo with Repository() as repo."""
-
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        """Ob izhodu iz bloka with vedno zapre povezavo."""
-
-        self.zapri()
+        self.conn.close()
 
     @staticmethod
     def _naslednji_id(cur, tabela: str) -> int:
@@ -135,10 +108,8 @@ class Repository:
         # Zvezdica razpakira šest vrednosti v konstruktor razreda Oseba.
         return Oseba(*vrstica)
 
-    def dobi_osebo_po_uporabniskem_imenu(
-        self, uporabnisko_ime: str
-    ) -> Oseba | None:
-        """Poišče osebo po uporabniškem imenu; uporabno pri prijavi."""
+    def dobi_osebo_po_uporabniskem_imenu(self, uporabnisko_ime: str) -> Oseba | None:
+        """Poišče osebo po uporabniškem imenu (za prijavo)"""
 
         with self.conn:
             with self.conn.cursor() as cur:
@@ -155,6 +126,7 @@ class Repository:
 
         return None if vrstica is None else Oseba(*vrstica)
 
+# to nevem če zares rabima
     def dobi_vse_osebe(self) -> list[Oseba]:
         """Vrne vse osebe, urejene po priimku in imenu."""
 
