@@ -1,0 +1,46 @@
+%rebase('osnova.html', naslov='Priljubljeni recepti')
+
+<div>
+    %for sladica in priljubljeno:
+    <h1><a href="/recept/{{sladica.id}}">{{sladica.ime}}</a></h1>
+
+    <table>
+        <tr>
+            <td>
+                <p>
+                    {{sladica.kratek_opis}}
+                </p>
+                <p><strong>Kategorija:</strong> {{sladica.kategorija}}</p>
+                <p><strong>Čas priprave:</strong> {{sladica.cas_priprave}} min</p>
+                <p><strong>Težavnost:</strong> {{sladica.tezavnost}}</p>
+            </td>
+        </tr>
+    </table>
+    %end
+
+    <p>
+    Nazaj na domačo stran: <a href="/">Domov</a>
+    </p>
+    
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
