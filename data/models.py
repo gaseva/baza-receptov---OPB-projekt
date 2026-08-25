@@ -11,12 +11,13 @@ from dataclasses import dataclass
 class Oseba:
     """Uporabnik aplikacije oziroma ena vrstica tabele oseba."""
 
-    id: int
     ime: str
     priimek: str
     elektronski_naslov: str
     uporabnisko_ime: str
     geslo: str
+    role: str
+    id: int | None = None
 
 @dataclass
 class Tezavnost:

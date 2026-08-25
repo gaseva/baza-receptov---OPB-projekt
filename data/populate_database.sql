@@ -1,36 +1,37 @@
 
 INSERT INTO oseba
-    (id, ime, priimek, elektronski_naslov, uporabnisko_ime, geslo)
+    (ime, priimek, elektronski_naslov, uporabnisko_ime, geslo_hash)
 VALUES
-    (1,  'Maja',   'Kovač',    'maja.kovac@example.com',    'maja3',   'demo123'),
-    (2,  'Luka',   'Zupan',    'luka.zupan@example.com',    'luka7',   'luka225'),
-    (3, 'Nina',   'Kralj',    'nina.kralj@example.com',    'nina11',  'nina11'),
-    (4, 'Ana',    'Novak',    'ana.novak@example.com',     'ana12',   'ana124'),
-    (5, 'Eva',    'Mlakar',   'eva.mlakar@example.com',    'eva16',   'eva167'),
-    (6, 'Sara',   'Kos',      'sara.kos@example.com',      'sara23',  'sara234'),
-    (7, 'Miha',   'Vidmar',   'miha.vidmar@example.com',   'miha28',  'miha289'),
-    (8, 'Tina',   'Horvat',   'tina.horvat@example.com',   'tina34',  'tina345'),
-    (9, 'Jan',    'Rozman',   'jan.rozman@example.com',    'jan39',   'jan390'),
-    (10, 'Neža',   'Potočnik', 'neza.potocnik@example.com', 'neza45',  'neza456'),
-    (11, 'Urša',   'Golob',    'ursa.golob@example.com',    'ursa49',  'ursa490'),
-    (12, 'Rok',    'Turk',     'rok.turk@example.com',      'rok52',   'rok523'),
-    (13, 'Klara',  'Bizjak',   'klara.bizjak@example.com',  'klara58', 'klara589'),
-    (14, 'Žan',    'Božič',    'zan.bozic@example.com',     'zan62',   'zan623'),
-    (15, 'Ema',    'Kavčič',   'ema.kavcic@example.com',    'ema67',   'ema674'),
-    (16, 'Jakob',  'Zajc',     'jakob.zajc@example.com',    'jakob76', 'jakob765'),
-    (17, 'Lana',   'Petek',    'lana.petek@example.com',    'lana84',  'lana846'),
-    (18, 'Tjaša',  'Koren',    'tjasa.koren@example.com',   'tjasa88', 'tjasa887'),
-    (19, 'Vid',    'Kastelic', 'vid.kastelic@example.com',  'vid91',   'vid918'),
-    (20, 'Ajda',   'Kranjc',   'ajda.kranjc@example.com',   'ajda95',  'ajda950')
+('Maja', 'Kovač', 'maja.kovac@example.com', 'maja3', '$2b$12$wdS2nzjRe89nBjopl.ZxHOztQk7wFmikP3ZtPQBjkptygAN/lMOSC'),
+('Luka', 'Zupan', 'luka.zupan@example.com', 'luka7', '$2b$12$COC4ZqgxW6jF0s10lB.KNuKOtt7TLrDfJnT7pzkQjNNFxlBMaYErS'),
+('Nina', 'Kralj', 'nina.kralj@example.com', 'nina11', '$2b$12$6vfD3VpuaIdkxnueJXhxheR8Uyqf93Hzq1CnZ4r.g9EQY6LP3eHCO'),
+('Ana', 'Novak', 'ana.novak@example.com', 'ana12', '$2b$12$myopO3.Kl8IfT5il4zMlV.YNGIZUdQK3TUjYDMSRi6X07//bBiepG'),
+('Eva', 'Mlakar', 'eva.mlakar@example.com', 'eva16', '$2b$12$A33a8FgaJQ7PIJbJtbqDAOQSqNxezkx5PemACP.sWQLPU3WifXk82'),
+('Sara', 'Kos', 'sara.kos@example.com', 'sara23', '$2b$12$m9b33NB1WFb6iZGDxLEwN.dc47KvZuw3iO/esNSuAqNNZaVqkCB.K'),
+('Miha', 'Vidmar', 'miha.vidmar@example.com', 'miha28', '$2b$12$SzQ1SAnvd0KztkHQZ2T/rOtrRQjXoshekIsfug4u.zqMN6XlakwRe'),
+('Tina', 'Horvat', 'tina.horvat@example.com', 'tina34', '$2b$12$6YqDvnuu3UxyVvVKT9GfneaDj9fmNMfpW7AbIDZ2sTc42QPIvHE0e'),
+('Jan', 'Rozman', 'jan.rozman@example.com', 'jan39', '$2b$12$60c5JqoXhCjvix2/Vbrne..ylYBKvCGozF/dLzAdedsNdE6nrvhNW'),
+('Neža', 'Potočnik', 'neza.potocnik@example.com', 'neza45', '$2b$12$32/EcCrdwy9dvmzyQHl1xuS9RP5QSE1zwRKRKowNPPxxYDySMx3xe'),
+('Urša', 'Golob', 'ursa.golob@example.com', 'ursa49', '$2b$12$byDZMz3nF3AvBZQYOKu9cuk1fCHQ7tr84FCXMZnxOiRikpxO7FyuC'),
+('Rok', 'Turk', 'rok.turk@example.com', 'rok52', '$2b$12$80.KLjTiUs2itJ1Nkqa1lOOzUmUZx.dAGmg3Sfg5q6erwPtAQL8eO'),
+('Klara', 'Bizjak', 'klara.bizjak@example.com', 'klara58', '$2b$12$OuYY.ZECKuxHiKR64zSz4OTy6DArR.KUbRkxoN22RmOkzGkP9h3sG'),
+('Žan', 'Božič', 'zan.bozic@example.com', 'zan62', '$2b$12$fWcYEzHPKoVVNEEFIYdi2OcW41q.eeNgy9kt764E94R49hX4/vcey'),
+('Ema', 'Kavčič', 'ema.kavcic@example.com', 'ema67', '$2b$12$jTBNMihuA5nd7upI1RjINuG2TPjvL6hI9v8BZtOpG1YiittIhdHf2'),
+('Jakob', 'Zajc', 'jakob.zajc@example.com', 'jakob76', '$2b$12$dVXFL48wBYsSBXl/FgsP/uhl.o71JkCwBiZrLjIUxnvM16SGlHf12'),
+('Lana', 'Petek', 'lana.petek@example.com', 'lana84', '$2b$12$ut6LW6vUyHP5S7D1Qyv60up.90Tjcz.4mTz7EjZy4C/RBlNP1uNGG'),
+('Tjaša', 'Koren', 'tjasa.koren@example.com', 'tjasa88', '$2b$12$WFSx5.beHAHQIYEHPGBVb./nYrcRU03G4J.eN7/.K0KgFn/qSZVUe'),
+('Vid', 'Kastelic', 'vid.kastelic@example.com', 'vid91', '$2b$12$C6/EGi1UqpT2sg1qUWtO0eHgnsX3bwq3xOWUsHYSTjBicndURbQJK'),
+('Ajda', 'Kranjc', 'ajda.kranjc@example.com', 'ajda95', '$2b$12$zyBM.y1A7yv1lhhJM/ihS.bgjQ4VOUnEXADRp9udYBtcYSYB5sRxy')
 ON CONFLICT (id) DO UPDATE SET
     ime = EXCLUDED.ime,
     priimek = EXCLUDED.priimek,
     elektronski_naslov = EXCLUDED.elektronski_naslov,
     uporabnisko_ime = EXCLUDED.uporabnisko_ime,
-    geslo = EXCLUDED.geslo;
+    geslo_hash = EXCLUDED.geslo_hash,
+    rola = EXCLUDED.rola;
 
 
--- select * from oseba;
+--select * from oseba;
 
 
 INSERT INTO tezavnost (id, ime)
@@ -60,11 +61,10 @@ ON CONFLICT (id) DO UPDATE SET ime = EXCLUDED.ime;
 -- select * from kategorija;
 
 INSERT INTO sladica
-(id, ime, cas_priprave, postopek, kratek_opis, avtor, tezavnost, kategorija)
+(ime, cas_priprave, postopek, kratek_opis, avtor, tezavnost, kategorija)
 VALUES
 
 (
-1,
 'Čokoladna torta',
 90,
 'Najprej pečico segrejemo na 180 °C. Čokolado in maslo stopimo nad paro ter pustimo, da se nekoliko ohladi. V večji posodi stepemo jajca in sladkor, dokler masa ne postane svetla in puhasta. Dodamo stopljeno čokolado, moko in pecilni prašek ter nežno premešamo. Maso vlijemo v namaščen tortni model in pečemo približno 45 minut. Medtem pripravimo čokoladno kremo iz sladke smetane in čokolade. Ohlajen biskvit prerežemo na dve plasti, premažemo s kremo in torto okrasimo s čokoladnimi ostružki.',
@@ -75,7 +75,6 @@ VALUES
 ),
 
 (
-2,
 'Vanilijevi mafini',
 45,
 'V eni posodi zmešamo moko, pecilni prašek in sladkor. V drugi posodi stepemo jajca, mleko in stopljeno maslo. Mokre sestavine postopoma primešamo suhim in dodamo vanilijev ekstrakt. Maso razdelimo v modelčke za mafine do približno dveh tretjin višine. Mafine pečemo 20–25 minut, da postanejo zlato rjavi. Pred serviranjem jih ohladimo in po želji posujemo s sladkorjem v prahu.',
@@ -86,7 +85,6 @@ VALUES
 ),
 
 (
-3,
 'Jagodni cheesecake',
 135,
 'Piškote zdrobimo v drobne drobtine in jih zmešamo s stopljenim maslom. Zmes vtisnemo na dno tortnega modela. Kremni sir stepemo s sladkorjem, dodamo jajca in vanilijo. Kremo vlijemo na podlago in pečemo približno eno uro pri nižji temperaturi. Ko se torta ohladi, jo premažemo z jagodnim prelivom iz svežih jagod in sladkorja ter postavimo v hladilnik za vsaj dve uri.',
@@ -97,7 +95,6 @@ VALUES
 ),
 
 (
-4,
 'Masleni piškoti',
 60,
 'Iz moke, masla, sladkorja in jajca zgnetemo gladko testo. Testo zavijemo v folijo in ga pustimo počivati v hladilniku približno 30 minut. Nato ga razvaljamo na pomokani površini in z modelčki izrežemo različne oblike. Piškote pečemo 10–12 minut pri 180 °C, dokler rahlo ne porjavijo. Ohlajene lahko okrasimo s čokolado ali sladkorno glazuro.',
@@ -108,7 +105,6 @@ VALUES
 ),
 
 (
-5,
 'Čokoladni mousse',
 45,
 'Temno čokolado stopimo nad paro in pustimo, da se nekoliko ohladi. Sladko smetano stepemo do mehkih vrhov. Ločeno stepemo beljake s sladkorjem. V stopljeno čokolado najprej vmešamo rumenjake, nato stepeno smetano in na koncu še beljake. Mousse razdelimo v kozarčke in ga hladimo vsaj dve uri. Pred serviranjem ga okrasimo z naribano čokolado ali sadjem.',
@@ -119,7 +115,6 @@ VALUES
 ),
 
 (
-6,
 'Sadna pita',
 75,
 'Iz moke, masla in sladkorja pripravimo krhko testo. Testo razvaljamo in položimo v model za pito. Podlago pečemo približno 15 minut. Nato dodamo vanilijevo kremo in sveže sadje, kot so jagode, borovnice in kivi. Pito pečemo še dodatnih 20 minut in jo pred serviranjem dobro ohladimo.',
@@ -130,7 +125,6 @@ VALUES
 ),
 
 (
-7,
 'Tiramisu',
 60,
 'Skuhamo močno kavo in jo ohladimo. Rumenjake stepemo s sladkorjem, nato dodamo mascarpone. Beljake posebej stepemo v trd sneg in jih nežno vmešamo v kremo. Baby piškote pomočimo v kavo in jih zlagamo v pekač. Čez nanesemo plast kreme in postopek ponovimo. Tiramisu hladimo čez noč ter ga pred serviranjem posujemo s kakavom.',
@@ -141,7 +135,6 @@ VALUES
 ),
 
 (
-8,
 'Kokosove kroglice',
 30,
 'Piškote zdrobimo in jih zmešamo s kakavom, kokosom in kondenziranim mlekom. Maso dobro pregnetemo in oblikujemo majhne kroglice. Vsako kroglico povaljamo v kokosovi moki. Sladico postavimo v hladilnik za vsaj 30 minut, da se strdi.',
@@ -152,7 +145,6 @@ VALUES
 ),
 
 (
-9,
 'Browniji',
 45,
 'Čokolado in maslo stopimo nad paro. Dodamo sladkor in eno po eno umešamo jajca. Nato primešamo moko in ščepec soli. Maso vlijemo v manjši pekač in pečemo približno 25 minut. Browniji morajo ostati rahlo mehki v sredini. Pred rezanjem jih popolnoma ohladimo.',
@@ -163,7 +155,6 @@ VALUES
 ),
 
 (
-10,
 'Limonina pita',
 75,
 'Najprej pripravimo krhko testo in ga spečemo do zlato rumene barve. Medtem v kozici segrejemo limonin sok, sladkor in maslo. Dodamo stepena jajca ter mešamo, dokler se krema ne zgosti. Kremo vlijemo na pečeno testo in pito pečemo še približno 20 minut. Ohlajeno pito postrežemo s stepeno smetano.',
@@ -174,7 +165,6 @@ VALUES
 ),
 
 (
-11,
 'Domač vanilijev sladoled',
 240,
 'Mleko segrejemo skupaj z vanilijo. Rumenjake stepemo s sladkorjem in jim počasi prilijemo toplo mleko. Zmes kuhamo na nizkem ognju, dokler se ne zgosti. Dodamo sladko smetano in maso popolnoma ohladimo. Sladoled zamrznemo ter ga med zamrzovanjem večkrat premešamo za kremasto teksturo.',
@@ -185,7 +175,6 @@ VALUES
 ),
 
 (
-12,
 'Jabolčni zavitek',
 90,
 'Testo tanko razvaljamo na kuhinjski krpi. Jabolka olupimo in naribamo ter jim dodamo cimet, sladkor in rozine. Nadev razporedimo po testu in ga previdno zvijemo. Zavitek premažemo z maslom in pečemo približno 40 minut. Pred serviranjem ga posujemo s sladkorjem v prahu.',
@@ -196,7 +185,6 @@ VALUES
 ),
 
 (
-13,
 'Medenjaki',
 60,
 'Med segrejemo skupaj z maslom. Dodamo moko, sladkor, jajce in začimbe ter zgnetemo testo. Testo pustimo počivati, nato ga razvaljamo in izrežemo različne oblike. Medenjake pečemo približno 10 minut. Ko se ohladijo, jih lahko okrasimo z belo glazuro.',
@@ -207,7 +195,6 @@ VALUES
 ),
 
 (
-14,
 'Palačinke z marmelado',
 30,
 'Iz moke, mleka in jajc pripravimo gladko maso brez grudic. Na segreti ponvi spečemo tanke palačinke z obeh strani. Še tople namažemo z marmelado in jih zvijemo ali prepognemo. Po želji jih posujemo s sladkorjem v prahu.',
@@ -218,7 +205,6 @@ VALUES
 ),
 
 (
-15,
 'Bananin kruh',
 75,
 'Banane pretlačimo z vilico in jih zmešamo z jajci, sladkorjem in stopljenim maslom. Dodamo moko in pecilni prašek. Maso vlijemo v podolgovat model in pečemo približno 50 minut. Ohlajen kruh narežemo na rezine in postrežemo.',
@@ -229,7 +215,6 @@ VALUES
 ),
 
 (
-16,
 'Makroni',
 150,
 'Beljake stepemo v trd sneg in postopoma dodajamo sladkor. Primešamo mandljevo moko in maso nežno mešamo do gladke teksture. Z dresirno vrečko oblikujemo kroge na pekaču in jih pustimo počivati 30 minut. Pečemo jih pri nizki temperaturi. Ohlajene makrone napolnimo s čokoladno ali sadno kremo.',
@@ -240,7 +225,6 @@ VALUES
 ),
 
 (
-17,
 'Čokoladni sufle',
 45,
 'Čokolado in maslo stopimo nad paro. Ločeno stepemo jajca in sladkor, nato dodamo stopljeno čokolado in moko. Modelčke namažemo z maslom in jih napolnimo z maso. Sufleje pečemo kratek čas, da sredica ostane tekoča. Postrežemo jih takoj po peki.',
@@ -251,7 +235,6 @@ VALUES
 ),
 
 (
-18,
 'Sadni smoothie',
 15,
 'Sadje narežemo na manjše koščke in ga damo v blender. Dodamo mleko, led in po želji med. Vse skupaj miksamo, dokler ne dobimo gladke teksture. Smoothie postrežemo dobro ohlajen.',
@@ -262,7 +245,6 @@ VALUES
 ),
 
 (
-19,
 'Krofi z marmelado',
 120,
 'Iz moke, mleka, kvasa in jajc pripravimo kvašeno testo. Testo pustimo vzhajati približno eno uro. Nato oblikujemo krofe in jih ponovno pustimo vzhajati. Krofe ocvremo v vročem olju do zlato rjave barve in jih napolnimo z marmelado.',
@@ -273,7 +255,6 @@ VALUES
 ),
 
 (
-20,
 'Čokoladni piškoti',
 45,
 'Maslo in sladkor penasto stepemo. Dodamo jajce in moko ter primešamo koščke čokolade. Iz mase oblikujemo majhne kupčke in jih pečemo približno 15 minut. Piškoti se med peko rahlo razlezejo in postanejo hrustljavi na robovih.',
@@ -295,29 +276,21 @@ ON CONFLICT (id) DO UPDATE SET
 -- select * from sladica;
 
 
-
--- drop table if exists oseba cascade;
-
-
-
-
--- drop table if exists sestavina cascade;
-
-INSERT INTO sestavina (id, ime, enota)
+INSERT INTO sestavina (ime, enota)
 VALUES
-    (1, 'moka', 'g'), (2, 'sladkor', 'g'), (3, 'jajca', ''),
-    (4, 'maslo', 'g'), (5, 'temna čokolada', 'g'),
-    (6, 'sladka smetana', 'ml'), (7, 'pecilni prašek', 'g'),
-    (8, 'mleko', 'ml'), (9, 'vanilijev ekstrakt', 'ml'),
-    (10, 'piškoti', 'g'), (11, 'kremni sir', 'g'),
-    (12, 'jagode', 'g'), (13, 'kakav', 'g'), (14, 'sadje', 'g'),
-    (15, 'kokosova moka', 'g'), (16, 'kondenzirano mleko', 'ml'),
-    (17, 'limone', 'kos'), (18, 'kava', 'ml'), (19, 'mascarpone', 'g'),
-    (20, 'baby piškoti', 'g'), (21, 'jabolka', 'g'),
-    (22, 'cimet', 'g'), (23, 'rozine', 'g'), (24, 'med', 'g'),
-    (25, 'marmelada', 'g'), (26, 'banane', 'kos'),
-    (27, 'mandljeva moka', 'g'), (28, 'kvas', 'g'),
-    (29, 'olje', 'ml'), (30, 'sol', 'g'), (31, 'led', 'kos')
+    ('moka', 'g'), ('sladkor', 'g'), ('jajca', ''),
+    ('maslo', 'g'), ('temna čokolada', 'g'),
+    ('sladka smetana', 'ml'), ('pecilni prašek', 'g'),
+    ('mleko', 'ml'), ('vanilijev ekstrakt', 'ml'),
+    ('piškoti', 'g'), ('kremni sir', 'g'),
+    ('jagode', 'g'), ('kakav', 'g'), ('sadje', 'g'),
+    ('kokosova moka', 'g'), ('kondenzirano mleko', 'ml'),
+    ('limone', 'kos'), ('kava', 'ml'), ('mascarpone', 'g'),
+    ('baby piškoti', 'g'), ('jabolka', 'g'),
+    ('cimet', 'g'), ('rozine', 'g'), ('med', 'g'),
+    ('marmelada', 'g'), ('banane', 'kos'),
+    ('mandljeva moka', 'g'), ('kvas', 'g'),
+    ('olje', 'ml'), ('sol', 'g'), ('led', 'kos')
 ON CONFLICT (id) DO UPDATE SET
     ime = EXCLUDED.ime,
     enota = EXCLUDED.enota;
@@ -325,12 +298,12 @@ ON CONFLICT (id) DO UPDATE SET
 
 -- select * from sestavina;
 
-INSERT INTO pripomocek (id, ime)
+INSERT INTO pripomocek (ime)
 VALUES
-    (1, 'pečica'), (2, 'mešalnik'), (3, 'tortni model'),
-    (4, 'pekač'), (5, 'ponev'), (6, 'kozica'),
-    (7, 'blender'), (8, 'dresirna vrečka'),
-    (9, 'model za pito'), (10, 'zamrzovalnik')
+    ('pečica'), ('mešalnik'), ('tortni model'),
+    ('pekač'), ('ponev'), ('kozica'),
+    ('blender'), ('dresirna vrečka'),
+    ('model za pito'), ('zamrzovalnik')
 ON CONFLICT (id) DO UPDATE SET ime = EXCLUDED.ime;
 
 -- select * from pripomocek;
