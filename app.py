@@ -17,9 +17,10 @@ def domaca_stran():
 def prijava():
     return template("prijava.html")
 
-#@get('/seznam_receptov')
-#def seznam_receptov():
-#    return template("seznam_receptov.html")
+@get('/registracija')
+def registracija():
+    return template("registracija.html")
+
 
 
 @get("/recepti")

@@ -8,7 +8,6 @@ Koda je usklajena z dogovorjeno shemo podatkovne baze.
 import psycopg2
 
 from . import auth_public as auth
-
 from .models import (
     Kategorija,
     Oseba,
@@ -53,13 +52,6 @@ class Repository:
         JOIN kategorija AS k ON k.id = s.kategorija
     """
 
-
-    def dobi_sladice(self) -> List[Sladica]:
-        self.cur.execute(self.SQL_SLADICE)
-        sladice = [Sladica.from_dict(s) for s in self.cur.fetchall()]
-        return sladice
-
-
     def __init__(self):
         """Odpre povezavo s podatki iz auth_public.py."""
 
@@ -70,8 +62,6 @@ class Repository:
             password=auth.password,
             port=auth.port,
         )
-        self.cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-
 
     def zapri(self):
         """Zapre povezavo, če je ta še odprta."""
