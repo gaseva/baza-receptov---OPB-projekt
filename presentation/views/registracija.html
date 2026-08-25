@@ -40,7 +40,35 @@
             <div class="right-side">
                 <input type="password" class="form-control" id="geslo" name="geslo" required placeholder="Vnesi geslo" >
             </div>
+            <div class="form-check mt-2">
+            <input
+                class="form-check-input"
+                type="checkbox"
+                id="prikazi_geslo">
+
+            <label class="form-check-label" for="prikazi_geslo">
+                Prikaži geslo
+            </label>
         </div>
+        </div>
+
+        <div class="form-row">
+            <div class="left-side">Ponovno geslo</div>
+            <div class="right-side">
+                <input type="password" class="form-control" id="ponovno_geslo" name="ponovno_geslo" required placeholder="Ponovno vnesi geslo" >
+            </div>
+            <div class="form-check mt-2">
+            <input
+                class="form-check-input"
+                type="checkbox"
+                id="prikazi_ponovno_geslo">
+
+            <label class="form-check-label" for="prikazi_geslo">
+                Prikaži geslo
+            </label>
+        </div>
+        </div>
+
 
         <button type="submit" class="btn btn-primary">Registracija</button>
 
@@ -48,7 +76,7 @@
 
 
 <p class="mt-3">
-    Si že registriran? <a href="/prijava">Se prijavi.</a>
+    Si že registriran? <a href="/prijava">Prijavi se</a>
   </p>
   
   <p>
@@ -56,4 +84,33 @@
   </p>
 
 
+  
 </div>
+
+<script>
+    const geslo = document.getElementById("geslo");
+    const ponovnoGeslo = document.getElementById("ponovno_geslo");
+
+    const prikaziGeslo = document.getElementById("prikazi_geslo");
+    const prikaziPonovnoGeslo =
+        document.getElementById("prikazi_ponovno_geslo");
+
+    function preveriGesli() {
+        if (geslo.value !== ponovnoGeslo.value) {
+            ponovnoGeslo.setCustomValidity("Gesli se ne ujemata.");
+        } else {
+            ponovnoGeslo.setCustomValidity("");
+        }
+    }
+
+    geslo.addEventListener("input", preveriGesli);
+    ponovnoGeslo.addEventListener("input", preveriGesli);
+
+    prikaziGeslo.addEventListener("change", function () {
+        geslo.type = this.checked ? "text" : "password";
+    });
+
+    prikaziPonovnoGeslo.addEventListener("change", function () {
+        ponovnoGeslo.type = this.checked ? "text" : "password";
+    });
+</script>

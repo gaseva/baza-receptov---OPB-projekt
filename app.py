@@ -28,6 +28,36 @@ def registracija():
     return template("registracija.html")
 
 
+#@post('/registracija')
+#def registracija_post():
+#    ime = request.forms.get('ime')
+#    priimek = request.forms.get('priimek')
+#    elektronski_naslov = request.forms.get('elektronski_naslov')
+#    uporabnisko_ime = request.forms.get('uporabnisko_ime')
+#    geslo = request.forms.get('geslo')
+#    ponovno_geslo = request.forms.get('ponovno_geslo')
+#
+#    if geslo != ponovno_geslo:
+#        return template(
+#            'registracija.html',
+#            napaka='Gesli se ne ujemata.'
+#        )
+#
+#    try:
+#        auth_service.registriraj_uporabnika(
+#            ime,
+#            priimek,
+#            elektronski_naslov,
+#            uporabnisko_ime,
+#            geslo
+#        )
+#    except ValueError as napaka:
+#        return template(
+#            'registracija.html',
+#            napaka=str(napaka)
+#        )
+#
+#    redirect('/prijava')
 
 @get("/recepti")
 def seznam_receptov():
@@ -65,5 +95,17 @@ def recept(sladica_id):
         sladica=sladica,
         sestavine=sestavine
     )
+
+
+@get("/dodaj_recept")
+def dodaj_recept():
+    return template("dodaj_recept.html")
+
+
+#@get("/priljubljene_recepti")
+#def priljubljeni_recepti():
+#    priljubljeno = ss.dobi_priljubljene_recepte()
+#    return template("priljubljeni_recepti.html", priljubljeno=priljubljeno)
+
 
 run(host='localhost', port=SERVER_PORT, reloader=RELOADER, debug=True)
