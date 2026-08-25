@@ -76,7 +76,7 @@ class Repository:
                 cur.execute(
                     """
                     SELECT id, ime, priimek, elektronski_naslov,
-                           uporabnisko_ime, geslo_hash
+                           uporabnisko_ime, geslo_hash, rola
                     FROM oseba
                     WHERE id = %s
                     """,
@@ -98,7 +98,7 @@ class Repository:
                 cur.execute(
                     """
                     SELECT id, ime, priimek, elektronski_naslov,
-                           uporabnisko_ime, geslo_hash
+                           uporabnisko_ime, geslo_hash, rola
                     FROM oseba
                     WHERE uporabnisko_ime = %s
                     """,
@@ -117,7 +117,7 @@ class Repository:
                 cur.execute(
                     """
                     SELECT id, ime, priimek, elektronski_naslov,
-                           uporabnisko_ime, geslo_hash
+                           uporabnisko_ime, geslo_hash, rola
                     FROM oseba
                     ORDER BY priimek, ime
                     """
@@ -133,7 +133,7 @@ class Repository:
         elektronski_naslov: str,
         uporabnisko_ime: str,
         geslo_hash: str,
-    ) -> int:
+    ):
         """Doda osebo in vrne njen novi ID.
 
         Repository gesla ne šifrira. Pred klicem mora servis geslo pretvoriti
@@ -160,7 +160,6 @@ class Repository:
                     ),
                 )
 
-        return
 
     # =====================================================================
     # SLADICE

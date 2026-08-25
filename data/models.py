@@ -83,8 +83,3 @@ class SestavinaRecepta:
     ime: str
     kolicina: str
     enota: str
-
-
-
-
-
