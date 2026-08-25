@@ -107,6 +107,22 @@ class Repository:
                 vrstica = cur.fetchone()
 
         return None if vrstica is None else Oseba(*vrstica)
+    
+    def dobi_osebo_po_elektronskem_naslovu(self, elektronski_naslov: str) -> Oseba | None:
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT id, ime, priimek, elektronski_naslov,
+                        uporabnisko_ime, geslo_hash, rola
+                FROM oseba
+                WHERE elektronski_naslov = %s
+                """,
+                (elektronski_naslov,),
+            )
+
+            vrstica = cur.fetchone()
+
+        return None if vrstica is None else Oseba(*vrstica)
 
 # to nevem če zares rabima
     def dobi_vse_osebe(self) -> list[Oseba]:

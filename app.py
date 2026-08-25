@@ -24,7 +24,9 @@ def prijava():
 #    uporabnisko_ime = request.forms.get('username')
 #    geslo = request.forms.get('password')
 
-
+@get("/registracija", name="registracija")
+def registracija():
+    return template("registracija.html")
 
 @post('/registracija')
 def registracija_post():
@@ -55,7 +57,7 @@ def registracija_post():
             napaka=str(napaka)
         )
 
-    redirect('/prijava')
+    return redirect('/prijava')
 
 @get("/recepti")
 def seznam_receptov():

@@ -1,31 +1,21 @@
 from data.repository import Repository
 import bcrypt
-from datetime import date
-from .models import (
-    Kategorija,
-    Oseba,
-    Pripomocek,
-    Sestavina,
-    SestavinaRecepta,
-    Sladica,
-    Tezavnost,
-)
 
 
 class UporabnikiService:       
 
-    def registracija(self, ime: str, priimek: str, elektronski_naslov: str, uporabnisko_ime: str, geslo_hash: str):
+    def registracija(self, ime: str, priimek: str, elektronski_naslov: str, uporabnisko_ime: str, geslo: str):
 
-        if not all([ime, priimek, elektronski_naslov, uporabnisko_ime, geslo_hash,]):
+        if not all([ime, priimek, elektronski_naslov, uporabnisko_ime, geslo]):
             raise ValueError("Prosim izpolnite vsa polja.")
 
-        if len(geslo_hash) < 8:
+        if len(geslo) < 8:
             raise ValueError("Geslo mora vsebovati najmanj 8 znakov.")
             
         #zakodiramo geslo
-        bytes = geslo_hash.encode('utf-8')
+        geslo_bytes = geslo.encode('utf-8')
         salt = bcrypt.gensalt()
-        password_hash = bcrypt.hashpw(bytes, salt)
+        password_hash = bcrypt.hashpw(geslo_bytes, salt)
 
         with Repository() as repository:
             if (repository.dobi_osebo_po_uporabniskem_imenu(uporabnisko_ime)
