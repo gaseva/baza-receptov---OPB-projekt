@@ -31,4 +31,21 @@ def seznam_receptov():
         sladice=sladice
     )
 
+@get("/recept/<sladica_id:int>")
+def recept(sladica_id):
+    sladica, sestavine = ss.dobi_recept(sladica_id)
+
+    if sladica is None:
+        response.status = 404
+        return template(
+            "napaka.html",
+            napaka="Sladica s tem ID-jem ne obstaja."
+        )
+
+    return template(
+        "recept.html",
+        sladica=sladica,
+        sestavine=sestavine
+    )
+
 run(host='localhost', port=SERVER_PORT, reloader=RELOADER, debug=True)
