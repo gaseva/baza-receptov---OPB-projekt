@@ -16,7 +16,7 @@ class Oseba:
     priimek: str
     elektronski_naslov: str
     uporabnisko_ime: str
-    geslo: str
+    geslo_hash: str
     role: str
 
 @dataclass

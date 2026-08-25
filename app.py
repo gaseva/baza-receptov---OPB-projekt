@@ -25,10 +25,6 @@ def prijava():
 #    geslo = request.forms.get('password')
 
 
-@get('/registracija')
-def registracija():
-    return template("registracija.html")
-
 
 @post('/registracija')
 def registracija_post():
@@ -46,7 +42,7 @@ def registracija_post():
         )
 
     try:
-        us.registriraj_uporabnika(
+        us.registracija(
             ime,
             priimek,
             elektronski_naslov,

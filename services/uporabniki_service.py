@@ -1,29 +1,49 @@
 from data.repository import Repository
 import bcrypt
 from datetime import date
+from .models import (
+    Kategorija,
+    Oseba,
+    Pripomocek,
+    Sestavina,
+    SestavinaRecepta,
+    Sladica,
+    Tezavnost,
+)
 
 
 class UporabnikiService:       
 
-    def registracija(self, ime: str, priimek: str, elektronski_naslov: str, uporabnisko_ime: str, geslo_hash: str, role: str):
+    def registracija(self, ime: str, priimek: str, elektronski_naslov: str, uporabnisko_ime: str, geslo_hash: str):
+
+        if not all([ime, priimek, elektronski_naslov, uporabnisko_ime, geslo_hash,]):
+            raise ValueError("Prosim izpolnite vsa polja.")
+
+        if len(geslo_hash) < 8:
+            raise ValueError("Geslo mora vsebovati najmanj 8 znakov.")
+            
         #zakodiramo geslo
         bytes = geslo_hash.encode('utf-8')
         salt = bcrypt.gensalt()
         password_hash = bcrypt.hashpw(bytes, salt)
 
-        # Sedaj ustvarimo objekt Uporabnik in ga zapišemo bazo
         with Repository() as repository:
-            o = Oseba(
+            if (repository.dobi_osebo_po_uporabniskem_imenu(uporabnisko_ime)
+                is not None):
+                raise ValueError("To uporabniško ime je že zasedeno.")
+
+            if (repository.dobi_osebo_po_elektronskem_naslovu(elektronski_naslov)
+                is not None):
+                raise ValueError("Ta elektronski naslov je že registriran.")
+
+            repository.dodaj_osebo(
                 ime=ime,
                 priimek=priimek,
                 elektronski_naslov=elektronski_naslov,
                 uporabnisko_ime=uporabnisko_ime,
                 geslo_hash=password_hash.decode("UTF-8")
-            )
+                )
 
-            self.repo.dodaj_osebo(o)
-
-            return
 
     #  def obstaja_uporabnik(self, uporabnik: str) -> bool:
     #      try:
