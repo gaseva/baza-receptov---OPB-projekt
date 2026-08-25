@@ -133,13 +133,8 @@ class Repository:
         elektronski_naslov: str,
         uporabnisko_ime: str,
         geslo_hash: str,
-    ):
-        """Doda osebo in vrne njen novi ID.
-
-        Repository gesla ne šifrira. Pred klicem mora servis geslo pretvoriti
-        v bcrypt zgoščeno vrednost. Če je e-pošta ali uporabniško ime že v
-        bazi, PostgreSQL sproži napako in transakcija se razveljavi.
-        """
+    )-> None:
+        """Doda osebo v bazo """
 
         with self.conn:
             with self.conn.cursor() as cur:
