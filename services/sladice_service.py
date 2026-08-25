@@ -2,7 +2,6 @@ from data.repository import Repository as repo
 
 
 class SladiceService:
-
     def __init__(self):
         self.repository = repo()
 
