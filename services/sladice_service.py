@@ -1,4 +1,4 @@
-from data.repository import repo
+from data.repository import repository as repo
 
 
 class SladiceService:
