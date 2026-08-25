@@ -301,11 +301,11 @@ ON CONFLICT (id) DO UPDATE SET
 
 
 
-
+-- drop table if exists sestavina cascade;
 
 INSERT INTO sestavina (id, ime, enota)
 VALUES
-    (1, 'moka', 'g'), (2, 'sladkor', 'g'), (3, 'jajca', 'kos'),
+    (1, 'moka', 'g'), (2, 'sladkor', 'g'), (3, 'jajca', ''),
     (4, 'maslo', 'g'), (5, 'temna čokolada', 'g'),
     (6, 'sladka smetana', 'ml'), (7, 'pecilni prašek', 'g'),
     (8, 'mleko', 'ml'), (9, 'vanilijev ekstrakt', 'ml'),

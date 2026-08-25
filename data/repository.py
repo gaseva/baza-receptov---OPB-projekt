@@ -317,6 +317,27 @@ class Repository:
 
         return sladica_id
 
+    def dobi_sestavine_za_sladico(
+        self, sladica_id: int
+    ) -> list[SestavinaRecepta]:
+        """Vrne imena, količine in enote sestavin izbranega recepta."""
+
+        with self.conn:
+            with self.conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT se.id, se.ime, v.kolicina_sestavine, se.enota
+                    FROM vsebuje AS v
+                    JOIN sestavina AS se ON se.id = v.sestavina
+                    WHERE v.sladica = %s
+                    ORDER BY se.ime
+                    """,
+                    (sladica_id,),
+                )
+                vrstice = cur.fetchall()
+
+        return [SestavinaRecepta(*vrstica) for vrstica in vrstice]
+
     # =====================================================================
     # ŠIFRANTI: KATEGORIJE, TEŽAVNOSTI, SESTAVINE IN PRIPOMOČKI
     # =====================================================================

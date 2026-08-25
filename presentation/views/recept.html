@@ -1,0 +1,35 @@
+%rebase('osnova.html', naslov='sladica.ime')
+<div>
+    <h1>{{sladica.ime}}</h1>
+
+    <table>
+        <tr>
+            <td>
+                <p>
+                    {{sladica.kratek_opis}}
+                </p>
+                <p><strong>Kategorija:</strong> {{sladica.kategorija}}</p>
+                <p><strong>Čas priprave:</strong> {{sladica.cas_priprave}} min</p>
+                <p><strong>Težavnost:</strong> {{sladica.tezavnost}}</p>
+                <p><strong>Način priprave:</strong> {{sladica.postopek}}</p>
+            </td>
+        </tr>
+    </table>
+    
+
+     <h2>Sestavine</h2>
+
+    <ul>
+        %for sestavina in sestavine:
+        <li>
+            {{sestavina.kolicina}} {{sestavina.enota}}
+            {{sestavina.ime}}
+        </li>
+        %end
+    </ul>
+
+    <p>
+        <a href="/recepti">Nazaj na seznam receptov</a>
+    </p>
+
+</div>
