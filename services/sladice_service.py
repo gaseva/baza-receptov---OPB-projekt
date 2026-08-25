@@ -21,3 +21,20 @@ class SladiceService:
 
         sestavine = self.repository.dobi_sestavine_za_sladico(sladica_id)
         return sladica, sestavine
+
+
+#    def poisci_sladice(self, iskanje):
+#        """Vrne sladice, ki se ujemajo z iskalnim nizom."""
+#        sladice = self.repository.dobi_vse_sladice()
+#        iskanje = (iskanje or "").strip().casefold()
+#
+#        if not iskanje:
+#            return sladice
+#
+#        return [
+#            sladica
+#            for sladica in sladice
+#            if iskanje in sladica.ime.casefold()
+#            or iskanje in (sladica.kratek_opis or "").casefold()
+#            or iskanje in (sladica.kategorija or "").casefold()
+#        ]

@@ -17,6 +17,12 @@ def domaca_stran():
 def prijava():
     return template("prijava.html")
 
+#@post('/prijava')
+#def prijava_post():
+#    uporabnisko_ime = request.forms.get('username')
+#    geslo = request.forms.get('password')
+
+
 @get('/registracija')
 def registracija():
     return template("registracija.html")
@@ -29,7 +35,8 @@ def seznam_receptov():
 
     return template(
         "seznam_receptov.html",
-        sladice=sladice
+        sladice=sladice#,
+        #iskanje = ""
     )
 
 @get("/recept/<sladica_id:int>")
