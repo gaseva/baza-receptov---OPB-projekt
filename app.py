@@ -1,6 +1,8 @@
 from presentation.bottleext import get, post, run, request, template, redirect, static_file, url, response, template_user
 import os
-from services.sladice_service import SladiceService as ss
+from services.sladice_service import SladiceService
+
+ss = SladiceService()
 
 # privzete nastavitve
 SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
