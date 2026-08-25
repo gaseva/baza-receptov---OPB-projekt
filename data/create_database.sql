@@ -2,14 +2,14 @@
 
 CREATE TABLE IF NOT EXISTS oseba
 ( 
-    id INTEGER PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     ime TEXT NOT NULL, 
     priimek TEXT NOT NULL,
     elektronski_naslov TEXT NOT NULL UNIQUE,
     uporabnisko_ime TEXT NOT NULL UNIQUE,
-    geslo TEXT NOT NULL
+    geslo_hash TEXT NOT NULL,
+    rola TEXT NOT NULL DEFAULT 'uporabnik'
 );
--- komentar
 
 CREATE TABLE IF NOT EXISTS tezavnost
 (
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS kategorija
 
 CREATE TABLE IF NOT EXISTS sladica
 (
-    id INTEGER PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     ime TEXT NOT NULL,
     cas_priprave INTEGER NOT NULL,
     -- tezavnost INTEGER napisi requirements, 
@@ -36,15 +36,11 @@ CREATE TABLE IF NOT EXISTS sladica
     tezavnost INTEGER NOT NULL REFERENCES tezavnost(id),
     kategorija INTEGER NOT NULL REFERENCES kategorija(id)
 );
---komentar 2
 
-
-
--- drop table if exists sestavina cascade;
 
 CREATE TABLE IF NOT EXISTS sestavina
 (
-    id INTEGER PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     ime TEXT NOT NULL,
     enota TEXT NOT NULL
 );
@@ -52,7 +48,7 @@ CREATE TABLE IF NOT EXISTS sestavina
 
 CREATE TABLE IF NOT EXISTS pripomocek
 (
-    id INTEGER PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     ime TEXT NOT NULL
 );
 
@@ -79,10 +75,14 @@ CREATE TABLE IF NOT EXISTS priljubljeno
 );
 
 
--- CREATE TABLE IF NOT EXISTS public.uporabniki
--- (
---     username text PRIMARY KEY,
---     role text not null,
---     password text not null,
---     last_login timestamp
--- );
+--DROP TABLE IF EXISTS
+--    priljubljeno,
+--    potrebujes,
+--    vsebuje,
+--    pripomocek,
+--    sestavina,
+--    sladica,
+--    kategorija,
+--    tezavnost,
+--    oseba
+--CASCADE;
