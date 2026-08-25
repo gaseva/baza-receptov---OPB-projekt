@@ -1,8 +1,6 @@
 from presentation.bottleext import get, post, run, request, template, redirect, static_file, url, response, template_user
 import os
-from services.sladice_service import sladice_service
-
-service = sladice_service()
+from services.sladice_service import SladiceService as ss
 
 # privzete nastavitve
 SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
@@ -24,7 +22,7 @@ def prijava():
 
 @get("/recepti")
 def seznam_receptov():
-    sladice = service.dobi_vse_sladice()
+    sladice = ss.dobi_vse_sladice()
 
     return template(
         "seznam_receptov.html",
