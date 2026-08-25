@@ -325,6 +325,46 @@ class Repository:
 
         return [Sestavina(*vrstica) for vrstica in vrstice]
 
+    def dobi_sestavino_po_imenu(self, ime: str) -> Sestavina | None:
+        """Vrne sestavino z danim imenom ali None, če ne obstaja."""
+
+        with self.conn:
+            with self.conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT id, ime, enota
+                    FROM sestavina
+                    WHERE LOWER(ime) = LOWER(%s)
+                    """,
+                    (ime,),
+                )
+
+                # fetchone mora biti znotraj bloka za cursor
+                vrstica = cur.fetchone()
+
+        return None if vrstica is None else Sestavina(*vrstica)
+
+    
+    def dodaj_sestavino(self, ime: str, enota: str) -> Sestavina:
+        """Doda novo sestavino in vrne ustvarjeni objekt."""
+
+        with self.conn:
+            with self.conn.cursor() as cur:
+                cur.execute(
+                    """
+                    INSERT INTO sestavina (ime, enota)
+                    VALUES (%s, %s)
+                    RETURNING id, ime, enota
+                    """,
+                    (ime, enota),
+                )
+
+                # Tudi tukaj mora biti fetchone znotraj bloka
+                vrstica = cur.fetchone()
+
+        return Sestavina(*vrstica)
+
+    
     def dobi_sestavine_sladice(
         self, sladica_id: int
     ) -> list[SestavinaRecepta]:

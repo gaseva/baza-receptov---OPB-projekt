@@ -101,7 +101,33 @@ def recept(sladica_id):
 
 @get("/dodaj_recept")
 def dodaj_recept():
-    return template("dodaj_recept.html")
+    sestavine = ss.dobi_vse_sestavine()
+
+    return template(
+        "dodaj_recept.html",
+        sestavine=sestavine,
+        napaka_sestavine=None
+    )
+
+
+@post("/dodaj_sestavino")
+def dodaj_sestavino_post():
+    ime = request.forms.get("ime_sestavine")
+    enota = request.forms.get("enota_sestavine")
+
+    try:
+        ss.dodaj_sestavino(ime, enota)
+
+    except ValueError as napaka:
+        sestavine = ss.dobi_vse_sestavine()
+
+        return template(
+            "dodaj_recept.html",
+            sestavine=sestavine,
+            napaka_sestavine=str(napaka)
+        )
+
+    redirect("/dodaj_recept")
 
 
 #@get("/priljubljene_recepti")
