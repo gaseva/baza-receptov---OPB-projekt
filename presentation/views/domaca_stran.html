@@ -3,5 +3,32 @@
 
 <h1 class="display-4 fw-bold">Baza receptov za sladice</h1>
 
+<p class="lead text-secondary mb-4">Poišči recept za svojo najljubšo sladico</p>
+
+
+<form action="/recepti/iskanje" method="GET" class="row justify-content-center g-2 mb-4">
+    <div class="col-md-7 col-lg-6">
+        <label for="iskanje" class="visually-hidden">Poišči recept</label>
+        <input id="iskanje" name="iskanje" type="search"
+            class="form-control form-control-lg"
+            placeholder="Na primer: bananin kruh" required>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary btn-lg">Poišči</button>
+    </div>
+</form>
+
+
+
+
+
+
+<div>
+    <a href="/recepti" class="btn btn-primary">Vsi recepti</a>
+    <a href="/prijava" class="btn btn-primary">Prijava</a>
+    <a href="/registracija" class="btn btn-primary">Registracija</a>
+</div>
+
+
 
 

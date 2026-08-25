@@ -35,8 +35,18 @@ def seznam_receptov():
 
     return template(
         "seznam_receptov.html",
-        sladice=sladice#,
-        #iskanje = ""
+        sladice=sladice
+    )
+
+@get("/recepti/iskanje")
+def seznam_receptov():
+    iskanje = request.query.get("iskanje", "").strip()
+    sladice = ss.poisci_sladice(iskanje)
+
+    return template(
+        "seznam_receptov.html",
+        sladice=sladice,
+        iskanje=iskanje
     )
 
 @get("/recept/<sladica_id:int>")
