@@ -38,6 +38,111 @@ class SladiceService:
         ]
 
 
+    def dodaj_sladico(
+            self,
+            ime,
+            cas_priprave,
+            postopek,
+            kratek_opis,
+            avtor_id,
+            tezavnost_id,
+            kategorija_id,
+            sestavina_ids,
+            kolicine,
+            pripomocek_ids,
+        ):
+            """Preveri podatke obrazca in doda celoten recept v bazo."""
+
+            ime = (ime or "").strip() # odstranjevanje odvečnih presledkov
+            cas_priprave = (cas_priprave or "").strip()
+            postopek = (postopek or "").strip()
+            kratek_opis = (kratek_opis or "").strip()
+
+            if not ime:
+                raise ValueError("Vnesti moraš ime sladice.") # preverjanje obveznih podatkov
+            if not cas_priprave:
+                raise ValueError("Vnesti moraš čas priprave.")
+            if not postopek:
+                raise ValueError("Vnesti moraš postopek priprave.")
+            if not kratek_opis:
+                raise ValueError("Vnesti moraš kratek opis.")
+
+            try:
+                ure, minute = map(int, cas_priprave.split(":")) # pretvorba časa v minute
+                cas_priprave_minute = ure * 60 + minute
+            except (TypeError, ValueError):
+                raise ValueError("Čas priprave ni v pravilni obliki.")
+
+            if cas_priprave_minute <= 0:
+                raise ValueError("Čas priprave mora biti daljši od 0 minut.")
+
+
+            # to pomojem lahko zbriševa
+            try:
+                avtor_id = int(avtor_id)
+                tezavnost_id = int(tezavnost_id)
+                kategorija_id = int(kategorija_id)
+            except (TypeError, ValueError):
+                raise ValueError("Izberi veljavno težavnost in kategorijo.")
+
+            sestavina_ids = sestavina_ids or []
+            kolicine = kolicine or []
+
+            if len(sestavina_ids) != len(kolicine):
+                raise ValueError("Podatki o sestavinah niso popolni.")
+
+            sestavine = []
+
+            for sestavina_id, kolicina in zip(sestavina_ids, kolicine):
+                sestavina_id = (sestavina_id or "").strip()
+                kolicina = (kolicina or "").strip()
+
+                # popolnoma prazno dodatno vrstico preskočimo
+                if not sestavina_id and not kolicina:
+                    continue
+
+                if not sestavina_id or not kolicina:
+                    raise ValueError(
+                        "Pri vsaki sestavini izberi sestavino in vnesi količino."
+                    )
+
+                try:
+                    sestavina_id = int(sestavina_id)
+                    kolicina_stevilo = int(kolicina)
+                except ValueError:
+                    raise ValueError("Količina sestavine mora biti celo število.")
+
+                if kolicina_stevilo <= 0:
+                    raise ValueError("Količina sestavine mora biti večja od 0.")
+
+                sestavine.append((sestavina_id, str(kolicina_stevilo)))
+
+            if not sestavine:
+                raise ValueError("Recept mora vsebovati vsaj eno sestavino.")
+
+            try:
+                pripomocki = [
+                    int(pripomocek_id)
+                    for pripomocek_id in (pripomocek_ids or [])
+                    if (pripomocek_id or "").strip()
+                ]
+            except ValueError:
+                raise ValueError("Izbran pripomoček ni veljaven.")
+
+            with Repository() as repository:
+                return repository.dodaj_sladico(
+                    ime=ime,
+                    cas_priprave=cas_priprave_minute,
+                    postopek=postopek,
+                    kratek_opis=kratek_opis,
+                    avtor_id=avtor_id,
+                    tezavnost_id=tezavnost_id,
+                    kategorija_id=kategorija_id,
+                    sestavine=sestavine,
+                    pripomocki=pripomocki,
+                )
+
+
     def dobi_vse_sestavine(self):
         """Vrne vse sestavine za prikaz v dropdownu."""
 
