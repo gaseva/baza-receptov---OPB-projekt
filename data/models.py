@@ -17,7 +17,7 @@ class Oseba:
     elektronski_naslov: str
     uporabnisko_ime: str
     geslo_hash: str
-    role: str
+    rola: str
 
 @dataclass
 class Tezavnost:

@@ -2,6 +2,7 @@ from presentation.bottleext import get, post, run, request, template, redirect, 
 import os
 from services.sladice_service import SladiceService
 from services.uporabniki_service import UporabnikiService
+from functools import wraps
 
 ss = SladiceService()
 us = UporabnikiService()
@@ -9,6 +10,29 @@ us = UporabnikiService()
 # privzete nastavitve
 SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
 RELOADER = os.environ.get('BOTTLE_RELOADER', True)
+
+COOKIE_SECRET = os.environ.get("COOKIE_SECRET")
+if not COOKIE_SECRET:
+    raise RuntimeError(
+        "Okoljska spremenljivka COOKIE_SECRET ni nastavljena."
+    )
+
+def cookie_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        oseba_id = request.get_cookie("oseba_id", secret=COOKIE_SECRET)
+
+        if oseba_id is None:
+            return redirect("/prijava")
+
+        try:
+            int(oseba_id)
+        except (TypeError, ValueError):
+            return redirect("/prijava")
+
+        return f(*args, **kwargs)
+
+    return decorated
 
 @get('/')
 def domaca_stran():
@@ -19,12 +43,46 @@ def domaca_stran():
 def prijava():
     return template("prijava.html")
 
-#@post('/prijava')
-#def prijava_post():
-#    uporabnisko_ime = request.forms.get('username')
-#    geslo = request.forms.get('password')
+@post('/prijava')
+def prijava_post():
+    uporabnisko_ime = request.forms.get('username')
+    geslo = request.forms.get('password')
+    
+    if not uporabnisko_ime or not geslo:
+        return template(
+            "prijava.html",
+            napaka="Prosim izpolnite vsa polja."
+        )
+        
+    try:
+        uporabnik = us.prijava(
+            uporabnisko_ime,
+            geslo
+        )
+    except ValueError as napaka:
+        return template(
+            'prijava.html',
+            napaka=str(napaka)
+        )
+    
+    response.set_cookie(
+        "oseba_id",
+        str(uporabnik.id),
+        secret=COOKIE_SECRET,
+        httponly=True,
+        samesite="Lax",
+        secure=False,
+        path="/",
+    )
+
+    return redirect('/')
 
 
+
+
+@get("/registracija", name="registracija")
+def registracija():
+    return template("registracija.html")
 
 @post('/registracija')
 def registracija_post():
@@ -34,6 +92,26 @@ def registracija_post():
     uporabnisko_ime = request.forms.get('uporabnisko_ime')
     geslo = request.forms.get('geslo')
     ponovno_geslo = request.forms.get('ponovno_geslo')
+    
+    if not all([
+        ime,
+        priimek,
+        elektronski_naslov,
+        uporabnisko_ime,
+        geslo,
+        ponovno_geslo,
+    ]):
+        return template(
+            "registracija.html",
+            napaka="Prosim, izpolnite vsa polja.",
+        )
+
+    
+    if len(geslo) < 8:
+        return template(
+            'registracija.html',
+            napaka='Geslo mora vsebovati najmanj 8 znakov.'
+        )
 
     if geslo != ponovno_geslo:
         return template(
@@ -55,7 +133,15 @@ def registracija_post():
             napaka=str(napaka)
         )
 
-    redirect('/prijava')
+    return redirect('/prijava')
+
+@get("/odjava")
+def odjava():
+    response.delete_cookie(
+        "oseba_id",
+        path="/",
+    )
+    return redirect("/")
 
 @get("/recepti")
 def seznam_receptov():

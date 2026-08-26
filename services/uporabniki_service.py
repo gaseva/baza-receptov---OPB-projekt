@@ -1,31 +1,22 @@
 from data.repository import Repository
 import bcrypt
-from datetime import date
-from data.models import (
-    Kategorija,
-    Oseba,
-    Pripomocek,
-    Sestavina,
-    SestavinaRecepta,
-    Sladica,
-    Tezavnost,
-)
+from data.models import Oseba
 
 
 class UporabnikiService:       
 
-    def registracija(self, ime: str, priimek: str, elektronski_naslov: str, uporabnisko_ime: str, geslo_hash: str):
+    def registracija(self, ime: str, priimek: str, elektronski_naslov: str, uporabnisko_ime: str, geslo: str):
 
-        if not all([ime, priimek, elektronski_naslov, uporabnisko_ime, geslo_hash,]):
+        if not all([ime, priimek, elektronski_naslov, uporabnisko_ime, geslo]):
             raise ValueError("Prosim izpolnite vsa polja.")
 
-        if len(geslo_hash) < 8:
+        if len(geslo) < 8:
             raise ValueError("Geslo mora vsebovati najmanj 8 znakov.")
             
         #zakodiramo geslo
-        bytes = geslo_hash.encode('utf-8')
+        geslo_bytes = geslo.encode('utf-8')
         salt = bcrypt.gensalt()
-        password_hash = bcrypt.hashpw(bytes, salt)
+        geslo_hash = bcrypt.hashpw(geslo_bytes, salt)
 
         with Repository() as repository:
             if (repository.dobi_osebo_po_uporabniskem_imenu(uporabnisko_ime)
@@ -41,31 +32,32 @@ class UporabnikiService:
                 priimek=priimek,
                 elektronski_naslov=elektronski_naslov,
                 uporabnisko_ime=uporabnisko_ime,
-                geslo_hash=password_hash.decode("UTF-8")
+                geslo_hash=geslo_hash.decode("UTF-8")
                 )
 
+        
+    def prijava(self, uporabnisko_ime: str, geslo: str) -> Oseba:
+            if not uporabnisko_ime or not geslo:
+                raise ValueError("Prosim izpolnite vsa polja.")
+            
+            with Repository() as repository:
+                # dobimo uporabnika iz baze po uporabniškem imenu (dobimo objekt Oseba)
+                user = repository.dobi_osebo_po_uporabniskem_imenu(uporabnisko_ime)
+                
+                #preverimo ali obstraja uporabnik
+                if user is None:
+                    raise ValueError("Uporabniško ime ali geslo je napačno.")
+                
+                #preverimo ali se geslo ujema z geslom v bazi
+                geslo_bytes_prijava = geslo.encode('utf-8')
+                geslo_hash_baza = user.geslo_hash.encode('utf-8')
 
-    #  def obstaja_uporabnik(self, uporabnik: str) -> bool:
-    #      try:
-    #          user = self.repo.dobi_uporabnika(uporabnik)
-    #          return True
-    #      except:
-    #          return False
-    #      
-    #  def prijavi_uporabnika(self, uporabnik : str, geslo_hash: str) -> UporabnikDto | bool :
-#  
-    #      # Najprej dobimo uporabnika iz baze
-    #      user = self.repo.dobi_uporabnika(uporabnik)
-#  
-    #      geslo_hash_bytes = geslo_hash.encode('utf-8')
-    #      # Ustvarimo hash iz gesla, ki ga je vnesel uporabnik
-    #      succ = bcrypt.checkpw(geslo_hash_bytes, user.password_hash.encode('utf-8'))
-#  
-    #      if succ:
-    #          # popravimo last login time
-    #          user.last_login = date.today().isoformat()
-    #          self.repo.posodobi_uporabnika(user)
-    #          return UporabnikDto(username=user.username, role=user.role)
-    #      
-    #      return False
-#  
+                if not bcrypt.checkpw(geslo_bytes_prijava, geslo_hash_baza):
+                    raise ValueError("Uporabniško ime ali geslo je napačno.")
+                
+                return user
+                
+                
+
+        
+ 
