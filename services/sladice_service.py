@@ -21,17 +21,39 @@ class SladiceService:
             return sladica, sestavine
 
     
-    def poisci_sladice(self, iskanje):
-        """Išče recepte po imenu sladice ali sestavine."""
-    
+    def poisci_sladice(self, iskanje, kategorija_id=None):
+        """Išče po imenu/sladici in po neobvezni kategoriji."""
+
         iskanje = (iskanje or "").strip()
+
+        kategorija_id = (
+            ""
+            if kategorija_id is None
+            else str(kategorija_id).strip()
+        )
+
+        if kategorija_id:
+            try:
+                kategorija_id = int(kategorija_id)
+            except ValueError:
+                return []
+        else:
+            kategorija_id = None
+
+        with Repository() as repository:
+            if not iskanje and kategorija_id is None:
+                return repository.dobi_vse_sladice()
+
+            return repository.poisci_sladice(
+                iskanje,
+                kategorija_id,
+            )
+
+    def dobi_kategorije(self):
+        """Vrne kategorije za dropdown na domači strani."""
     
         with Repository() as repository:
-            if not iskanje:
-                return repository.dobi_vse_sladice()
-    
-            return repository.poisci_sladice(iskanje)
-
+            return repository.dobi_kategorije()
 
     def dodaj_sladico(
             self,
