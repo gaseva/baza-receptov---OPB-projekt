@@ -7,22 +7,24 @@
         <a href="/recepti" class="btn btn-primary">
         Pojdi na vse recepte
         </a>
-    %for sladica in priljubljeno:
-        <h1><a href="/recept/{{sladica.id}}">{{sladica.ime}}</a></h1>
+    % else:
+        <h1 class="display-4 fw-bold">Vaši priljubljeni recepti</h1>
+        %for sladica in priljubljeno:
+            <h1><a href="/recept/{{sladica.id}}">{{sladica.ime}}</a></h1>
 
-        <table>
-            <tr>
-                <td>
-                    <p>
-                        {{sladica.kratek_opis}}
-                    </p>
-                    <p><strong>Kategorija:</strong> {{sladica.kategorija}}</p>
-                    <p><strong>Čas priprave:</strong> {{sladica.cas_priprave}} min</p>
-                    <p><strong>Težavnost:</strong> {{sladica.tezavnost}}</p>
-                </td>
-            </tr>
-        </table>
-    %end
+            <table>
+                <tr>
+                    <td>
+                        <p>
+                            {{sladica.kratek_opis}}
+                        </p>
+                        <p><strong>Kategorija:</strong> {{sladica.kategorija}}</p>
+                        <p><strong>Čas priprave:</strong> {{sladica.cas_priprave}} min</p>
+                        <p><strong>Težavnost:</strong> {{sladica.tezavnost}}</p>
+                    </td>
+                </tr>
+            </table>
+        %end
 
     <a href="/" class="btn btn-primary">
     Nazaj na domačo stran
