@@ -64,6 +64,10 @@ class UporabnikiService:
                     )
 
                 return user
+    def priljubljeni_recepti(self, oseba_id: int):
+        with Repository() as repository:
+            priljubljeno = repository.dobi_priljubljene_recepte(oseba_id)
+            return priljubljeno
                 
                 
 

@@ -353,7 +353,8 @@ ON CONFLICT (sladica, pripomocek) DO NOTHING;
 INSERT INTO priljubljeno (sladica, oseba)
 VALUES
     (1,7), (1,20), (3,12), (5,13), (7,5),
-    (9,8), (12,6), (14,9), (18,19), (20,3)
+    (9,8), (12,6), (14,9), (18,19), (20,3), (15,7)
 ON CONFLICT (sladica, oseba) DO NOTHING;
+
 
 -- SELECT * from priljubljeno;

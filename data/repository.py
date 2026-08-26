@@ -512,7 +512,7 @@ class Repository:
                 )
                 return cur.fetchone()[0]
 
-    def dobi_priljubljene(self, oseba_id: int) -> list[Sladica]:
+    def dobi_priljubljene_recepte(self, oseba_id: int) -> list[Sladica]:
         """Vrne vse priljubljene sladice izbrane osebe."""
 
         with self.conn:
