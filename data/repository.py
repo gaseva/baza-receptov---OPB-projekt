@@ -453,3 +453,7 @@ class Repository:
                 vrstice = cur.fetchall()
 
         return [self._ustvari_sladico(vrstica) for vrstica in vrstice]
+
+
+
+

@@ -10,6 +10,19 @@ us = UporabnikiService()
 SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
 RELOADER = os.environ.get('BOTTLE_RELOADER', True)
 
+def cookie_required(f):
+    """
+    Dekorator, ki zahteva veljaven piškotek. Če piškotka ni, uporabnika preusmeri na stran za prijavo.
+    """
+    @wraps(f)
+    def decorated( *args, **kwargs):
+        cookie = request.get_cookie("uporabnik")
+        if cookie:
+            return f(*args, **kwargs)
+        return template("prijava.html",uporabnik=None, rola=None, napaka="Potrebna je prijava!")
+        
+    return decorated
+
 @get('/')
 def domaca_stran():
     return template("domaca_stran.html")
@@ -19,10 +32,35 @@ def domaca_stran():
 def prijava():
     return template("prijava.html")
 
-#@post('/prijava')
-#def prijava_post():
-#    uporabnisko_ime = request.forms.get('username')
-#    geslo = request.forms.get('password')
+@post('/prijava')
+def prijava_post():
+    uporabnisko_ime = request.forms.get('username')
+    geslo = request.forms.get('password')
+    
+    if not uporabnisko_ime or not geslo:
+        return template(
+            "prijava.html",
+            napaka="Prosim izpolnite vsa polja."
+        )
+        
+    try:
+        us.prijava(
+            uporabnisko_ime,
+            geslo
+        )
+    except ValueError as napaka:
+        return template(
+            'prijava.html',
+            napaka=str(napaka)
+        )
+    
+    response.set_cookie("uporabnik", uporabnisko_ime)
+    response.set_cookie("rola", prijava.role)    
+
+    return redirect('/')
+
+
+
 
 @get("/registracija", name="registracija")
 def registracija():
@@ -36,6 +74,26 @@ def registracija_post():
     uporabnisko_ime = request.forms.get('uporabnisko_ime')
     geslo = request.forms.get('geslo')
     ponovno_geslo = request.forms.get('ponovno_geslo')
+    
+    if not all([
+        ime,
+        priimek,
+        elektronski_naslov,
+        uporabnisko_ime,
+        geslo,
+        ponovno_geslo,
+    ]):
+        return template(
+            "registracija.html",
+            napaka="Prosim, izpolnite vsa polja.",
+        )
+
+    
+    if len(geslo) < 8:
+        return template(
+            'registracija.html',
+            napaka='Geslo mora vsebovati najmanj 8 znakov.'
+        )
 
     if geslo != ponovno_geslo:
         return template(
