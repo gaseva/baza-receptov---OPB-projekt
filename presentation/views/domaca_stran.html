@@ -49,7 +49,6 @@
 </form>
 
 
-
 <div>
     <a href="/recepti" class="btn btn-primary">
         Vsi recepti
@@ -77,6 +76,31 @@
         </a>
     % end
 </div>
+
+<section class="mt-5">
+    <h2>Najbolj priljubljene sladice</h2>
+
+    % if najbolj_priljubljene:
+        <div class="list-group mt-3">
+            % for sladica in najbolj_priljubljene:
+                <a
+                    href="/recept/{{sladica.id}}"
+                    class="list-group-item list-group-item-action"
+                >
+                    <strong>{{sladica.ime}}</strong>
+
+                    <div class="text-secondary">
+                        {{sladica.kratek_opis}}
+                    </div>
+                </a>
+            % end
+        </div>
+    % else:
+        <p class="text-secondary">
+            Trenutno še ni priljubljenih receptov.
+        </p>
+    % end
+</section>
 
 
 

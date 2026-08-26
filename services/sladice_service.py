@@ -213,3 +213,15 @@ class SladiceService:
                 )
 
             return repository.dodaj_pripomocek(ime)
+        
+    def dobi_najbolj_priljubljene_sladice(
+        self,
+        omejitev: int = 10
+    ):
+        if omejitev < 1:
+            return []
+
+        with Repository() as repository:
+            return repository.dobi_najbolj_priljubljene_sladice(
+                omejitev
+            )
