@@ -31,7 +31,7 @@ ON CONFLICT (id) DO UPDATE SET
     rola = EXCLUDED.rola;
 
 
--- select * from oseba;
+select * from oseba;
 
 
 INSERT INTO tezavnost (id, ime)
