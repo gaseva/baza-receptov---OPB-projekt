@@ -1,7 +1,7 @@
 """Dostop do podatkov v PostgreSQL bazi."""
 
 import psycopg2
-import psycopg2.extras
+import psycopg2.extras                                         #a to rabiva?
 
 from . import auth_public as auth
 
