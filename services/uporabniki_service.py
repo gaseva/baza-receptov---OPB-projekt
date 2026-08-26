@@ -70,6 +70,17 @@ class UporabnikiService:
     def priljubljeni_recepti(self, oseba_id: int):
         with Repository() as repository:
             return repository.dobi_priljubljene_recepte(oseba_id)
+    
+    def je_recept_priljubljen(
+        self,
+        oseba_id: int,
+        sladica_id: int
+    ) -> bool:
+        with Repository() as repository:
+            return repository.je_priljubljena(
+                oseba_id,
+                sladica_id
+            )
 
 
     def dobi_id_priljubljenih_receptov(self, oseba_id: int) -> set[int]:

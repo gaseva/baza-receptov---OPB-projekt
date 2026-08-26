@@ -1,6 +1,30 @@
 %rebase('osnova.html', naslov='sladica.ime')
 <div>
-    <h1>{{sladica.ime}}</h1>
+    <div class="d-flex align-items-center gap-3 mb-4">
+        <h1 class="mb-0">{{sladica.ime}}</h1>
+
+        <form
+            action="/priljubljeni/preklopi/{{sladica.id}}"
+            method="POST"
+            class="d-inline"
+        >
+            <input
+                type="hidden"
+                name="nazaj"
+                value="/recept/{{sladica.id}}"
+            >
+
+            <button
+                type="submit"
+                class="btn btn-link border-0 p-0 text-danger"
+                style="font-size: 2rem; text-decoration: none;"
+                title="{{'Odstrani iz priljubljenih' if je_priljubljena else 'Dodaj med priljubljene'}}"
+                aria-label="{{'Odstrani iz priljubljenih' if je_priljubljena else 'Dodaj med priljubljene'}}"
+            >
+                {{'♥' if je_priljubljena else '♡'}}
+            </button>
+        </form>
+    </div>
 
     <table>
         <tr>

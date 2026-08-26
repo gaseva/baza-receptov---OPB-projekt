@@ -57,11 +57,13 @@ def cookie_required(f):
 def domaca_stran():
     oseba_id = dobi_prijavljeno_osebo_id()
     kategorije = ss.dobi_kategorije()
+    najbolj_priljubljene = (ss.dobi_najbolj_priljubljene_sladice(10))
 
     return template(
         "domaca_stran.html",
         prijavljen=oseba_id is not None,
-        kategorije=kategorije
+        kategorije=kategorije,
+        najbolj_priljubljene=najbolj_priljubljene,
     )
 
 
@@ -243,10 +245,21 @@ def recept(sladica_id):
             napaka="Sladica s tem ID-jem ne obstaja."
         )
 
+    oseba_id = dobi_prijavljeno_osebo_id()
+
+    if oseba_id is None:
+        je_priljubljena = False
+    else:
+        je_priljubljena = us.je_recept_priljubljen(
+            oseba_id,
+            sladica_id
+        )
+
     return template(
         "recept.html",
         sladica=sladica,
-        sestavine=sestavine
+        sestavine=sestavine,
+        je_priljubljena=je_priljubljena,
     )
 
 
@@ -401,12 +414,26 @@ def preklopi_priljubljeni_recept(sladica_id):
             napaka=str(napaka)
         )
 
+    # Klik na srček na strani posameznega recepta
+    nazaj = request.forms.get("nazaj")
+
+    if (
+        nazaj
+        and nazaj.startswith("/")
+        and not nazaj.startswith("//")
+    ):
+        return redirect(nazaj)
+
+    # Klik na srček med rezultati iskanja
     iskanje = request.forms.get("iskanje", "").strip()
 
     if iskanje:
         parametri = urlencode({"iskanje": iskanje})
-        return redirect(f"/recepti/iskanje?{parametri}")
+        return redirect(
+            f"/recepti/iskanje?{parametri}"
+        )
 
+    # Klik na seznamu vseh receptov
     return redirect("/recepti")
 
 run(host='localhost', port=SERVER_PORT, reloader=RELOADER, debug=True)

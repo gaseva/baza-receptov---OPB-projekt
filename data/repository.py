@@ -344,6 +344,53 @@ class Repository:
                 vrstice = cur.fetchall()
 
         return [SestavinaRecepta(*vrstica) for vrstica in vrstice]
+    
+    def dobi_najbolj_priljubljene_sladice(
+        self,
+        omejitev: int = 10
+    ) -> list[Sladica]:
+        """
+        Vrne sladice z največ uporabniki, ki so jih dodali
+        med priljubljene.
+        """
+
+        with self.conn:
+            with self.conn.cursor() as cur:
+                cur.execute(
+                    self.SQL_SLADICE
+                    + """
+                    JOIN priljubljeno AS p
+                        ON p.sladica = s.id
+
+                    GROUP BY
+                        s.id,
+                        s.ime,
+                        s.cas_priprave,
+                        s.postopek,
+                        s.kratek_opis,
+                        o.id,
+                        o.ime,
+                        o.priimek,
+                        t.id,
+                        t.ime,
+                        k.id,
+                        k.ime
+
+                    ORDER BY
+                        COUNT(p.oseba) DESC,
+                        s.ime
+
+                    LIMIT %s
+                    """,
+                    (omejitev,),
+                )
+
+                vrstice = cur.fetchall()
+
+                return [
+                    self._ustvari_sladico(vrstica)
+                    for vrstica in vrstice
+                ]
 
     # =====================================================================
     # ŠIFRANTI: KATEGORIJE, TEŽAVNOSTI, SESTAVINE IN PRIPOMOČKI
