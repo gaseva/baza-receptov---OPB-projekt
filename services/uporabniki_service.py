@@ -41,6 +41,7 @@ class UporabnikiService:
                 raise ValueError("Prosim izpolnite vsa polja.")
             
             with Repository() as repository:
+                uporabnisko_ime = uporabnisko_ime.strip()
                 # dobimo uporabnika iz baze po uporabniškem imenu (dobimo objekt Oseba)
                 user = repository.dobi_osebo_po_uporabniskem_imenu(uporabnisko_ime)
                 
@@ -48,13 +49,20 @@ class UporabnikiService:
                 if user is None:
                     raise ValueError("Uporabniško ime ali geslo je napačno.")
                 
-                #preverimo ali se geslo ujema z geslom v bazi
-                geslo_bytes_prijava = geslo.encode('utf-8')
-                geslo_hash_baza = user.geslo_hash.encode('utf-8')
+                #preverimo ujemanje gesel
+                try:
+                    pravilno_geslo = bcrypt.checkpw(
+                        geslo.encode("utf-8"),
+                        user.geslo_hash.encode("utf-8"),
+                    )
+                except (ValueError, TypeError):
+                    pravilno_geslo = False
 
-                if not bcrypt.checkpw(geslo_bytes_prijava, geslo_hash_baza):
-                    raise ValueError("Uporabniško ime ali geslo je napačno.")
-                
+                if not pravilno_geslo:
+                    raise ValueError(
+                        "Uporabniško ime ali geslo je napačno."
+                    )
+
                 return user
                 
                 
