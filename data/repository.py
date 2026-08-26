@@ -197,6 +197,36 @@ class Repository:
 
         return [self._ustvari_sladico(vrstica) for vrstica in vrstice]
 
+    def poisci_sladice(self, iskanje: str) -> list[Sladica]:
+        """Išče po imenu sladice ali po imenu njene sestavine."""
+    
+        vzorec = f"%{iskanje}%"
+    
+        with self.conn:
+            with self.conn.cursor() as cur:
+                cur.execute(
+                    self.SQL_SLADICE
+                    + """
+                    WHERE s.ime ILIKE %s
+                       OR EXISTS (
+                            SELECT 1
+                            FROM vsebuje AS v
+                            JOIN sestavina AS se
+                                ON se.id = v.sestavina
+                            WHERE v.sladica = s.id
+                              AND se.ime ILIKE %s
+                       )
+                    ORDER BY s.ime
+                    """,
+                    (vzorec, vzorec),
+                )
+                vrstice = cur.fetchall()
+    
+        return [
+            self._ustvari_sladico(vrstica)
+            for vrstica in vrstice
+        ]
+
     def dobi_sladico(self, sladica_id: int) -> Sladica | None:
         """Vrne eno sladico ali None, če tak ID ne obstaja."""
 

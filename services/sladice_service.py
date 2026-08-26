@@ -22,20 +22,15 @@ class SladiceService:
 
     
     def poisci_sladice(self, iskanje):
-        """Vrne sladice, katerih ime vsebuje iskalni niz."""
+        """Išče recepte po imenu sladice ali sestavine."""
+    
+        iskanje = (iskanje or "").strip()
+    
         with Repository() as repository:
-            sladice = repository.dobi_vse_sladice()
-
-        iskanje = (iskanje or "").strip().casefold()
-
-        if not iskanje:
-            return sladice
-
-        return [
-            sladica
-            for sladica in sladice
-            if iskanje in sladica.ime.casefold()
-        ]
+            if not iskanje:
+                return repository.dobi_vse_sladice()
+    
+            return repository.poisci_sladice(iskanje)
 
 
     def dodaj_sladico(

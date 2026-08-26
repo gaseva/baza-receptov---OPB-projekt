@@ -31,7 +31,7 @@ ON CONFLICT (id) DO UPDATE SET
     rola = EXCLUDED.rola;
 
 
---select * from oseba;
+-- select * from oseba;
 
 
 INSERT INTO tezavnost (id, ime)
@@ -276,6 +276,8 @@ ON CONFLICT (id) DO UPDATE SET
 -- select * from sladica;
 
 
+
+
 INSERT INTO sestavina (ime, enota)
 VALUES
     ('moka', 'g'), ('sladkor', 'g'), ('jajca', ''),
@@ -285,16 +287,17 @@ VALUES
     ('piškoti', 'g'), ('kremni sir', 'g'),
     ('jagode', 'g'), ('kakav', 'g'), ('sadje', 'g'),
     ('kokosova moka', 'g'), ('kondenzirano mleko', 'ml'),
-    ('limone', 'kos'), ('kava', 'ml'), ('mascarpone', 'g'),
+    ('limone', ''), ('kava', 'ml'), ('mascarpone', 'g'),
     ('baby piškoti', 'g'), ('jabolka', 'g'),
     ('cimet', 'g'), ('rozine', 'g'), ('med', 'g'),
-    ('marmelada', 'g'), ('banane', 'kos'),
+    ('marmelada', 'g'), ('banane', ''),
     ('mandljeva moka', 'g'), ('kvas', 'g'),
     ('olje', 'ml'), ('sol', 'g'), ('led', 'kos')
 ON CONFLICT (id) DO UPDATE SET
     ime = EXCLUDED.ime,
     enota = EXCLUDED.enota;
 
+-- drop table if exists sestavina cascade;
 
 -- select * from sestavina;
 
