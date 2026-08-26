@@ -5,7 +5,7 @@ from data.models import Oseba
 
 class UporabnikiService:       
 
-    def registracija(self, ime: str, priimek: str, elektronski_naslov: str, uporabnisko_ime: str, geslo: str) -> Oseba:
+    def registracija(self, ime: str, priimek: str, elektronski_naslov: str, uporabnisko_ime: str, geslo: str) -> Int:
 
         if not all([ime, priimek, elektronski_naslov, uporabnisko_ime, geslo]):
             raise ValueError("Prosim izpolnite vsa polja.")
@@ -27,14 +27,14 @@ class UporabnikiService:
                 is not None):
                 raise ValueError("Ta elektronski naslov je že registriran.")
 
-            oseba = repository.dodaj_osebo(
+            oseba_id = repository.dodaj_osebo(
                 ime=ime,
                 priimek=priimek,
                 elektronski_naslov=elektronski_naslov,
                 uporabnisko_ime=uporabnisko_ime,
                 geslo_hash=geslo_hash.decode("UTF-8")
                 )
-            return oseba
+            return oseba_id
 
         
     def prijava(self, uporabnisko_ime: str, geslo: str) -> Oseba:
