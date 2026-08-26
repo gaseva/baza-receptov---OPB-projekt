@@ -1,26 +1,34 @@
 %rebase('osnova.html', naslov='Priljubljeni recepti')
 
 <div>
-    %for sladica in priljubljeno:
-        <h1><a href="/recept/{{sladica.id}}">{{sladica.ime}}</a></h1>
+    % if priljubljeno == None or len(priljubljeno) == 0:
+        <h1>Trenutno še nimate priljubljenih receptov.</h1>
+        <p class="lead text-secondary mb-15">Dodajte recepte med priljubljene, da jih boste lahko hitro našli.</p>
+        <a href="/recepti" class="btn btn-primary">
+        Pojdi na vse recepte
+        </a>
+    % else:
+        <h1 class="display-4 fw-bold">Vaši priljubljeni recepti</h1>
+        %for sladica in priljubljeno:
+            <h1><a href="/recept/{{sladica.id}}">{{sladica.ime}}</a></h1>
 
-        <table>
-            <tr>
-                <td>
-                    <p>
-                        {{sladica.kratek_opis}}
-                    </p>
-                    <p><strong>Kategorija:</strong> {{sladica.kategorija}}</p>
-                    <p><strong>Čas priprave:</strong> {{sladica.cas_priprave}} min</p>
-                    <p><strong>Težavnost:</strong> {{sladica.tezavnost}}</p>
-                </td>
-            </tr>
-        </table>
-    %end
+            <table>
+                <tr>
+                    <td>
+                        <p>
+                            {{sladica.kratek_opis}}
+                        </p>
+                        <p><strong>Kategorija:</strong> {{sladica.kategorija}}</p>
+                        <p><strong>Čas priprave:</strong> {{sladica.cas_priprave}} min</p>
+                        <p><strong>Težavnost:</strong> {{sladica.tezavnost}}</p>
+                    </td>
+                </tr>
+            </table>
+        %end
 
-    <p>
-    Nazaj na domačo stran: <a href="/">Domov</a>
-    </p>
+    <a href="/" class="btn btn-primary">
+    Nazaj na domačo stran
+    </a>
     
 </div>
 

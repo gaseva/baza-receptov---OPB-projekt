@@ -325,7 +325,7 @@ def dodaj_pripomocek_post():
     redirect("/dodaj_recept")
 
 
-@get("/priljubljene_recepti")
+@get("/priljubljeni_recepti")
 @cookie_required
 def priljubljeni_recepti():
     oseba_id = request.get_cookie("oseba_id", secret=COOKIE_SECRET)
