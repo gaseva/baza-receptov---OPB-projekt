@@ -4,6 +4,7 @@ from services.sladice_service import SladiceService
 from services.uporabniki_service import UporabnikiService
 from functools import wraps
 import secrets
+import json
 from urllib.parse import urlencode
 
 ss = SladiceService()
@@ -108,7 +109,10 @@ def prijava_post():
 
 @get("/registracija", name="registracija")
 def registracija():
-    return template("registracija.html")
+    return template(
+        "registracija.html",
+        podatki={}
+    )
 
 @post('/registracija')
 def registracija_post():
@@ -118,6 +122,15 @@ def registracija_post():
     uporabnisko_ime = request.forms.get('uporabnisko_ime')
     geslo = request.forms.get('geslo')
     ponovno_geslo = request.forms.get('ponovno_geslo')
+
+    # Ob napaki ohranimo nesenzitivne podatke. Gesel zaradi varnosti
+    # nikoli ne pošiljamo nazaj v HTML.
+    podatki = {
+        "ime": (ime or "").strip(),
+        "priimek": (priimek or "").strip(),
+        "elektronski_naslov": (elektronski_naslov or "").strip(),
+        "uporabnisko_ime": (uporabnisko_ime or "").strip(),
+    }
     
     if not all([
         ime,
@@ -130,19 +143,22 @@ def registracija_post():
         return template(
             "registracija.html",
             napaka="Prosim, izpolnite vsa polja.",
+            podatki=podatki,
         )
 
     
     if len(geslo) < 8:
         return template(
             'registracija.html',
-            napaka='Geslo mora vsebovati najmanj 8 znakov.'
+            napaka='Geslo mora vsebovati najmanj 8 znakov.',
+            podatki=podatki,
         )
 
     if geslo != ponovno_geslo:
         return template(
             'registracija.html',
-            napaka='Gesli se ne ujemata.'
+            napaka='Gesli se ne ujemata.',
+            podatki=podatki,
         )
 
     try:
@@ -156,7 +172,8 @@ def registracija_post():
     except ValueError as napaka:
         return template(
             'registracija.html',
-            napaka=str(napaka)
+            napaka=str(napaka),
+            podatki=podatki,
         )
     
     response.set_cookie(
@@ -323,22 +340,31 @@ def dodaj_sestavino_post():
     enota = request.forms.get("enota_sestavine")
 
     try:
-        ss.dodaj_sestavino(ime, enota)
+        sestavina = ss.dodaj_sestavino(ime, enota)
 
     except ValueError as napaka:
-        sestavine = ss.dobi_vse_sestavine()
-        pripomocki = ss.dobi_vse_pripomocke()
-
-        return template(
-            "dodaj_recept.html",
-            sestavine=sestavine,
-            pripomocki=pripomocki,
-            napaka_sestavine=str(napaka),
-            napaka_pripomocka=None,
-            napaka_recepta=None
+        response.status = 400
+        response.content_type = "application/json"
+        return json.dumps(
+            {
+                "uspeh": False,
+                "napaka": str(napaka),
+            },
+            ensure_ascii=False,
         )
 
-    redirect("/dodaj_recept")
+    response.content_type = "application/json"
+    return json.dumps(
+        {
+            "uspeh": True,
+            "sestavina": {
+                "id": sestavina.id,
+                "ime": sestavina.ime,
+                "enota": sestavina.enota,
+            },
+        },
+        ensure_ascii=False,
+    )
 
 
 @post("/dodaj_pripomocek")
@@ -347,22 +373,30 @@ def dodaj_pripomocek_post():
     ime = request.forms.get("ime_pripomocka") # prebere ime iz obrazca
 
     try:
-        ss.dodaj_pripomocek(ime)
+        pripomocek = ss.dodaj_pripomocek(ime)
 
     except ValueError as napaka:
-        sestavine = ss.dobi_vse_sestavine()
-        pripomocki = ss.dobi_vse_pripomocke()
-
-        return template(
-            "dodaj_recept.html",
-            sestavine=sestavine,
-            pripomocki=pripomocki,
-            napaka_sestavine=None,
-            napaka_pripomocka=str(napaka),
-            napaka_recepta=None
+        response.status = 400
+        response.content_type = "application/json"
+        return json.dumps(
+            {
+                "uspeh": False,
+                "napaka": str(napaka),
+            },
+            ensure_ascii=False,
         )
 
-    redirect("/dodaj_recept")
+    response.content_type = "application/json"
+    return json.dumps(
+        {
+            "uspeh": True,
+            "pripomocek": {
+                "id": pripomocek.id,
+                "ime": pripomocek.ime,
+            },
+        },
+        ensure_ascii=False,
+    )
 
 
 @get("/priljubljeni_recepti")

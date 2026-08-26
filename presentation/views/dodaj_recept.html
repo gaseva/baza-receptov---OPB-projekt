@@ -158,20 +158,20 @@
                     </div>
                 
                     <button
-                        type="submit"
+                        type="button"
+                        id="gumb-ustvari-sestavino"
                         class="btn btn-outline-primary btn-sm mt-2"
-                        formaction="/dodaj_sestavino"
-                        formmethod="post"
-                        formnovalidate
                     >
                         Ustvari sestavino
                     </button>
-                
-                    % if napaka_sestavine:
-                        <p class="text-danger mt-2">
+
+                    <p id="sporocilo-sestavine" class="mt-2" aria-live="polite">
+                        % if napaka_sestavine:
+                            <span class="text-danger">
                             {{napaka_sestavine}}
-                        </p>
-                    % end
+                            </span>
+                        % end
+                    </p>
                 </div>
 
 
@@ -223,15 +223,17 @@
                     >
                 </div>
             
-                <button type="submit" class="btn btn-outline-primary btn-sm mt-2" formaction="/dodaj_pripomocek" formmethod="post" formnovalidate >
+                <button type="button" id="gumb-ustvari-pripomocek" class="btn btn-outline-primary btn-sm mt-2">
                     Ustvari pripomoček
                 </button>
-            
-                % if napaka_pripomocka:
-                    <p class="text-danger mt-2">
+
+                <p id="sporocilo-pripomocka" class="mt-2" aria-live="polite">
+                    % if napaka_pripomocka:
+                        <span class="text-danger">
                         {{napaka_pripomocka}}
-                    </p>
-                % end
+                        </span>
+                    % end
+                </p>
         </div>
 
 
@@ -329,6 +331,190 @@ document.addEventListener('DOMContentLoaded', function () {
             select.selectedIndex = 0;
             novBlok.classList.add('mt-3');
             vsebnikPripomocki.appendChild(novBlok);
+        });
+    }
+
+    // USTVARJANJE SESTAVINE BREZ OSVEŽITVE STRANI
+    const gumbUstvariSestavino =
+        document.getElementById('gumb-ustvari-sestavino');
+    const imeSestavine = document.getElementById('ime_sestavine');
+    const enotaSestavine = document.getElementById('enota_sestavine');
+    const sporociloSestavine =
+        document.getElementById('sporocilo-sestavine');
+
+    if (
+        gumbUstvariSestavino &&
+        imeSestavine &&
+        enotaSestavine &&
+        sporociloSestavine
+    ) {
+        gumbUstvariSestavino.addEventListener('click', async function () {
+            sporociloSestavine.textContent = '';
+            sporociloSestavine.className = 'mt-2';
+            gumbUstvariSestavino.disabled = true;
+
+            const podatki = new URLSearchParams();
+            podatki.append('ime_sestavine', imeSestavine.value);
+            podatki.append('enota_sestavine', enotaSestavine.value);
+
+            try {
+                const odgovor = await fetch('/dodaj_sestavino', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type':
+                            'application/x-www-form-urlencoded;charset=UTF-8'
+                    },
+                    body: podatki.toString()
+                });
+
+                const tipVsebine =
+                    odgovor.headers.get('content-type') || '';
+
+                if (!tipVsebine.includes('application/json')) {
+                    throw new Error(
+                        'Seja je morda potekla. Osveži stran in se ponovno prijavi.'
+                    );
+                }
+
+                const rezultat = await odgovor.json();
+
+                if (!odgovor.ok || !rezultat.uspeh) {
+                    throw new Error(
+                        rezultat.napaka || 'Sestavine ni bilo mogoče ustvariti.'
+                    );
+                }
+
+                const vsiSelecti = Array.from(
+                    document.querySelectorAll('select[name="sestavine"]')
+                );
+
+                vsiSelecti.forEach(function (select) {
+                    const moznost = document.createElement('option');
+                    moznost.value = rezultat.sestavina.id;
+                    moznost.textContent = rezultat.sestavina.ime;
+                    moznost.dataset.enota = rezultat.sestavina.enota;
+                    select.appendChild(moznost);
+                });
+
+                let ciljniSelect = vsiSelecti.find(function (select) {
+                    return !select.value;
+                });
+
+                if (!ciljniSelect && gumb && vsebnik) {
+                    gumb.click();
+                    const posodobljeniSelecti =
+                        vsebnik.querySelectorAll('select[name="sestavine"]');
+                    ciljniSelect =
+                        posodobljeniSelecti[posodobljeniSelecti.length - 1];
+                }
+
+                if (ciljniSelect) {
+                    ciljniSelect.value = String(rezultat.sestavina.id);
+                    ciljniSelect.dispatchEvent(
+                        new Event('change', {bubbles: true})
+                    );
+                }
+
+                imeSestavine.value = '';
+                enotaSestavine.value = '';
+                sporociloSestavine.textContent =
+                    'Sestavina je bila uspešno ustvarjena.';
+                sporociloSestavine.className = 'text-success mt-2';
+            } catch (napaka) {
+                sporociloSestavine.textContent = napaka.message;
+                sporociloSestavine.className = 'text-danger mt-2';
+            } finally {
+                gumbUstvariSestavino.disabled = false;
+            }
+        });
+    }
+
+    // USTVARJANJE PRIPOMOČKA BREZ OSVEŽITVE STRANI
+    const gumbUstvariPripomocek =
+        document.getElementById('gumb-ustvari-pripomocek');
+    const imePripomocka = document.getElementById('ime_pripomocka');
+    const sporociloPripomocka =
+        document.getElementById('sporocilo-pripomocka');
+
+    if (
+        gumbUstvariPripomocek &&
+        imePripomocka &&
+        sporociloPripomocka
+    ) {
+        gumbUstvariPripomocek.addEventListener('click', async function () {
+            sporociloPripomocka.textContent = '';
+            sporociloPripomocka.className = 'mt-2';
+            gumbUstvariPripomocek.disabled = true;
+
+            const podatki = new URLSearchParams();
+            podatki.append('ime_pripomocka', imePripomocka.value);
+
+            try {
+                const odgovor = await fetch('/dodaj_pripomocek', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type':
+                            'application/x-www-form-urlencoded;charset=UTF-8'
+                    },
+                    body: podatki.toString()
+                });
+
+                const tipVsebine =
+                    odgovor.headers.get('content-type') || '';
+
+                if (!tipVsebine.includes('application/json')) {
+                    throw new Error(
+                        'Seja je morda potekla. Osveži stran in se ponovno prijavi.'
+                    );
+                }
+
+                const rezultat = await odgovor.json();
+
+                if (!odgovor.ok || !rezultat.uspeh) {
+                    throw new Error(
+                        rezultat.napaka || 'Pripomočka ni bilo mogoče ustvariti.'
+                    );
+                }
+
+                const vsiSelecti = Array.from(
+                    document.querySelectorAll('select[name="pripomocki"]')
+                );
+
+                vsiSelecti.forEach(function (select) {
+                    const moznost = document.createElement('option');
+                    moznost.value = rezultat.pripomocek.id;
+                    moznost.textContent = rezultat.pripomocek.ime;
+                    select.appendChild(moznost);
+                });
+
+                let ciljniSelect = vsiSelecti.find(function (select) {
+                    return !select.value;
+                });
+
+                if (!ciljniSelect && gumbPripomocek && vsebnikPripomocki) {
+                    gumbPripomocek.click();
+                    const posodobljeniSelecti =
+                        vsebnikPripomocki.querySelectorAll(
+                            'select[name="pripomocki"]'
+                        );
+                    ciljniSelect =
+                        posodobljeniSelecti[posodobljeniSelecti.length - 1];
+                }
+
+                if (ciljniSelect) {
+                    ciljniSelect.value = String(rezultat.pripomocek.id);
+                }
+
+                imePripomocka.value = '';
+                sporociloPripomocka.textContent =
+                    'Pripomoček je bil uspešno ustvarjen.';
+                sporociloPripomocka.className = 'text-success mt-2';
+            } catch (napaka) {
+                sporociloPripomocka.textContent = napaka.message;
+                sporociloPripomocka.className = 'text-danger mt-2';
+            } finally {
+                gumbUstvariPripomocek.disabled = false;
+            }
         });
     }
 });
