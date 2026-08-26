@@ -105,11 +105,58 @@ def dodaj_recept():
         sestavine=sestavine,
         pripomocki=pripomocki,
         napaka_sestavine=None,
-        napaka_pripomocka=None
+        napaka_pripomocka=None,
+        napaka_recepta=None
     )
 
 
-#post dodaj recept
+@post("/dodaj_recept")
+def dodaj_recept_post():
+    ime = request.forms.get("ime")
+    cas_priprave = request.forms.get("cas_priprave")
+    tezavnost_id = request.forms.get("tezavnost")
+    kategorija_id = request.forms.get("kategorija")
+    kratek_opis = request.forms.get("kratek_opis")
+    postopek = request.forms.get("postopek")
+
+    sestavina_ids = request.forms.getall("sestavine")
+    kolicine = request.forms.getall("kolicina")
+    pripomocek_ids = request.forms.getall("pripomocki")
+
+    # Začasno, dokler prijava uporabnika še ni povezana z dodajanjem recepta.
+    # Pozneje bo tukaj ID trenutno prijavljenega uporabnika iz piškotka/seje.
+    avtor_id = 1
+
+    try:
+        sladica_id = ss.dodaj_sladico(
+            ime=ime,
+            cas_priprave=cas_priprave,
+            postopek=postopek,
+            kratek_opis=kratek_opis,
+            avtor_id=avtor_id,
+            tezavnost_id=tezavnost_id,
+            kategorija_id=kategorija_id,
+            sestavina_ids=sestavina_ids,
+            kolicine=kolicine,
+            pripomocek_ids=pripomocek_ids,
+        )
+
+    except ValueError as napaka:
+        sestavine = ss.dobi_vse_sestavine()
+        pripomocki = ss.dobi_vse_pripomocke()
+
+        return template(
+            "dodaj_recept.html",
+            sestavine=sestavine,
+            pripomocki=pripomocki,
+            napaka_sestavine=None,
+            napaka_pripomocka=None,
+            napaka_recepta=str(napaka)
+        )
+
+    redirect(f"/recept/{sladica_id}")
+
+
 
 
 @post("/dodaj_sestavino")
@@ -122,11 +169,15 @@ def dodaj_sestavino_post():
 
     except ValueError as napaka:
         sestavine = ss.dobi_vse_sestavine()
+        pripomocki = ss.dobi_vse_pripomocke()
 
         return template(
             "dodaj_recept.html",
             sestavine=sestavine,
-            napaka_sestavine=str(napaka)
+            pripomocki=pripomocki,
+            napaka_sestavine=str(napaka),
+            napaka_pripomocka=None,
+            napaka_recepta=None
         )
 
     redirect("/dodaj_recept")
@@ -148,7 +199,8 @@ def dodaj_pripomocek_post():
             sestavine=sestavine,
             pripomocki=pripomocki,
             napaka_sestavine=None,
-            napaka_pripomocka=str(napaka)
+            napaka_pripomocka=str(napaka),
+            napaka_recepta=None
         )
 
     redirect("/dodaj_recept")

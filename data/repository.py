@@ -214,17 +214,16 @@ class Repository:
 
         with self.conn:
             with self.conn.cursor() as cur:
-                sladica_id = self._naslednji_id(cur, "sladica")
                 cur.execute(
                     """
                     INSERT INTO sladica (
-                        id, ime, cas_priprave, postopek, kratek_opis,
+                        ime, cas_priprave, postopek, kratek_opis,
                         avtor, tezavnost, kategorija
                     )
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    RETURNING id
                     """,
                     (
-                        sladica_id,
                         ime,
                         cas_priprave,
                         postopek,
@@ -234,6 +233,7 @@ class Repository:
                         kategorija_id,
                     ),
                 )
+                sladica_id = cur.fetchone()[0]
 
                 # vsebuje je povezovalna tabela med sladicami in sestavinami.
                 for sestavina_id, kolicina in sestavine:
@@ -412,7 +412,7 @@ class Repository:
 
     def dodaj_pripomocek(self, ime: str) -> Pripomocek:
         """Doda nov pripomoček in vrne ustvarjeni objekt."""
-    
+
         with self.conn:
             with self.conn.cursor() as cur:
                 cur.execute(
@@ -424,7 +424,7 @@ class Repository:
                     (ime,),
                 )
                 vrstica = cur.fetchone()
-    
+
         return Pripomocek(*vrstica)
 
     def dobi_pripomocke_sladice(self, sladica_id: int) -> list[Pripomocek]:
