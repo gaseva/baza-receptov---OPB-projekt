@@ -22,26 +22,44 @@ if not COOKIE_SECRET:
         "cookie_secret ni nastavljen v auth_private.py."
     )
 
+def dobi_prijavljeno_osebo_id():
+    """Vrne ID prijavljenega uporabnika ali None."""
+
+    oseba_id = request.get_cookie(
+        "oseba_id",
+        secret=COOKIE_SECRET
+    )
+
+    if oseba_id is None:
+        return None
+
+    try:
+        return int(oseba_id)
+    except (TypeError, ValueError):
+        return None
+
+    
+
 def cookie_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        oseba_id = request.get_cookie("oseba_id", secret=COOKIE_SECRET)
+        oseba_id = dobi_prijavljeno_osebo_id()
 
         if oseba_id is None:
-            return redirect("/prijava")
-
-        try:
-            int(oseba_id)
-        except (TypeError, ValueError):
             return redirect("/prijava")
 
         return f(*args, **kwargs)
 
     return decorated
 
-@get('/')
+@get("/")
 def domaca_stran():
-    return template("domaca_stran.html")
+    oseba_id = dobi_prijavljeno_osebo_id()
+
+    return template(
+        "domaca_stran.html",
+        prijavljen=oseba_id is not None
+    )
 
 
 @get('/prijava')
@@ -187,6 +205,7 @@ def recept(sladica_id):
 
 
 @get("/dodaj_recept")
+@cookie_required
 def dodaj_recept():
     sestavine = ss.dobi_vse_sestavine()
     pripomocki = ss.dobi_vse_pripomocke()
@@ -202,6 +221,7 @@ def dodaj_recept():
 
 
 @post("/dodaj_recept")
+@cookie_required
 def dodaj_recept_post():
     ime = request.forms.get("ime")
     cas_priprave = request.forms.get("cas_priprave")
@@ -216,7 +236,7 @@ def dodaj_recept_post():
 
     # Začasno, dokler prijava uporabnika še ni povezana z dodajanjem recepta.
     # Pozneje bo tukaj ID trenutno prijavljenega uporabnika iz piškotka/seje.
-    avtor_id = 1
+    avtor_id = dobi_prijavljeno_osebo_id()
 
     try:
         sladica_id = ss.dodaj_sladico(
@@ -251,6 +271,7 @@ def dodaj_recept_post():
 
 
 @post("/dodaj_sestavino")
+@cookie_required
 def dodaj_sestavino_post():
     ime = request.forms.get("ime_sestavine")
     enota = request.forms.get("enota_sestavine")
@@ -275,6 +296,7 @@ def dodaj_sestavino_post():
 
 
 @post("/dodaj_pripomocek")
+@cookie_required
 def dodaj_pripomocek_post():
     ime = request.forms.get("ime_pripomocka") # prebere ime iz obrazca
 
@@ -298,6 +320,7 @@ def dodaj_pripomocek_post():
 
 
 #@get("/priljubljene_recepti")
+#@cookie_required
 #def priljubljeni_recepti():
 #    priljubljeno = ss.dobi_priljubljene_recepte()
 #    return template("priljubljeni_recepti.html", priljubljeno=priljubljeno)
