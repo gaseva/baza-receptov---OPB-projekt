@@ -3,7 +3,7 @@ import os
 from services.sladice_service import SladiceService
 from services.uporabniki_service import UporabnikiService
 from functools import wraps
-from data import auth_private as auth
+import secrets
 
 ss = SladiceService()
 us = UporabnikiService()
@@ -12,10 +12,14 @@ us = UporabnikiService()
 SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
 RELOADER = os.environ.get('BOTTLE_RELOADER', True)
 
-COOKIE_SECRET = auth.cookie_secret
+COOKIE_SECRET = (
+    os.environ.get("COOKIE_SECRET")
+    or secrets.token_urlsafe(32)
+)
+
 if not COOKIE_SECRET:
     raise RuntimeError(
-        "Okoljska spremenljivka COOKIE_SECRET ni nastavljena."
+        "cookie_secret ni nastavljen v auth_private.py."
     )
 
 def cookie_required(f):
