@@ -5,7 +5,7 @@ from data.models import Oseba
 
 class UporabnikiService:       
 
-    def registracija(self, ime: str, priimek: str, elektronski_naslov: str, uporabnisko_ime: str, geslo: str) -> Int:
+    def registracija(self, ime: str, priimek: str, elektronski_naslov: str, uporabnisko_ime: str, geslo: str) -> int:
 
         if not all([ime, priimek, elektronski_naslov, uporabnisko_ime, geslo]):
             raise ValueError("Prosim izpolnite vsa polja.")
@@ -69,8 +69,42 @@ class UporabnikiService:
             
     def priljubljeni_recepti(self, oseba_id: int):
         with Repository() as repository:
-            priljubljeno = repository.dobi_priljubljene_recepte(oseba_id)
-            return priljubljeno
+            return repository.dobi_priljubljene_recepte(oseba_id)
+
+
+    def dobi_id_priljubljenih_receptov(self, oseba_id: int) -> set[int]:
+        with Repository() as repository:
+            return repository.dobi_id_priljubljenih_receptov(oseba_id)
+
+
+    def preklopi_priljubljeni_recept(
+        self,
+        oseba_id: int,
+        sladica_id: int
+    ) -> bool:
+        """
+        Doda recept med priljubljene ali ga odstrani.
+        Vrne True, če je po spremembi priljubljen.
+        """
+
+        with Repository() as repository:
+            sladica = repository.dobi_sladico(sladica_id)
+
+            if sladica is None:
+                raise ValueError("Izbrani recept ne obstaja.")
+
+            if repository.je_priljubljena(oseba_id, sladica_id):
+                repository.odstrani_iz_priljubljenih(
+                    oseba_id,
+                    sladica_id
+                )
+                return False
+
+            repository.dodaj_med_priljubljene(
+                oseba_id,
+                sladica_id
+            )
+            return True
                 
                 
 

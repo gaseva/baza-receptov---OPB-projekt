@@ -4,6 +4,7 @@ from services.sladice_service import SladiceService
 from services.uporabniki_service import UporabnikiService
 from functools import wraps
 import secrets
+from urllib.parse import urlencode
 
 ss = SladiceService()
 us = UporabnikiService()
@@ -178,27 +179,42 @@ def odjava():
 
 @get("/recepti")
 def seznam_receptov():
+    oseba_id = dobi_prijavljeno_osebo_id()
     sladice = ss.dobi_vse_sladice()
+
+    if oseba_id is None:
+        priljubljeni_idji = set()
+    else:
+        priljubljeni_idji = (
+            us.dobi_id_priljubljenih_receptov(oseba_id)
+        )
 
     return template(
         "seznam_receptov.html",
         sladice=sladice,
-        iskanje=""
+        iskanje="",
+        priljubljeni_idji=priljubljeni_idji,
     )
 
 @get("/recepti/iskanje")
 def iskanje_receptov():
-    iskanje = request.query.get(
-        "iskanje",
-        ""
-    ).strip()
-
+    iskanje = request.query.get("iskanje", "").strip()
     sladice = ss.poisci_sladice(iskanje)
+
+    oseba_id = dobi_prijavljeno_osebo_id()
+
+    if oseba_id is None:
+        priljubljeni_idji = set()
+    else:
+        priljubljeni_idji = (
+            us.dobi_id_priljubljenih_receptov(oseba_id)
+        )
 
     return template(
         "seznam_receptov.html",
         sladice=sladice,
-        iskanje=iskanje
+        iskanje=iskanje,
+        priljubljeni_idji=priljubljeni_idji,
     )
 
 
@@ -338,9 +354,45 @@ def dodaj_pripomocek_post():
 @get("/priljubljeni_recepti")
 @cookie_required
 def priljubljeni_recepti():
-    oseba_id = request.get_cookie("oseba_id", secret=COOKIE_SECRET)
+    oseba_id = dobi_prijavljeno_osebo_id()
     priljubljeno = us.priljubljeni_recepti(oseba_id)
     return template("priljubljeni_recepti.html", priljubljeno=priljubljeno)
 
+@post("/priljubljeni/dodaj/<sladica_id:int>")
+@cookie_required
+def dodaj_med_priljubljene(sladica_id):
+    oseba_id = dobi_prijavljeno_osebo_id()
+
+    us.dodaj_med_priljubljene(
+        oseba_id,
+        sladica_id
+    )
+
+    return redirect("/recepti")
+
+@post("/priljubljeni/preklopi/<sladica_id:int>")
+@cookie_required
+def preklopi_priljubljeni_recept(sladica_id):
+    oseba_id = dobi_prijavljeno_osebo_id()
+
+    try:
+        us.preklopi_priljubljeni_recept(
+            oseba_id,
+            sladica_id
+        )
+    except ValueError as napaka:
+        response.status = 404
+        return template(
+            "napaka.html",
+            napaka=str(napaka)
+        )
+
+    iskanje = request.forms.get("iskanje", "").strip()
+
+    if iskanje:
+        parametri = urlencode({"iskanje": iskanje})
+        return redirect(f"/recepti/iskanje?{parametri}")
+
+    return redirect("/recepti")
 
 run(host='localhost', port=SERVER_PORT, reloader=RELOADER, debug=True)

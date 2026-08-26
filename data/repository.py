@@ -565,6 +565,19 @@ class Repository:
 
         return [self._ustvari_sladico(vrstica) for vrstica in vrstice]
 
+    def dobi_id_priljubljenih_receptov(self, oseba_id: int) -> set[int]:
+        """Vrne ID-je vseh receptov, ki jih ima oseba med priljubljenimi."""
+        with self.conn:
+            with self.conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT sladica
+                    FROM priljubljeno
+                    WHERE oseba = %s
+                    """,
+                    (oseba_id,),
+                )
 
+                return {vrstica[0] for vrstica in cur.fetchall()}
 
 

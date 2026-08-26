@@ -45,11 +45,35 @@
     % end
 
     % for sladica in sladice:
-        <h1>
-            <a href="/recept/{{sladica.id}}">
-                {{sladica.ime}}
-            </a>
-        </h1>
+<div class="d-flex align-items-center gap-3 mb-2">
+    <h1 class="mb-0">
+        <a href="/recept/{{sladica.id}}">
+            {{sladica.ime}}
+        </a>
+    </h1>
+
+    <form
+        action="/priljubljeni/preklopi/{{sladica.id}}"
+        method="POST"
+        class="d-inline"
+    >
+        <input
+            type="hidden"
+            name="iskanje"
+            value="{{iskanje}}"
+        >
+
+        <button
+            type="submit"
+            class="btn btn-link border-0 p-0 text-danger"
+            style="font-size: 2rem; text-decoration: none;"
+            title="{{'Odstrani iz priljubljenih' if sladica.id in priljubljeni_idji else 'Dodaj med priljubljene'}}"
+            aria-label="{{'Odstrani iz priljubljenih' if sladica.id in priljubljeni_idji else 'Dodaj med priljubljene'}}"
+        >
+            {{'♥' if sladica.id in priljubljeni_idji else '♡'}}
+        </button>
+    </form>
+</div>
 
         <table>
             <tr>
