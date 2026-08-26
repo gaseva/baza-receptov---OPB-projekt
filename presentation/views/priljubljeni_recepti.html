@@ -1,6 +1,12 @@
 %rebase('osnova.html', naslov='Priljubljeni recepti')
 
 <div>
+    % if priljubljeno == None or len(priljubljeno) == 0:
+        <h1>Trenutno še nimate priljubljenih receptov.</h1>
+        <p class="lead text-secondary mb-15">Dodajte recepte med priljubljene, da jih boste lahko hitro našli.</p>
+        <a href="/recepti" class="btn btn-primary">
+        Pojdi na vse recepte
+        </a>
     %for sladica in priljubljeno:
         <h1><a href="/recept/{{sladica.id}}">{{sladica.ime}}</a></h1>
 
@@ -18,9 +24,9 @@
         </table>
     %end
 
-    <p>
-    Nazaj na domačo stran: <a href="/">Domov</a>
-    </p>
+    <a href="/" class="btn btn-primary">
+    Nazaj na domačo stran
+    </a>
     
 </div>
 
