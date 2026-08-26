@@ -385,17 +385,6 @@ def priljubljeni_recepti():
     priljubljeno = us.priljubljeni_recepti(oseba_id)
     return template("priljubljeni_recepti.html", priljubljeno=priljubljeno)
 
-@post("/priljubljeni/dodaj/<sladica_id:int>")
-@cookie_required
-def dodaj_med_priljubljene(sladica_id):
-    oseba_id = dobi_prijavljeno_osebo_id()
-
-    us.dodaj_med_priljubljene(
-        oseba_id,
-        sladica_id
-    )
-
-    return redirect("/recepti")
 
 @post("/priljubljeni/preklopi/<sladica_id:int>")
 @cookie_required
