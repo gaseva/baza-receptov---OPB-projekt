@@ -1,7 +1,7 @@
 from data.repository import Repository
 import bcrypt
 from datetime import date
-from .models import (
+from data.models import (
     Kategorija,
     Oseba,
     Pripomocek,
