@@ -225,3 +225,16 @@ class SladiceService:
             return repository.dobi_najbolj_priljubljene_sladice(
                 omejitev
             )
+            
+    def dobi_recepte_uporabnika(
+        self,
+        oseba_id: int
+    ):
+        """
+        Vrne recepte, ki jih je dodal izbrani uporabnik.
+        """
+
+        with Repository() as repository:
+            return repository.dobi_sladice_avtorja(
+                oseba_id
+            )

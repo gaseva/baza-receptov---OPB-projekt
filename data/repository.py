@@ -555,7 +555,7 @@ class Repository:
         return [Pripomocek(*vrstica) for vrstica in vrstice]
 
     # =====================================================================
-    # PRILJUBLJENE SLADICE
+    # PRILJUBLJENE IN MOJE SLADICE
     # =====================================================================
 
     def dodaj_med_priljubljene(self, oseba_id: int, sladica_id: int) -> None:
@@ -638,3 +638,28 @@ class Repository:
                 return {vrstica[0] for vrstica in cur.fetchall()}
 
 
+    def dobi_sladice_avtorja(
+        self,
+        oseba_id: int
+    ) -> list[Sladica]:
+        """
+        Vrne vse sladice, ki jih je dodal izbrani uporabnik.
+        """
+
+        with self.conn:
+            with self.conn.cursor() as cur:
+                cur.execute(
+                    self.SQL_SLADICE
+                    + """
+                    WHERE s.avtor = %s
+                    ORDER BY s.ime
+                    """,
+                    (oseba_id,),
+                )
+
+                vrstice = cur.fetchall()
+
+                return [
+                    self._ustvari_sladico(vrstica)
+                    for vrstica in vrstice
+                ]

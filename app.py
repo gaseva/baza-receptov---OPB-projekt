@@ -459,4 +459,18 @@ def preklopi_priljubljeni_recept(sladica_id):
     # Klik na seznamu vseh receptov
     return redirect("/recepti")
 
+@get("/moji_recepti")
+@cookie_required
+def moji_recepti():
+    oseba_id = dobi_prijavljeno_osebo_id()
+
+    recepti = ss.dobi_recepte_uporabnika(
+        oseba_id
+    )
+
+    return template(
+        "moji_recepti.html",
+        recepti=recepti,
+    )
+
 run(host='localhost', port=SERVER_PORT, reloader=RELOADER, debug=True)
