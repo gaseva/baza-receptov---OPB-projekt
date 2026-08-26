@@ -124,7 +124,7 @@
                     </div>
                 </div>
 
-                <button type="button" id="gumb-dodaj-sestavino" class="btn btn-secondary btn-sm mt-2">
+                <button type="button" id="gumb-dodaj-sestavino" class="btn btn-outline-primary btn-sm mt-2">
                     + Dodaj sestavino
                 </button>
 
@@ -138,24 +138,22 @@
                             class="form-control"
                             id="ime_sestavine"
                             name="ime_sestavine"
-                            placeholder="Na primer: pistacija"
                         >
                     </div>
                 
                     <div class="mb-2">
-                        <label for="enota_sestavine">Merska enota</label>
+                        <label for="enota_sestavine">Merska enota (na primer: g, ml, kos)</label>
                         <input
                             type="text"
                             class="form-control"
                             id="enota_sestavine"
                             name="enota_sestavine"
-                            placeholder="Na primer: g, ml, kos"
                         >
                     </div>
                 
                     <button
                         type="submit"
-                        class="btn btn-outline-primary"
+                        class="btn btn-outline-primary btn-sm mt-2"
                         formaction="/dodaj_sestavino"
                         formmethod="post"
                         formnovalidate
@@ -185,12 +183,12 @@
 
                 <select class="form-select" name="pripomocki">
                     <option value="">Izberi pripomoček</option>
-                    <option value="pekac">Pekač</option>
-                    <option value="metlica">Metlica</option>
-                    <option value="zlica">Žlica</option>
-                    <option value="posoda">Posoda</option>
-                    <option value="mikser">Mikser</option>
-                    <option value="valjar">Valjar</option>
+
+                        % for pripomocek in pripomocki:
+                        <option value="{{pripomocek.id}}">
+                            {{pripomocek.ime}}
+                        </option>
+                        % end
                 </select>
 
             </div>
@@ -199,11 +197,38 @@
 
         <button type="button"
                 id="gumb-dodaj-pripomocek"
-                class="btn btn-secondary btn-sm mt-2">
+                class="btn btn-outline-primary btn-sm mt-2">
 
             + Dodaj pripomoček
 
         </button>
+
+
+        <div class="mt-4">
+            <h5>Ali pripomočka ni na seznamu?</h5>
+
+                <div class="mb-2">
+                    <label for="ime_pripomocka">Ime novega pripomočka</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="ime_pripomocka"
+                        name="ime_pripomocka"
+                        placeholder="Na primer: kuhinjski termometer"
+                    >
+                </div>
+            
+                <button type="submit" class="btn btn-outline-primary btn-sm mt-2" formaction="/dodaj_pripomocek" formmethod="post" formnovalidate >
+                    Ustvari pripomoček
+                </button>
+            
+                % if napaka_pripomocka:
+                    <p class="text-danger mt-2">
+                        {{napaka_pripomocka}}
+                    </p>
+                % end
+        </div>
+
 
     </div>
 </div>
@@ -231,6 +256,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    // DODAJANJE SESTAVIN
     const gumb = document.getElementById('gumb-dodaj-sestavino');
     const vsebnik = document.getElementById('sestavine-vsebnik');
 
@@ -239,9 +265,14 @@ document.addEventListener('DOMContentLoaded', function () {
             const prviBlok = vsebnik.querySelector('.sestavina-blok');
             const novBlok = prviBlok.cloneNode(true);
 
-            const select = novBlok.querySelector('select[name="sestavine"]');
-            const kolicina = novBlok.querySelector('input[name="kolicina"]');
-            const enota = novBlok.querySelector('.enota-oznaka');
+            const select =
+                novBlok.querySelector('select[name="sestavine"]');
+
+            const kolicina =
+                novBlok.querySelector('input[name="kolicina"]');
+
+            const enota =
+                novBlok.querySelector('.enota-oznaka');
 
             select.selectedIndex = 0;
             kolicina.value = '';
@@ -252,6 +283,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // PRIKAZ MERSKE ENOTE
     if (vsebnik) {
         vsebnik.addEventListener('change', function (e) {
             if (e.target.name === 'sestavine') {
@@ -271,10 +303,30 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    // DODAJANJE PRIPOMOČKOV
+    const gumbPripomocek =
+        document.getElementById('gumb-dodaj-pripomocek');
+
+    const vsebnikPripomocki =
+        document.getElementById('pripomocki-vsebnik');
+
+    if (gumbPripomocek && vsebnikPripomocki) {
+        gumbPripomocek.addEventListener('click', function () {
+            const prviBlok =
+                vsebnikPripomocki.querySelector('.pripomocek-blok');
+
+            const novBlok = prviBlok.cloneNode(true);
+
+            const select =
+                novBlok.querySelector('select[name="pripomocki"]');
+
+            select.selectedIndex = 0;
+            novBlok.classList.add('mt-3');
+            vsebnikPripomocki.appendChild(novBlok);
+        });
+    }
 });
 </script>
-
-
-
 
 

@@ -98,12 +98,18 @@ def recept(sladica_id):
 @get("/dodaj_recept")
 def dodaj_recept():
     sestavine = ss.dobi_vse_sestavine()
+    pripomocki = ss.dobi_vse_pripomocke()
 
     return template(
         "dodaj_recept.html",
         sestavine=sestavine,
-        napaka_sestavine=None
+        pripomocki=pripomocki,
+        napaka_sestavine=None,
+        napaka_pripomocka=None
     )
+
+
+#post dodaj recept
 
 
 @post("/dodaj_sestavino")
@@ -121,6 +127,28 @@ def dodaj_sestavino_post():
             "dodaj_recept.html",
             sestavine=sestavine,
             napaka_sestavine=str(napaka)
+        )
+
+    redirect("/dodaj_recept")
+
+
+@post("/dodaj_pripomocek")
+def dodaj_pripomocek_post():
+    ime = request.forms.get("ime_pripomocka") # prebere ime iz obrazca
+
+    try:
+        ss.dodaj_pripomocek(ime)
+
+    except ValueError as napaka:
+        sestavine = ss.dobi_vse_sestavine()
+        pripomocki = ss.dobi_vse_pripomocke()
+
+        return template(
+            "dodaj_recept.html",
+            sestavine=sestavine,
+            pripomocki=pripomocki,
+            napaka_sestavine=None,
+            napaka_pripomocka=str(napaka)
         )
 
     redirect("/dodaj_recept")
