@@ -55,10 +55,12 @@ def cookie_required(f):
 @get("/")
 def domaca_stran():
     oseba_id = dobi_prijavljeno_osebo_id()
+    kategorije = ss.dobi_kategorije()
 
     return template(
         "domaca_stran.html",
-        prijavljen=oseba_id is not None
+        prijavljen=oseba_id is not None,
+        kategorije=kategorije
     )
 
 
@@ -183,7 +185,15 @@ def iskanje_receptov():
         ""
     ).strip()
 
-    sladice = ss.poisci_sladice(iskanje)
+    kategorija_id = request.query.get(
+        "kategorija",
+        ""
+    ).strip()
+
+    sladice = ss.poisci_sladice(
+        iskanje,
+        kategorija_id,
+    )
 
     return template(
         "seznam_receptov.html",
