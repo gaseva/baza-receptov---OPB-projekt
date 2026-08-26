@@ -1,24 +1,84 @@
 %rebase('osnova.html', naslov='Seznam sladic')
-<div>
-    %for sladica in sladice:
-    <h1><a href="/recept/{{sladica.id}}">{{sladica.ime}}</a></h1>
 
-    <table>
-        <tr>
-            <td>
-                <p>
-                    {{sladica.kratek_opis}}
-                </p>
-                <p><strong>Kategorija:</strong> {{sladica.kategorija}}</p>
-                <p><strong>Čas priprave:</strong> {{sladica.cas_priprave}} min</p>
-                <p><strong>Težavnost:</strong> {{sladica.tezavnost}}</p>
-            </td>
-        </tr>
-    </table>
-    %end
+<div>
+    <form
+        action="/recepti/iskanje"
+        method="GET"
+        class="row g-2 mb-4"
+    >
+        <div class="col-md-7 col-lg-6">
+            <label for="iskanje" class="visually-hidden">
+                Poišči recept po imenu ali sestavini
+            </label>
+
+            <input
+                id="iskanje"
+                name="iskanje"
+                type="search"
+                class="form-control"
+                value="{{iskanje}}"
+                placeholder="Ime sladice ali sestavine"
+                required
+            >
+        </div>
+
+        <div class="col-auto">
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                Poišči
+            </button>
+        </div>
+    </form>
+
+    % if iskanje:
+        <h2 class="mb-4">
+            Rezultati iskanja za »{{iskanje}}«
+        </h2>
+    % end
+
+    % if not sladice:
+        <p>
+            Za izbrano ime ali sestavino ni bilo najdenih receptov.
+        </p>
+    % end
+
+    % for sladica in sladice:
+        <h1>
+            <a href="/recept/{{sladica.id}}">
+                {{sladica.ime}}
+            </a>
+        </h1>
+
+        <table>
+            <tr>
+                <td>
+                    <p>
+                        {{sladica.kratek_opis}}
+                    </p>
+
+                    <p>
+                        <strong>Kategorija:</strong>
+                        {{sladica.kategorija}}
+                    </p>
+
+                    <p>
+                        <strong>Čas priprave:</strong>
+                        {{sladica.cas_priprave}} min
+                    </p>
+
+                    <p>
+                        <strong>Težavnost:</strong>
+                        {{sladica.tezavnost}}
+                    </p>
+                </td>
+            </tr>
+        </table>
+    % end
 
     <p>
-    Nazaj na domačo stran: <a href="/">Domov</a>
+        Nazaj na domačo stran:
+        <a href="/">Domov</a>
     </p>
-    
 </div>
