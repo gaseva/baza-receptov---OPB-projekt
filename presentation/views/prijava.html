@@ -5,12 +5,18 @@
 <form action="/prijava" method="POST" style="width:60%">
   <div class="form-group">
     <label for="username">Uporabniško ime</label>
-    <input type="text" class="form-control" name="username" placeholder="Vnesi uporabniško ime">
+    <input type="text" class="form-control" name="username" required placeholder="Vnesi uporabniško ime">
   </div>
   <div class="form-group">
     <label for="password">Geslo</label>
-    <input type="password" class="form-control" name="password" placeholder="Vnesi geslo">
+    <input type="password" class="form-control" name="password" required placeholder="Vnesi geslo">
   </div>
+
+  % if defined("napaka") and napaka:
+    <div class="alert alert-danger">
+        {{napaka}}
+    </div>
+  % end
 
   <button type="submit" class="btn btn-primary">Prijava</button>
 

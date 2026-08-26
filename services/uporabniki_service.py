@@ -1,5 +1,6 @@
 from data.repository import Repository
 import bcrypt
+from data.models import Oseba
 
 
 class UporabnikiService:       
@@ -35,7 +36,7 @@ class UporabnikiService:
                 )
 
         
-    def prijava(self, uporabnisko_ime: str, geslo: str) -> Oseba | None:
+    def prijava(self, uporabnisko_ime: str, geslo: str) -> Oseba:
             if not uporabnisko_ime or not geslo:
                 raise ValueError("Prosim izpolnite vsa polja.")
             

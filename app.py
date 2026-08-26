@@ -2,6 +2,7 @@ from presentation.bottleext import get, post, run, request, template, redirect, 
 import os
 from services.sladice_service import SladiceService
 from services.uporabniki_service import UporabnikiService
+from functools import wraps
 
 ss = SladiceService()
 us = UporabnikiService()
@@ -10,17 +11,27 @@ us = UporabnikiService()
 SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
 RELOADER = os.environ.get('BOTTLE_RELOADER', True)
 
+COOKIE_SECRET = os.environ.get("COOKIE_SECRET")
+if not COOKIE_SECRET:
+    raise RuntimeError(
+        "Okoljska spremenljivka COOKIE_SECRET ni nastavljena."
+    )
+
 def cookie_required(f):
-    """
-    Dekorator, ki zahteva veljaven piškotek. Če piškotka ni, uporabnika preusmeri na stran za prijavo.
-    """
     @wraps(f)
-    def decorated( *args, **kwargs):
-        cookie = request.get_cookie("uporabnik")
-        if cookie:
-            return f(*args, **kwargs)
-        return template("prijava.html",uporabnik=None, rola=None, napaka="Potrebna je prijava!")
-        
+    def decorated(*args, **kwargs):
+        oseba_id = request.get_cookie("oseba_id", secret=COOKIE_SECRET)
+
+        if oseba_id is None:
+            return redirect("/prijava")
+
+        try:
+            int(oseba_id)
+        except (TypeError, ValueError):
+            return redirect("/prijava")
+
+        return f(*args, **kwargs)
+
     return decorated
 
 @get('/')
@@ -44,7 +55,7 @@ def prijava_post():
         )
         
     try:
-        us.prijava(
+        uporabnik = us.prijava(
             uporabnisko_ime,
             geslo
         )
@@ -54,8 +65,15 @@ def prijava_post():
             napaka=str(napaka)
         )
     
-    response.set_cookie("uporabnik", uporabnisko_ime)
-    response.set_cookie("rola", prijava.role)    
+    response.set_cookie(
+        "oseba_id",
+        str(uporabnik.id),
+        secret=COOKIE_SECRET,
+        httponly=True,
+        samesite="Lax",
+        secure=False,
+        path="/",
+    )
 
     return redirect('/')
 
@@ -116,6 +134,14 @@ def registracija_post():
         )
 
     return redirect('/prijava')
+
+@get("/odjava")
+def odjava():
+    response.delete_cookie(
+        "oseba_id",
+        path="/",
+    )
+    return redirect("/")
 
 @get("/recepti")
 def seznam_receptov():
