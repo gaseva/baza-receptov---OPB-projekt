@@ -149,7 +149,7 @@ class Repository:
         elektronski_naslov: str,
         uporabnisko_ime: str,
         geslo_hash: str,
-    )-> None:
+    )-> int:
         """Doda osebo v bazo """
 
         with self.conn:
@@ -161,6 +161,7 @@ class Repository:
                         uporabnisko_ime, geslo_hash
                     )
                     VALUES (%s, %s, %s, %s, %s)
+                    RETURNING id
                     """,
                     (
                         ime,
@@ -170,6 +171,10 @@ class Repository:
                         geslo_hash,
                     ),
                 )
+                
+                oseba_id = cur.fetchone()[0]
+
+        return oseba_id
 
 
     # =====================================================================

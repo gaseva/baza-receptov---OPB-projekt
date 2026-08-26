@@ -143,7 +143,7 @@ def registracija_post():
         )
 
     try:
-        us.registracija(
+        oseba = us.registracija(
             ime,
             priimek,
             elektronski_naslov,
@@ -155,8 +155,18 @@ def registracija_post():
             'registracija.html',
             napaka=str(napaka)
         )
+    
+    response.set_cookie(
+        "oseba_id",
+        str(oseba.id),
+        secret=COOKIE_SECRET,
+        httponly=True,
+        samesite="Lax",
+        secure=False,
+        path="/",
+        )
 
-    return redirect('/prijava')
+    return redirect('/')
 
 @get("/odjava")
 def odjava():
