@@ -25,7 +25,7 @@ Podatkovni nivo skrbi za strukturo podatkovne baze, začetne podatke, pravice do
 Sestavljen je iz:
 - `create_database.sql` – ustvari strukturo podatkovne baze in vse potrebne tabele ter povezave med njimi; struktura baze sledi ER-diagramu, ki je prikazan spodaj
 - `populate_database.sql` – napolni podatkovno bazo z začetnimi podatki, ki sva jih uporabili za testiranje delovanja aplikacije
-- `permissions_database.sql` – določa pravice za dostop do podatkovne baze; ločuje pravice lastnikov baze in pravice uporabnikov aplikacije, katerim se ob registraciji dodeli vloga `javnost`, ki ima samo pravice, ki jih potrebuje za uporabo aplikacije PREVERI ČE JE TO RES
+- `permissions_database.sql` – določa pravice za dostop do podatkovne baze; ločuje pravice lastnikov baze in pravice uporabnikov aplikacije (`javnost`), ki ima samo pravice, ki jih potrebuje za uporabo aplikacije
 - `models.py` – vsebuje podatkovne razrede, ki predstavljajo posamezne entitete oziroma obliko podatkov v aplikaciji
 - `repository.py` – predstavlja vmesnik med aplikacijo in podatkovno bazo, izvaja SQL-poizvedbe ter rezultate pretvarja v podatkovne razrede
 
