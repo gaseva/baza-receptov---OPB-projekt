@@ -2,6 +2,7 @@
 # izvaja SQL poizvedbe
 # rezultate pretvarja v podatkovne razrede
 
+import os
 import psycopg2 # psycopg2 povezuje python s postgresql
 from . import auth_public as auth
 from .models import (
@@ -47,7 +48,7 @@ class Repository:
             host=auth.host,
             user=auth.user,
             password=auth.password,
-            port=auth.port
+            port=int(os.environ.get("DB_PORT", auth.port))
         )
 
 
