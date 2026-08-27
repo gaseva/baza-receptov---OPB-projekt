@@ -360,9 +360,5 @@ VALUES
 ON CONFLICT (sladica, oseba) DO NOTHING;
 
 
-INSERT INTO priljubljeno (sladica, oseba)
-VALUES
-    (1,22), (14,22)
-ON CONFLICT (sladica, oseba) DO NOTHING;
 
 -- SELECT * from priljubljeno;
