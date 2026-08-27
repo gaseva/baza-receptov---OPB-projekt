@@ -72,12 +72,12 @@ python -m venv env
 
 Aktivirajte ga:
 
-Windows:
+- Windows
 ```bash
 env\Scripts\activate
 ```
 
-macOS/Linux:
+- macOS/Linux
 ```bash
 source env/bin/activate
 ```
