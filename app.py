@@ -268,10 +268,7 @@ def recept(sladica_id):
 
     if sladica is None:
         response.status = 404
-        return template(
-            "napaka.html",
-            napaka="Sladica s tem ID-jem ne obstaja."
-        )
+        return "Sladica s tem ID-jem ne obstaja."
 
     oseba_id = dobi_prijavljeno_osebo_id()
 
@@ -442,10 +439,7 @@ def preklopi_priljubljeni_recept(sladica_id):
         )
     except ValueError as napaka:
         response.status = 404
-        return template(
-            "napaka.html",
-            napaka=str(napaka)
-        )
+        return str(napaka)
 
     # Klik na srček na strani posameznega recepta
     nazaj = request.forms.get("nazaj")
