@@ -1,111 +1,115 @@
-% rebase('osnova.html', naslov='Domaca stran')
+% rebase('osnova.html', naslov='Domača stran', stran='domov')
 
 
-<h1 class="display-4 fw-bold">Baza receptov za sladice</h1>
+<section class="hero">
 
-<p class="lead text-secondary mb-4">Poišči recept za svojo najljubšo sladico</p>
+    <h1>Baza receptov za sladice</h1>
 
-
-<form action="/recepti/iskanje" method="GET" class="mb-4">
-    <div class="row justify-content-center align-items-start g-2">
-        <!-- Oba iskalnika sta v istem stolpcu in zato enako široka. -->
-        <div class="col-8 col-md-7 col-lg-6">
-            <label for="iskanje" class="visually-hidden">
-                Poišči recept
-            </label>
-            <input
-                id="iskanje"
-                name="iskanje"
-                type="search"
-                class="form-control form-control-lg"
-                placeholder="Na primer: bananin kruh"
-            >
-
-            <label for="kategorija" class="visually-hidden">
-                Izberi kategorijo
-            </label>
-            <select
-                id="kategorija"
-                name="kategorija"
-                class="form-select form-select-lg mt-2"
-            >
-                <option value="">Vse kategorije</option>
-
-                % for kategorija in kategorije:
-                    <option value="{{kategorija.id}}">
-                        {{kategorija.ime}}
-                    </option>
-                % end
-            </select>
-        </div>
-
-        <!-- Gumb je v svojem stolpcu ob glavnem iskalniku. -->
-        <div class="col-auto">
-            <button type="submit" class="btn btn-primary btn-lg">
-                Poišči
-            </button>
-        </div>
-    </div>
-</form>
+    <p>
+        Poišči recept za svojo najljubšo sladico.
+    </p>
 
 
-<div>
-    <a href="/recepti" class="btn btn-primary">
-        Vsi recepti
-    </a>
+    <form action="/recepti/iskanje" method="GET" class="home-search">
 
-    % if prijavljen:
-        <a href="/dodaj_recept" class="btn btn-primary">
-            Dodaj recept
-        </a>
+        <div class="home-search-row">
 
-        <a href="/priljubljeni_recepti" class="btn btn-primary">
-            Priljubljeni recepti
-        </a>
+            <div>
+                <label for="iskanje" class="visually-hidden">
+                    Poišči recept
+                </label>
 
-        <a href="/moji_recepti" class="btn btn-primary">
-            Moji recepti
-        </a>
-
-        <a href="/odjava" class="btn btn-outline-secondary">
-            Odjava
-        </a>
-    % else:
-        <a href="/prijava" class="btn btn-primary">
-            Prijava
-        </a>
-
-        <a href="/registracija" class="btn btn-primary">
-            Registracija
-        </a>
-    % end
-</div>
-
-<section class="mt-5">
-    <h2>Najbolj priljubljene sladice</h2>
-
-    % if najbolj_priljubljene:
-        <div class="list-group mt-3">
-            % for sladica in najbolj_priljubljene:
-                <a
-                    href="/recept/{{sladica.id}}"
-                    class="list-group-item list-group-item-action"
+                <input
+                    id="iskanje"
+                    name="iskanje"
+                    type="search"
+                    class="form-control form-control-lg"
+                    placeholder="Na primer: bananin kruh"
                 >
-                    <strong>{{sladica.ime}}</strong>
+            </div>
 
-                    <div class="text-secondary">
-                        {{sladica.kratek_opis}}
-                    </div>
-                </a>
-            % end
+
+            <div>
+                <label for="kategorija" class="visually-hidden">
+                    Izberi kategorijo
+                </label>
+
+                <select
+                    id="kategorija"
+                    name="kategorija"
+                    class="form-select form-select-lg"
+                >
+                    <option value="">Vse kategorije</option>
+
+                    % for kategorija in kategorije:
+                        <option value="{{kategorija.id}}">
+                            {{kategorija.ime}}
+                        </option>
+                    % end
+                </select>
+            </div>
+
+
+            <div>
+                <button type="submit" class="btn btn-primary btn-lg">
+                    Poišči
+                </button>
+            </div>
+
         </div>
-    % else:
-        <p class="text-secondary">
-            Trenutno še ni priljubljenih receptov.
-        </p>
-    % end
+    </form>
+
 </section>
 
 
+<section class="popular-section">
+
+    <header class="page-header">
+        <h2 class="page-title">
+            Najbolj priljubljene sladice
+        </h2>
+
+        <p class="page-description">
+            Oglej si recepte, ki so najbolj navdušili naše uporabnike.
+        </p>
+    </header>
 
 
+    % if najbolj_priljubljene:
+
+        <div class="recipe-grid">
+
+            % for sladica in najbolj_priljubljene:
+
+                <a
+                    href="/recept/{{sladica.id}}"
+                    class="recipe-card recipe-card-link"
+                >
+                    <h3>
+                        {{sladica.ime}}
+                    </h3>
+
+                    <p class="recipe-description">
+                        {{sladica.kratek_opis}}
+                    </p>
+
+                    <span class="recipe-link-text">
+                        Poglej recept →
+                    </span>
+                </a>
+
+            % end
+
+        </div>
+
+    % else:
+
+        <div class="empty-message">
+            <p>
+                Trenutno še ni priljubljenih receptov.
+            </p>
+        </div>
+
+    % end
+
+</section>

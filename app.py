@@ -1,11 +1,12 @@
-from presentation.bottleext import get, post, run, request, template, redirect, static_file, url, response, template_user
 import os
-from services.sladice_service import SladiceService
-from services.uporabniki_service import UporabnikiService
-from functools import wraps
 import secrets
 import json
+from functools import wraps
 from urllib.parse import urlencode
+from presentation.bottleext import get, post, run, request, template as osnovni_template, redirect, static_file, url, response, template_user
+from services.sladice_service import SladiceService
+from services.uporabniki_service import UporabnikiService
+
 
 ss = SladiceService()
 us = UporabnikiService()
@@ -39,6 +40,16 @@ def dobi_prijavljeno_osebo_id():
         return int(oseba_id)
     except (TypeError, ValueError):
         return None
+
+def template(*args, **kwargs):
+    # Vsaki HTML-predlogi samodejno povemo,
+    # ali je uporabnik trenutno prijavljen.
+    kwargs.setdefault(
+        "prijavljen",
+        dobi_prijavljeno_osebo_id() is not None
+    )
+
+    return osnovni_template(*args, **kwargs)
 
     
 
@@ -478,7 +489,7 @@ def moji_recepti():
 def staticne_datoteke(filepath):
     return static_file(
         filepath,
-        root=os.path.join(os.path.dirname(__file__), 'static')
+        root=os.path.join(os.path.dirname(__file__), 'presentation', 'static')
     )
 
 run(host='localhost', port=SERVER_PORT, reloader=RELOADER, debug=True)

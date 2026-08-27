@@ -400,3 +400,164 @@ textarea.form-control {
         padding: 22px;
     }
 }
+
+/* =========================================================
+   11. GLAVNA NAVIGACIJA
+   Navigacija je v datoteki osnova.html, zato je vidna
+   na vseh straneh aplikacije.
+   ========================================================= */
+
+.site-navigation {
+    border-bottom: 1px solid var(--barva-obrobe);
+    background-color: var(--barva-kartice);
+    box-shadow: 0 4px 18px rgba(74, 44, 32, 0.08);
+}
+
+.site-nav-inner {
+    max-width: 1120px;
+    margin-inline: auto;
+    padding: 12px 20px;
+}
+
+.site-brand {
+    margin-right: 30px;
+    color: var(--barva-glavna-temna);
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+
+.site-brand:hover {
+    color: var(--barva-glavna);
+    text-decoration: none;
+}
+
+.site-navigation .nav-link {
+    margin-inline: 3px;
+    padding: 8px 12px;
+    border-radius: 8px;
+
+    color: var(--barva-besedila);
+    font-weight: 600;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.site-navigation .nav-link:hover {
+    color: var(--barva-glavna-temna);
+    background-color: #fff1e5;
+    text-decoration: none;
+}
+
+.nav-logout {
+    white-space: nowrap;
+}
+
+.site-navigation .navbar-toggler {
+    border-color: var(--barva-obrobe);
+}
+
+.site-navigation .navbar-toggler:focus {
+    box-shadow: 0 0 0 4px rgba(165, 83, 61, 0.15);
+}
+
+
+/* =========================================================
+   12. ISKALNIK NA DOMAČI STRANI
+   ========================================================= */
+
+.home-search {
+    max-width: 900px;
+    margin-top: 35px;
+}
+
+.home-search-row {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr auto;
+    gap: 12px;
+    align-items: center;
+}
+
+.home-search .btn {
+    min-height: 48px;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   13. PRILJUBLJENI RECEPTI NA DOMAČI STRANI
+   ========================================================= */
+
+.popular-section {
+    margin-top: 55px;
+}
+
+.recipe-card-link {
+    display: block;
+    color: var(--barva-besedila);
+}
+
+.recipe-card-link:hover {
+    color: var(--barva-besedila);
+    text-decoration: none;
+}
+
+.recipe-card-link h3 {
+    margin-bottom: 14px;
+    color: var(--barva-glavna-temna);
+}
+
+.recipe-link-text {
+    display: inline-block;
+    margin-top: 18px;
+
+    color: var(--barva-glavna);
+    font-weight: 700;
+}
+
+.empty-message {
+    padding: 25px;
+    border: 1px dashed var(--barva-obrobe);
+    border-radius: var(--zaobljenost);
+    background-color: var(--barva-kartice);
+    color: var(--barva-nezna);
+}
+
+.empty-message p {
+    margin-bottom: 0;
+}
+
+
+/* =========================================================
+   14. NAVIGACIJA IN ISKALNIK NA TELEFONU
+   ========================================================= */
+
+@media (max-width: 991px) {
+    .site-navigation .navbar-collapse {
+        padding-top: 15px;
+    }
+
+    .site-navigation .nav-link {
+        margin-block: 2px;
+        margin-inline: 0;
+    }
+
+    .nav-logout {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 750px) {
+    .home-search-row {
+        grid-template-columns: 1fr;
+    }
+
+    .home-search .btn {
+        width: 100%;
+    }
+
+    .popular-section {
+        margin-top: 40px;
+    }
+}
