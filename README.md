@@ -52,18 +52,16 @@ Poleg tega v predstavitveni nivo sodijo še:
 
 ## Zagon spletne aplikacije
 
-## Lokalni zagon aplikacije
-
 Za zagon potrebujete **Python 3.10 ali novejši** in **Git**.
 
-### 1. Prenesite projekt
+**1. Prenesite projekt**
 
 ```bash
 git clone https://github.com/gaseva/baza-receptov---OPB-projekt.git
 cd baza-receptov---OPB-projekt
 ```
 
-### 2. Ustvarite virtualno okolje
+**2. Ustvarite virtualno okolje**
 
 ```bash
 python -m venv env
@@ -71,25 +69,23 @@ python -m venv env
 
 Aktivirajte ga:
 
-**Windows:**
-
+Windows:
 ```bash
 env\Scripts\activate
 ```
 
-**macOS/Linux:**
-
+macOS/Linux:
 ```bash
 source env/bin/activate
 ```
 
-### 3. Namestite knjižnice
+**3. Namestite knjižnice**
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Zaženite aplikacijo
+**4. Zaženite aplikacijo**
 
 ```bash
 python app.py
