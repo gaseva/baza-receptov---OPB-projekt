@@ -52,8 +52,51 @@ Poleg tega v predstavitveni nivo sodijo še:
 
 ## Zagon spletne aplikacije
 
-Aplikacijo se da najlažje preizkusiti preko Binderja:
+## Lokalni zagon aplikacije
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/gaseva/baza-receptov---OPB-projekt/HEAD)
+Za zagon potrebujete **Python 3.10 ali novejši** in **Git**.
+
+### 1. Prenesite projekt
+
+```bash
+git clone https://github.com/gaseva/baza-receptov---OPB-projekt.git
+cd baza-receptov---OPB-projekt
+```
+
+### 2. Ustvarite virtualno okolje
+
+```bash
+python -m venv env
+```
+
+Aktivirajte ga:
+
+**Windows:**
+
+```bash
+env\Scripts\activate
+```
+
+**macOS/Linux:**
+
+```bash
+source env/bin/activate
+```
+
+### 3. Namestite knjižnice
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Zaženite aplikacijo
+
+```bash
+python app.py
+```
+
+Aplikacija je dostopna na [http://localhost:8080](http://localhost:8080).
+
+Za ustavitev aplikacije v terminalu pritisnite `Ctrl + C`.
 
 **Avtorji:** Ana Barba, Eva Gašparič
