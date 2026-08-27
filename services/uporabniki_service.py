@@ -60,9 +60,7 @@ class UporabnikiService:
                     pravilno_geslo = False
 
                 if not pravilno_geslo:
-                    raise ValueError(
-                        "Uporabniško ime ali geslo je napačno."
-                    )
+                    raise ValueError("Uporabniško ime ali geslo je napačno.")
 
                 return user
             
@@ -85,15 +83,8 @@ class UporabnikiService:
             return repository.dobi_id_priljubljenih_receptov(oseba_id)
 
 
-    def preklopi_priljubljeni_recept(
-        self,
-        oseba_id: int,
-        sladica_id: int
-    ) -> bool:
-        """
-        Doda recept med priljubljene ali ga odstrani.
-        Vrne True, če je po spremembi priljubljen.
-        """
+    def preklopi_priljubljeni_recept(self, oseba_id: int, sladica_id: int) -> bool:
+        """Doda ali odstrani priljubljen recept. Če je po spremembi priljubljen, vrne True"""
 
         with Repository() as repository:
             sladica = repository.dobi_sladico(sladica_id)

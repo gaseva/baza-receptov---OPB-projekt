@@ -15,6 +15,10 @@ us = UporabnikiService()
 SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
 RELOADER = os.environ.get('BOTTLE_RELOADER', True)
 
+##############################################################################
+# POMOŽNE FUNKCIJE IN PIŠKOTKI
+##############################################################################
+ 
 COOKIE_SECRET = (
     os.environ.get("COOKIE_SECRET")
     or secrets.token_urlsafe(32)
@@ -65,6 +69,10 @@ def cookie_required(f):
 
     return decorated
 
+##############################################################################
+# POTI
+##############################################################################
+
 @get("/")
 def domaca_stran():
     oseba_id = dobi_prijavljeno_osebo_id()
@@ -77,6 +85,8 @@ def domaca_stran():
         kategorije=kategorije,
         najbolj_priljubljene=najbolj_priljubljene,
     )
+
+
 
 
 @get('/prijava')
@@ -114,7 +124,7 @@ def prijava_post():
         secure=False,
         path="/",
     )
-
+    
     return redirect('/')
 
 
