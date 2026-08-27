@@ -2,7 +2,7 @@
 # izvaja SQL poizvedbe
 # rezultate pretvarja v podatkovne razrede
 
-import psycopg2
+import psycopg2 # psycopg2 povezuje python s postgresql
 from . import auth_public as auth
 from .models import (
     Kategorija,
@@ -11,15 +11,15 @@ from .models import (
     Sestavina,
     SestavinaRecepta,
     Sladica,
-    Tezavnost,
+    Tezavnost
 )
 
 
 class Repository:
-    """Vse poizvedbe za dostop do baze.
-    """
+    # v tem razredu so zdruzene vse funkcije za delo z bazo
 
-    # Osnovni SELECT za pridobivanje vseh podatkov o sladicah
+    # pridobivanje vseh podatkov o sladicah
+    # sva naredili da sql kode ni treba ponavljat
     SQL_SLADICE = """
         SELECT
             s.id,
@@ -38,29 +38,43 @@ class Repository:
         JOIN tezavnost AS t ON t.id = s.tezavnost
         JOIN kategorija AS k ON k.id = s.kategorija
     """
+    # self predstavlja trenutni objekt razreda repository
 
+
+    # ustvari povezavo z bazo in jo shrani v self.conn
     def __init__(self):
         self.conn = psycopg2.connect(
             dbname=auth.db,
             host=auth.host,
             user=auth.user,
             password=auth.password,
-            port=auth.port,
+            port=auth.port
         )
 
+
+
+
+    # v repository vrne trenutni objekt
     def __enter__(self):
         return self
 
+
+
+
+    # ob koncu bloka wwith zapre povezavo z bazo
     def __exit__(self, exc_type, exc_value, traceback):
         self.conn.close()
 
-    # =====================================================================
-    # OSEBE
-    # =====================================================================
 
+
+
+    #######
+    # OSEBE 
+    #######
 
     def dobi_osebo_po_uporabniskem_imenu(self, uporabnisko_ime: str) -> Oseba | None:
-        """Poišče osebo po uporabniškem imenu (za prijavo)"""
+        """poišče osebo z določenim uporabniškim imenom"""
+        # uporablja se pri prijavi in preverjanju zasedenosti uporabniškega imena
 
         with self.conn:
             with self.conn.cursor() as cur:
@@ -71,13 +85,19 @@ class Repository:
                     FROM oseba
                     WHERE uporabnisko_ime = %s
                     """,
-                    (uporabnisko_ime,),
+                    (uporabnisko_ime,)
                 )
                 vrstica = cur.fetchone()
 
         return None if vrstica is None else Oseba(*vrstica)
+
     
+
+
     def dobi_osebo_po_elektronskem_naslovu(self, elektronski_naslov: str) -> Oseba | None:
+        """poišče osebo z določenim elektronskim naslovom"""
+        # uporablja se pri registraciji za enoličnost elektronskega naslova
+
         with self.conn.cursor() as cur:
             cur.execute(
                 """
@@ -86,12 +106,14 @@ class Repository:
                 FROM oseba
                 WHERE elektronski_naslov = %s
                 """,
-                (elektronski_naslov,),
+                (elektronski_naslov,)
             )
 
             vrstica = cur.fetchone()
 
         return None if vrstica is None else Oseba(*vrstica)
+
+
 
 
     def dodaj_osebo(
@@ -100,9 +122,9 @@ class Repository:
         priimek: str,
         elektronski_naslov: str,
         uporabnisko_ime: str,
-        geslo_hash: str,
+        geslo_hash: str
     )-> int:
-        """Doda osebo v bazo """
+        """doda osebo v bazo """
 
         with self.conn:
             with self.conn.cursor() as cur:
@@ -129,18 +151,23 @@ class Repository:
         return oseba_id
 
 
-    # =====================================================================
-    # SLADICE
-    # =====================================================================
 
+
+    #########
+    # SLADICE 
+    #########
+    
     @staticmethod
     def _ustvari_sladico(vrstica) -> Sladica:
-        """Pretvori eno SQL-vrstico v objekt Sladica iz models.py."""
+        """pretvori sql vrstico v objekt sladica"""
 
         return Sladica(*vrstica)
 
+
+    
+
     def dobi_vse_sladice(self) -> list[Sladica]:
-        """Vrne vse sladice z avtorjem, težavnostjo in kategorijo."""
+        """vrne vse sladice"""
 
         with self.conn:
             with self.conn.cursor() as cur:
@@ -149,8 +176,12 @@ class Repository:
 
         return [self._ustvari_sladico(vrstica) for vrstica in vrstice]
 
+
+
+
     def poisci_sladice(self, iskanje: str, kategorija_id: int | None = None) -> list[Sladica]:
-        """Išče po imenu/sladici in po izbrani kategoriji."""
+        """išče po imenu sladice in/ali po kategoriji"""
+        # ILIKE ne razlikuje med malimi in velikimi črkami
 
         vzorec = f"%{iskanje}%"
 
@@ -161,7 +192,7 @@ class Repository:
                     + """
                     WHERE (
                         %s = ''
-                        OR s.ime ILIKE %s
+                        OR s.ime ILIKE %s 
                         OR EXISTS (
                             SELECT 1
                             FROM vsebuje AS v
@@ -179,7 +210,7 @@ class Repository:
                         vzorec,
                         vzorec,
                         kategorija_id,
-                        kategorija_id,
+                        kategorija_id
                     ),
                 )
                 vrstice = cur.fetchall()
@@ -189,19 +220,26 @@ class Repository:
             for vrstica in vrstice
         ]
 
+
+
+
     def dobi_sladico(self, sladica_id: int) -> Sladica | None:
-        """Vrne eno sladico ali None, če tak ID ne obstaja."""
+        """pridobi sladico glede na njen ID"""
 
         with self.conn:
             with self.conn.cursor() as cur:
                 cur.execute(
                     self.SQL_SLADICE + " WHERE s.id = %s",
-                    (sladica_id,),
+                    (sladica_id,)
                 )
                 vrstica = cur.fetchone()
 
         return None if vrstica is None else self._ustvari_sladico(vrstica)
 
+
+
+
+    # funkcija doda sladico v bazo
     def dodaj_sladico(
         self,
         ime: str,
@@ -212,15 +250,9 @@ class Repository:
         tezavnost_id: int,
         kategorija_id: int,
         sestavine: list[tuple[int, str]] | None = None,
-        pripomocki: list[int] | None = None,
+        pripomocki: list[int] | None = None
     ) -> int:
-        """Doda sladico, sestavine in pripomočke v eni transakciji.
-
-        sestavine so pari (id_sestavine, kolicina), na primer
-        [(1, "200"), (3, "2")]. Enote tu ne podamo, saj je že shranjena v
-        tabeli sestavina. Pripomocki so seznam ID-jev. Če pade vstavljanje
-        ene povezave, se razveljavi tudi vstavljeni recept.
-        """
+    
 
         sestavine = sestavine or []
         pripomocki = pripomocki or []
@@ -243,12 +275,12 @@ class Repository:
                         kratek_opis,
                         avtor_id,
                         tezavnost_id,
-                        kategorija_id,
+                        kategorija_id
                     ),
                 )
                 sladica_id = cur.fetchone()[0]
 
-                # vsebuje je povezovalna tabela med sladicami in sestavinami.
+                # vsebuje povezuje sladico s sestavinami in količinami
                 for sestavina_id, kolicina in sestavine:
                     cur.execute(
                         """
@@ -263,7 +295,7 @@ class Repository:
                         (sladica_id, sestavina_id, kolicina),
                     )
 
-                # set odstrani morebitne podvojene ID-je pripomočkov.
+                # odstranitev podvojenih pripomočkov
                 for pripomocek_id in set(pripomocki):
                     cur.execute(
                         """
@@ -271,15 +303,19 @@ class Repository:
                         VALUES (%s, %s)
                         ON CONFLICT (sladica, pripomocek) DO NOTHING
                         """,
-                        (sladica_id, pripomocek_id),
+                        (sladica_id, pripomocek_id)
                     )
 
         return sladica_id
 
+
+
+
     def dobi_sestavine_za_sladico(
         self, sladica_id: int
     ) -> list[SestavinaRecepta]:
-        """Vrne imena, količine in enote sestavin izbranega recepta."""
+        """vrne imena in koičine sestavin za izbrano sladico"""
+        # povezuje tabelo vsebuje z količino in sestavina z imenom in enoto
 
         with self.conn:
             with self.conn.cursor() as cur:
@@ -291,19 +327,21 @@ class Repository:
                     WHERE v.sladica = %s
                     ORDER BY se.ime
                     """,
-                    (sladica_id,),
+                    (sladica_id,)
                 )
                 vrstice = cur.fetchall()
 
         return [SestavinaRecepta(*vrstica) for vrstica in vrstice]
+    
+
+
     
     def dobi_najbolj_priljubljene_sladice(
         self,
         omejitev: int = 12
     ) -> list[Sladica]:
         """
-        Vrne sladice z največ uporabniki, ki so jih dodali
-        med priljubljene.
+        vrne tiste sladice, ki jih je največ uporabnikov označilo kot priljubljene
         """
 
         with self.conn:
@@ -334,7 +372,7 @@ class Repository:
 
                     LIMIT %s
                     """,
-                    (omejitev,),
+                    (omejitev,)
                 )
 
                 vrstice = cur.fetchall()
@@ -344,12 +382,15 @@ class Repository:
                     for vrstica in vrstice
                 ]
 
-    # =====================================================================
+
+
+
+    ###########################################################
     # ŠIFRANTI: KATEGORIJE, TEŽAVNOSTI, SESTAVINE IN PRIPOMOČKI
-    # =====================================================================
+    ###########################################################
 
     def dobi_kategorije(self) -> list[Kategorija]:
-        """Vrne vse kategorije, urejene po imenu."""
+        """Vvrne vse kategorije kot seznam objektov Kategorija"""
 
         with self.conn:
             with self.conn.cursor() as cur:
@@ -359,20 +400,23 @@ class Repository:
         return [Kategorija(*vrstica) for vrstica in vrstice]
 
 
+
+
     def dobi_vse_sestavine(self) -> list[Sestavina]:
-        """Vrne ID, ime in enoto vseh sestavin, urejenih po imenu."""
+        """vrne ID, ime in enoto vseh sestavin"""
 
         with self.conn:
             with self.conn.cursor() as cur:
-                # Enota je del tabele sestavina, ne povezovalne tabele
-                # vsebuje, zato jo izberemo neposredno od tukaj.
                 cur.execute("SELECT id, ime, enota FROM sestavina ORDER BY ime")
                 vrstice = cur.fetchall()
 
         return [Sestavina(*vrstica) for vrstica in vrstice]
 
+
+
+
     def dobi_sestavino_po_imenu(self, ime: str) -> Sestavina | None:
-        """Vrne sestavino z danim imenom ali None, če ne obstaja."""
+        """poišče sestavino po imenu"""
 
         with self.conn:
             with self.conn.cursor() as cur:
@@ -382,17 +426,18 @@ class Repository:
                     FROM sestavina
                     WHERE LOWER(ime) = LOWER(%s)
                     """,
-                    (ime,),
+                    (ime,)
                 )
 
-                # fetchone mora biti znotraj bloka za cursor
                 vrstica = cur.fetchone()
 
         return None if vrstica is None else Sestavina(*vrstica)
 
-    
+
+
+
     def dodaj_sestavino(self, ime: str, enota: str) -> Sestavina:
-        """Doda novo sestavino in vrne ustvarjeni objekt."""
+        """doda novo sestavino v bazo in vrne objekt Sestavina"""
 
         with self.conn:
             with self.conn.cursor() as cur:
@@ -402,17 +447,18 @@ class Repository:
                     VALUES (%s, %s)
                     RETURNING id, ime, enota
                     """,
-                    (ime, enota),
+                    (ime, enota)
                 )
 
-                # Tudi tukaj mora biti fetchone znotraj bloka
                 vrstica = cur.fetchone()
 
         return Sestavina(*vrstica)
 
 
+
+
     def dobi_vse_pripomocke(self) -> list[Pripomocek]:
-        """Vrne vse pripomočke, urejene po imenu."""
+        """vrne vse pripomočke za prikaz v dropdownu"""
 
         with self.conn:
             with self.conn.cursor() as cur:
@@ -421,8 +467,11 @@ class Repository:
 
         return [Pripomocek(*vrstica) for vrstica in vrstice]
 
+
+
+
     def dobi_pripomocek_po_imenu(self, ime: str) -> Pripomocek | None:
-        """Vrne pripomoček z danim imenom ali None, če ne obstaja."""
+        """poišče pripomoček po imenu"""
 
         with self.conn:
             with self.conn.cursor() as cur:
@@ -432,7 +481,7 @@ class Repository:
                     FROM pripomocek
                     WHERE LOWER(ime) = LOWER(%s)
                     """,
-                    (ime,),
+                    (ime,)
                 )
                 vrstica = cur.fetchone()
 
@@ -440,8 +489,9 @@ class Repository:
 
 
 
+
     def dodaj_pripomocek(self, ime: str) -> Pripomocek:
-        """Doda nov pripomoček in vrne ustvarjeni objekt."""
+        """doda nov pripomoček v bazo in vrne objekt Pripomocek"""
 
         with self.conn:
             with self.conn.cursor() as cur:
@@ -451,14 +501,17 @@ class Repository:
                     VALUES (%s)
                     RETURNING id, ime
                     """,
-                    (ime,),
+                    (ime,)
                 )
                 vrstica = cur.fetchone()
 
         return Pripomocek(*vrstica)
+    
+
+
 
     def dobi_pripomocke_sladice(self, sladica_id: int) -> list[Pripomocek]:
-        """Vrne pripomočke, povezane z izbrano sladico."""
+        """pridobi pripomočke za določen recept"""
 
         with self.conn:
             with self.conn.cursor() as cur:
@@ -470,18 +523,21 @@ class Repository:
                     WHERE po.sladica = %s
                     ORDER BY p.ime
                     """,
-                    (sladica_id,),
+                    (sladica_id,)
                 )
                 vrstice = cur.fetchall()
 
         return [Pripomocek(*vrstica) for vrstica in vrstice]
 
-    # =====================================================================
+
+
+
+    ##############################
     # PRILJUBLJENE IN MOJE SLADICE
-    # =====================================================================
+    ##############################
 
     def dodaj_med_priljubljene(self, oseba_id: int, sladica_id: int) -> None:
-        """Doda povezavo oseba-sladica, če še ne obstaja."""
+        """v tabelo priljubljeno doda povezavo med osebo in sladico"""
 
         with self.conn:
             with self.conn.cursor() as cur:
@@ -491,13 +547,16 @@ class Repository:
                     VALUES (%s, %s)
                     ON CONFLICT (sladica, oseba) DO NOTHING
                     """,
-                    (sladica_id, oseba_id),
+                    (sladica_id, oseba_id)
                 )
+
+
+
 
     def odstrani_iz_priljubljenih(
         self, oseba_id: int, sladica_id: int
     ) -> None:
-        """Odstrani povezavo; ne izbriše niti osebe niti recepta."""
+        """odstrani povezavo oseba-sladica"""
 
         with self.conn:
             with self.conn.cursor() as cur:
@@ -506,11 +565,14 @@ class Repository:
                     DELETE FROM priljubljeno
                     WHERE oseba = %s AND sladica = %s
                     """,
-                    (oseba_id, sladica_id),
+                    (oseba_id, sladica_id)
                 )
 
+
+
+
     def je_priljubljena(self, oseba_id: int, sladica_id: int) -> bool:
-        """Pove, ali ima oseba izbrano sladico med priljubljenimi."""
+        """pove ali je recept priljubljen določeni osebi"""
 
         with self.conn:
             with self.conn.cursor() as cur:
@@ -522,12 +584,15 @@ class Repository:
                         WHERE oseba = %s AND sladica = %s
                     )
                     """,
-                    (oseba_id, sladica_id),
+                    (oseba_id, sladica_id)
                 )
                 return cur.fetchone()[0]
 
+
+
+
     def dobi_priljubljene_recepte(self, oseba_id: int) -> list[Sladica]:
-        """Vrne vse priljubljene sladice izbrane osebe."""
+        """vrne vse priljubljene sladice izbranega uporabnika"""
 
         with self.conn:
             with self.conn.cursor() as cur:
@@ -538,14 +603,19 @@ class Repository:
                     WHERE p.oseba = %s
                     ORDER BY s.ime
                     """,
-                    (oseba_id,),
+                    (oseba_id,)
                 )
                 vrstice = cur.fetchall()
 
         return [self._ustvari_sladico(vrstica) for vrstica in vrstice]
 
+
+
+
     def dobi_id_priljubljenih_receptov(self, oseba_id: int) -> set[int]:
-        """Vrne ID-je vseh receptov, ki jih ima oseba med priljubljenimi."""
+        """vrne ID priljubljenih sladic izbranega uporabnika"""
+        # na tej podlagi HTML pokaže poln/prazen srček
+
         with self.conn:
             with self.conn.cursor() as cur:
                 cur.execute(
@@ -554,10 +624,12 @@ class Repository:
                     FROM priljubljeno
                     WHERE oseba = %s
                     """,
-                    (oseba_id,),
+                    (oseba_id,)
                 )
 
                 return {vrstica[0] for vrstica in cur.fetchall()}
+
+
 
 
     def dobi_sladice_avtorja(
@@ -565,7 +637,7 @@ class Repository:
         oseba_id: int
     ) -> list[Sladica]:
         """
-        Vrne vse sladice, ki jih je dodal izbrani uporabnik.
+        vrne vse sladice, ki jih je dodal določen uporabnik
         """
 
         with self.conn:
@@ -576,7 +648,7 @@ class Repository:
                     WHERE s.avtor = %s
                     ORDER BY s.ime
                     """,
-                    (oseba_id,),
+                    (oseba_id,)
                 )
 
                 vrstice = cur.fetchall()
