@@ -1,4 +1,7 @@
 # Baza receptov - OPB projekt
+
+**Avtorji:** Ana Barba, Eva Gašparič
+
 V projektni nalogi pri predmetu **Osnove podatkovnih baz** na FMF sva ustvarili spletno aplikacijo za gledanje in dodajanje receptov za sladice.
 
 Uporabniki lahko pregledujejo recepte, jih iščejo in filtrirajo ter si ogledajo sestavine, pripomočke in postopek priprave posamezne sladice. Registrirani uporabniki lahko dodajajo svoje recepte ter označujejo recepte kot priljubljene.
@@ -95,4 +98,3 @@ Aplikacija je dostopna na [http://localhost:8080](http://localhost:8080).
 
 Za ustavitev aplikacije v terminalu pritisnite `Ctrl + C`.
 
-**Avtorji:** Ana Barba, Eva Gašparič
