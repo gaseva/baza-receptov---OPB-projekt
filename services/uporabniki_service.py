@@ -1,6 +1,6 @@
-from data.repository import Repository
 import bcrypt
 from data.models import Oseba
+from data.repository import Repository
 
 
 class UporabnikiService:       
@@ -71,11 +71,8 @@ class UporabnikiService:
         with Repository() as repository:
             return repository.dobi_priljubljene_recepte(oseba_id)
     
-    def je_recept_priljubljen(
-        self,
-        oseba_id: int,
-        sladica_id: int
-    ) -> bool:
+    
+    def je_recept_priljubljen(self, oseba_id: int, sladica_id: int) -> bool:
         with Repository() as repository:
             return repository.je_priljubljena(
                 oseba_id,

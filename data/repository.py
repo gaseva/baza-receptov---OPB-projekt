@@ -18,8 +18,7 @@ from .models import (
 class Repository:
     # v tem razredu so zdruzene vse funkcije za delo z bazo
 
-    # pridobivanje vseh podatkov o sladicah
-    # sva naredili da sql kode ni treba ponavljat
+    # sql poizvedba, ki vrne vse podatke o sladici in se pogosto uporablja
     SQL_SLADICE = """
         SELECT
             s.id,
@@ -39,7 +38,7 @@ class Repository:
         JOIN kategorija AS k ON k.id = s.kategorija
     """
     # self predstavlja trenutni objekt razreda repository
-
+    
 
     # ustvari povezavo z bazo in jo shrani v self.conn
     def __init__(self):
@@ -280,7 +279,7 @@ class Repository:
                 )
                 sladica_id = cur.fetchone()[0]
 
-                # vsebuje povezuje sladico s sestavinami in količinami
+                # tabela vsebuje povezuje sladico s sestavinami in količinami
                 for sestavina_id, kolicina in sestavine:
                     cur.execute(
                         """
@@ -314,8 +313,8 @@ class Repository:
     def dobi_sestavine_za_sladico(
         self, sladica_id: int
     ) -> list[SestavinaRecepta]:
-        """vrne imena in koičine sestavin za izbrano sladico"""
-        # povezuje tabelo vsebuje z količino in sestavina z imenom in enoto
+        """vrne imena in količine sestavin za izbrano sladico"""
+        # povezuje tabelo vsebuje s količino in sestavina z imenom in enoto
 
         with self.conn:
             with self.conn.cursor() as cur:
@@ -340,9 +339,7 @@ class Repository:
         self,
         omejitev: int = 12
     ) -> list[Sladica]:
-        """
-        vrne tiste sladice, ki jih je največ uporabnikov označilo kot priljubljene
-        """
+        """vrne tiste sladice, ki jih je največ uporabnikov označilo kot priljubljene"""
 
         with self.conn:
             with self.conn.cursor() as cur:
@@ -386,11 +383,11 @@ class Repository:
 
 
     ###########################################################
-    # ŠIFRANTI: KATEGORIJE, TEŽAVNOSTI, SESTAVINE IN PRIPOMOČKI
+    # KATEGORIJE, TEŽAVNOSTI, SESTAVINE IN PRIPOMOČKI
     ###########################################################
 
     def dobi_kategorije(self) -> list[Kategorija]:
-        """Vvrne vse kategorije kot seznam objektov Kategorija"""
+        """Vrne vse kategorije kot seznam objektov Kategorija"""
 
         with self.conn:
             with self.conn.cursor() as cur:
