@@ -12,9 +12,11 @@
 
     <form action="/recepti/iskanje" method="GET" class="home-search">
 
-        <div class="home-search-row">
+        <div class="home-search-main">
 
-            <div>
+            <!-- Besedilni iskalnik in kategorija sta v istem stolpcu. -->
+            <div class="home-search-field">
+
                 <label for="iskanje" class="visually-hidden">
                     Poišči recept
                 </label>
@@ -26,34 +28,40 @@
                     class="form-control form-control-lg"
                     placeholder="Na primer: bananin kruh"
                 >
+
+
+                <!-- Filter kategorije je neposredno pod iskalnim poljem. -->
+                <div class="home-search-filter">
+
+                    <label for="kategorija" class="visually-hidden">
+                        Izberi kategorijo
+                    </label>
+
+                    <select
+                        id="kategorija"
+                        name="kategorija"
+                        class="form-select form-select-lg"
+                    >
+                        <option value="">Vse kategorije</option>
+
+                        % for kategorija in kategorije:
+                            <option value="{{kategorija.id}}">
+                                {{kategorija.ime}}
+                            </option>
+                        % end
+                    </select>
+
+                </div>
             </div>
 
 
-            <div>
-                <label for="kategorija" class="visually-hidden">
-                    Izberi kategorijo
-                </label>
+            <!-- Gumb je v ločenem stolpcu desno od iskalnega polja. -->
+            <div class="home-search-button">
 
-                <select
-                    id="kategorija"
-                    name="kategorija"
-                    class="form-select form-select-lg"
-                >
-                    <option value="">Vse kategorije</option>
-
-                    % for kategorija in kategorije:
-                        <option value="{{kategorija.id}}">
-                            {{kategorija.ime}}
-                        </option>
-                    % end
-                </select>
-            </div>
-
-
-            <div>
                 <button type="submit" class="btn btn-primary btn-lg">
                     Poišči
                 </button>
+
             </div>
 
         </div>

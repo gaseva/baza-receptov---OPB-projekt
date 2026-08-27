@@ -216,7 +216,7 @@ class SladiceService:
         
     def dobi_najbolj_priljubljene_sladice(
         self,
-        omejitev: int = 10
+        omejitev: int = 12
     ):
         if omejitev < 1:
             return []

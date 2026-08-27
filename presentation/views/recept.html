@@ -1,12 +1,13 @@
 %rebase('osnova.html', naslov=sladica.ime)
-<div>
-    <div class="d-flex align-items-center gap-3 mb-4">
-        <h1 class="mb-0">{{sladica.ime}}</h1>
+
+<div class="recipe-detail">
+    <div class="recipe-detail-header">
+        <h1>{{sladica.ime}}</h1>
 
         <form
             action="/priljubljeni/preklopi/{{sladica.id}}"
             method="POST"
-            class="d-inline"
+            class="favorite-form"
         >
             <input
                 type="hidden"
@@ -16,8 +17,7 @@
 
             <button
                 type="submit"
-                class="btn btn-link border-0 p-0 text-danger"
-                style="font-size: 2rem; text-decoration: none;"
+                class="favorite-button {{'favorite-button-active' if je_priljubljena else ''}}"
                 title="{{'Odstrani iz priljubljenih' if je_priljubljena else 'Dodaj med priljubljene'}}"
                 aria-label="{{'Odstrani iz priljubljenih' if je_priljubljena else 'Dodaj med priljubljene'}}"
             >
@@ -26,51 +26,63 @@
         </form>
     </div>
 
-    <table>
-        <tr>
-            <td>
-                <p>
-                    {{sladica.kratek_opis}}
-                </p>
-                <p><strong>Kategorija:</strong> {{sladica.kategorija}}</p>
-                <p><strong>Čas priprave:</strong> {{sladica.cas_priprave}} min</p>
-                <p><strong>Težavnost:</strong> {{sladica.tezavnost}}</p>
-                <p><strong>Način priprave:</strong> {{sladica.postopek}}</p>
-            </td>
-        </tr>
-    </table>
-    
+    <div class="recipe-detail-box">
+        <p class="recipe-description">
+            {{sladica.kratek_opis}}
+        </p>
 
-<h2>Sestavine</h2>
+        <div class="recipe-meta">
+            <div class="recipe-meta-item">
+                <strong>Kategorija:</strong>
+                <span>{{sladica.kategorija}}</span>
+            </div>
 
-    <ul>
-        %for sestavina in sestavine:
-        <li>
-            {{sestavina.kolicina}} {{sestavina.enota}}
-            {{sestavina.ime}}
-        </li>
-        %end
-    </ul>
+            <div class="recipe-meta-item">
+                <strong>Čas priprave:</strong>
+                <span>{{sladica.cas_priprave}} min</span>
+            </div>
 
-<h2>Pripomočki</h2>
+            <div class="recipe-meta-item">
+                <strong>Težavnost:</strong>
+                <span>{{sladica.tezavnost}}</span>
+            </div>
+        </div>
+    </div>
 
-    % if pripomocki:
-    <ul>
-        % for pripomocek in pripomocki:
-        <li>{{pripomocek.ime}}</li>
-        % end
-    </ul>
-    % else:
-    <p>Za ta recept ne potrebuješ posebnih pripomočkov.</p>
-    % end
+    <div class="recipe-detail-columns">
+        <div class="recipe-detail-box">
+            <h2>Sestavine</h2>
 
-    <p>
-        <a href="/recepti">Nazaj na seznam receptov</a>
-    </p>
+            <ul>
+                %for sestavina in sestavine:
+                    <li>
+                        {{sestavina.kolicina}} {{sestavina.enota}}
+                        {{sestavina.ime}}
+                    </li>
+                %end
+            </ul>
+        </div>
 
-     <p>
-        <a href="/">Nazaj na domačo stran</a>
-    </p>
-    
+        <div class="recipe-detail-box">
+            <h2>Pripomočki</h2>
 
+            % if pripomocki:
+                <ul>
+                    % for pripomocek in pripomocki:
+                        <li>{{pripomocek.ime}}</li>
+                    % end
+                </ul>
+            % else:
+                <p>Za ta recept ne potrebuješ posebnih pripomočkov.</p>
+            % end
+        </div>
+    </div>
+
+    <div class="recipe-detail-box">
+        <h2>Postopek priprave</h2>
+
+        <p>
+            {{sladica.postopek}}
+        </p>
+    </div>
 </div>
