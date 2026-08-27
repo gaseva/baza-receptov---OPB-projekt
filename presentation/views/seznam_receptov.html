@@ -1,108 +1,179 @@
-%rebase('osnova.html', naslov='Seznam sladic')
+% rebase('osnova.html', naslov='Vsi recepti', stran='recepti')
 
-<div>
-    <form
-        action="/recepti/iskanje"
-        method="GET"
-        class="row g-2 mb-4"
-    >
-        <div class="col-md-7 col-lg-6">
-            <label for="iskanje" class="visually-hidden">
-                Poišči recept po imenu ali sestavini
-            </label>
 
-            <input
-                id="iskanje"
-                name="iskanje"
-                type="search"
-                class="form-control"
-                value="{{iskanje}}"
-                placeholder="Ime sladice ali sestavine"
-                required
-            >
-        </div>
+<header class="page-header">
 
-        <div class="col-auto">
-            <button
-                type="submit"
-                class="btn btn-primary"
-            >
-                Poišči
-            </button>
-        </div>
-    </form>
-
-    % if iskanje:
-        <h2 class="mb-4">
-            Rezultati iskanja za »{{iskanje}}«
-        </h2>
-    % end
-
-    % if not sladice:
-        <p>
-            Za izbrano iskanje ni bilo najdenih receptov.
-        </p>
-    % end
-
-    % for sladica in sladice:
-<div class="d-flex align-items-center gap-3 mb-2">
-    <h1 class="mb-0">
-        <a href="/recept/{{sladica.id}}">
-            {{sladica.ime}}
-        </a>
+    <h1 class="page-title">
+        Vsi recepti
     </h1>
 
-    <form
-        action="/priljubljeni/preklopi/{{sladica.id}}"
-        method="POST"
-        class="d-inline"
-    >
+    <p class="page-description">
+        Poišči sladico po njenem imenu ali sestavini.
+    </p>
+
+</header>
+
+
+<form
+    action="/recepti/iskanje"
+    method="GET"
+    class="recipes-search"
+>
+    <div class="recipes-search-field">
+
+        <label for="iskanje" class="visually-hidden">
+            Poišči recept po imenu ali sestavini
+        </label>
+
         <input
-            type="hidden"
+            id="iskanje"
             name="iskanje"
+            type="search"
+            class="form-control"
             value="{{iskanje}}"
+            placeholder="Ime sladice ali sestavine"
+            required
         >
 
+    </div>
+
+
+    <div>
         <button
             type="submit"
-            class="btn btn-link border-0 p-0 text-danger"
-            style="font-size: 2rem; text-decoration: none;"
-            title="{{'Odstrani iz priljubljenih' if sladica.id in priljubljeni_idji else 'Dodaj med priljubljene'}}"
-            aria-label="{{'Odstrani iz priljubljenih' if sladica.id in priljubljeni_idji else 'Dodaj med priljubljene'}}"
+            class="btn btn-primary"
         >
-            {{'♥' if sladica.id in priljubljeni_idji else '♡'}}
+            Poišči
         </button>
-    </form>
-</div>
+    </div>
 
-        <table>
-            <tr>
-                <td>
-                    <p>
-                        {{sladica.kratek_opis}}
-                    </p>
+</form>
 
-                    <p>
+
+% if iskanje:
+
+    <div class="search-summary">
+
+        <h2>
+            Rezultati iskanja za »{{iskanje}}«
+        </h2>
+
+        <a
+            href="/recepti"
+            class="btn btn-secondary btn-sm"
+        >
+            Počisti iskanje
+        </a>
+
+    </div>
+
+% end
+
+
+% if not sladice:
+
+    <div class="empty-message">
+
+        <h2>
+            Ni najdenih receptov
+        </h2>
+
+        <p>
+            Za izbrano iskanje ni bilo najdenih receptov.
+            Poskusi vnesti drugo ime sladice ali sestavine.
+        </p>
+
+        <a
+            href="/recepti"
+            class="btn btn-primary"
+        >
+            Prikaži vse recepte
+        </a>
+
+    </div>
+
+% else:
+
+    <div class="recipe-grid">
+
+        % for sladica in sladice:
+
+            <article class="recipe-card">
+
+                <div class="recipe-card-header">
+
+                    <h2>
+                        <a href="/recept/{{sladica.id}}">
+                            {{sladica.ime}}
+                        </a>
+                    </h2>
+
+
+                    <!-- Srček prikažemo samo prijavljenim uporabnikom. -->
+                    % if defined("prijavljen") and prijavljen:
+
+                        <form
+                            action="/priljubljeni/preklopi/{{sladica.id}}"
+                            method="POST"
+                            class="favorite-form"
+                        >
+                            <input
+                                type="hidden"
+                                name="iskanje"
+                                value="{{iskanje}}"
+                            >
+
+                            <button
+                                type="submit"
+                                class="favorite-button {{'favorite-button-active' if sladica.id in priljubljeni_idji else ''}}"
+                                title="{{'Odstrani iz priljubljenih' if sladica.id in priljubljeni_idji else 'Dodaj med priljubljene'}}"
+                                aria-label="{{'Odstrani iz priljubljenih' if sladica.id in priljubljeni_idji else 'Dodaj med priljubljene'}}"
+                            >
+                                {{'♥' if sladica.id in priljubljeni_idji else '♡'}}
+                            </button>
+                        </form>
+
+                    % end
+
+                </div>
+
+
+                <p class="recipe-description">
+                    {{sladica.kratek_opis}}
+                </p>
+
+
+                <div class="recipe-meta">
+
+                    <div class="recipe-meta-item">
                         <strong>Kategorija:</strong>
-                        {{sladica.kategorija}}
-                    </p>
+                        <span>{{sladica.kategorija}}</span>
+                    </div>
 
-                    <p>
+                    <div class="recipe-meta-item">
                         <strong>Čas priprave:</strong>
-                        {{sladica.cas_priprave}} min
-                    </p>
+                        <span>{{sladica.cas_priprave}} min</span>
+                    </div>
 
-                    <p>
+                    <div class="recipe-meta-item">
                         <strong>Težavnost:</strong>
-                        {{sladica.tezavnost}}
-                    </p>
-                </td>
-            </tr>
-        </table>
-    % end
+                        <span>{{sladica.tezavnost}}</span>
+                    </div>
 
-    <p>
-        Nazaj na domačo stran:
-        <a href="/">Domov</a>
-    </p>
-</div>
+                </div>
+
+
+                <a
+                    href="/recept/{{sladica.id}}"
+                    class="btn btn-outline-primary recipe-details-button"
+                >
+                    Poglej recept
+                </a>
+
+            </article>
+
+        % end
+
+    </div>
+
+% end

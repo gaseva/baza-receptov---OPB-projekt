@@ -586,3 +586,191 @@ textarea.form-control {
         margin-top: 40px;
     }
 }
+
+
+/* =========================================================
+   15. STRAN Z VSEMI RECEPTI
+   ========================================================= */
+
+/*
+   Iskalno polje zapolni razpoložljivi prostor,
+   gumb pa je postavljen desno od njega.
+*/
+.recipes-search {
+    display: grid;
+    grid-template-columns: minmax(0, 650px) auto;
+    gap: 12px;
+    align-items: center;
+
+    margin-bottom: 35px;
+}
+
+.recipes-search-field {
+    min-width: 0;
+}
+
+.recipes-search .btn {
+    min-height: 46px;
+}
+
+
+/*
+   Naslov rezultatov in gumb za brisanje iskanja
+   sta postavljena vsak na svojo stran.
+*/
+.search-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    margin-bottom: 25px;
+}
+
+.search-summary h2 {
+    margin-bottom: 0;
+}
+
+
+/* Zgornji del kartice vsebuje naslov in srček. */
+.recipe-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+
+    margin-bottom: 18px;
+}
+
+.recipe-card-header h2 {
+    margin-bottom: 0;
+}
+
+.recipe-card-header h2 a {
+    color: var(--barva-glavna-temna);
+}
+
+.recipe-card-header h2 a:hover {
+    color: var(--barva-glavna);
+    text-decoration: none;
+}
+
+
+/*
+   flex: 1 omogoči, da opis zapolni preostali prostor.
+   Kartice v isti vrstici zato lepše poravnajo gumbe.
+*/
+.recipe-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.recipe-card .recipe-description {
+    flex: 1;
+    margin-bottom: 20px;
+}
+
+
+/* Posamezna vrstica s podatkom o receptu. */
+.recipe-meta-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+
+    padding-bottom: 6px;
+    border-bottom: 1px solid #f1e7e1;
+}
+
+.recipe-meta-item:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
+.recipe-meta-item span {
+    text-align: right;
+}
+
+
+/* Obrazec s srčkom ne potrebuje dodatnih razmikov. */
+.favorite-form {
+    flex-shrink: 0;
+    margin: 0;
+}
+
+/*
+   appearance: none odstrani običajni videz gumba.
+   Tako lahko gumb izgleda samo kot srček.
+*/
+.favorite-button {
+    appearance: none;
+
+    padding: 0;
+    border: 0;
+    background: transparent;
+
+    color: #bba9a1;
+    font-size: 2rem;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.favorite-button:hover {
+    color: #c95757;
+    transform: scale(1.12);
+}
+
+/* Ta razred ima srček, kadar je recept že priljubljen. */
+.favorite-button-active {
+    color: #c95757;
+}
+
+.favorite-button:focus-visible {
+    outline: 3px solid rgba(165, 83, 61, 0.25);
+    outline-offset: 4px;
+    border-radius: 5px;
+}
+
+
+/* Gumb pod kartico prilagodimo barvam aplikacije. */
+.recipe-details-button {
+    align-self: flex-start;
+
+    border-color: var(--barva-glavna);
+    color: var(--barva-glavna);
+}
+
+.recipe-details-button:hover,
+.recipe-details-button:focus {
+    border-color: var(--barva-glavna);
+    background-color: var(--barva-glavna);
+    color: #ffffff;
+}
+
+
+/* Prilagoditve za manjše zaslone. */
+@media (max-width: 600px) {
+    .recipes-search {
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+    }
+
+    .search-summary {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .recipe-meta-item {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .recipe-meta-item span {
+        text-align: left;
+    }
+}

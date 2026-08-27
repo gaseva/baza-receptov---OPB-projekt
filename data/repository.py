@@ -299,7 +299,7 @@ class Repository:
     
     def dobi_najbolj_priljubljene_sladice(
         self,
-        omejitev: int = 10
+        omejitev: int = 12
     ) -> list[Sladica]:
         """
         Vrne sladice z največ uporabniki, ki so jih dodali
