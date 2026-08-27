@@ -774,3 +774,111 @@ textarea.form-control {
         text-align: left;
     }
 }
+
+/* =========================================================
+   16. POSAMEZEN RECEPT
+   ========================================================= */
+
+.recipe-detail {
+    max-width: 950px;
+    margin-inline: auto;
+}
+
+/* Naslov in srček sta drug ob drugem in nista v okvirju. */
+.recipe-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    margin-bottom: 25px;
+}
+
+.recipe-detail-header h1 {
+    margin-bottom: 0;
+    color: var(--barva-glavna-temna);
+}
+
+/* Beli okvirji z vsebino recepta. */
+.recipe-detail-box {
+    margin-bottom: 24px;
+    padding: 26px;
+
+    border: 1px solid var(--barva-obrobe);
+    border-radius: var(--zaobljenost);
+    background-color: var(--barva-kartice);
+    box-shadow: var(--senca);
+}
+
+.recipe-detail-box h2 {
+    margin-bottom: 15px;
+    color: var(--barva-glavna-temna);
+}
+
+/* Kratek opis recepta. */
+.recipe-detail .recipe-description {
+    margin-bottom: 22px;
+    color: var(--barva-nezna);
+    font-size: 1.05rem;
+}
+
+/* Kvadratki s kategorijo, časom in težavnostjo. */
+.recipe-detail .recipe-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+
+    margin-bottom: 0;
+}
+
+.recipe-detail .recipe-meta-item {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+
+    padding: 14px;
+    border: 1px solid var(--barva-obrobe);
+    border-radius: 9px;
+    background-color: #fffaf6;
+}
+
+.recipe-detail .recipe-meta-item span {
+    text-align: left;
+    color: var(--barva-nezna);
+}
+
+/* Sestavine in pripomočki so drug ob drugem. */
+.recipe-detail-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.recipe-detail-box ul {
+    margin-bottom: 0;
+    padding-left: 22px;
+}
+
+.recipe-detail-box li {
+    margin-bottom: 8px;
+}
+
+.recipe-detail-box li::marker {
+    color: var(--barva-glavna);
+}
+
+/* Na telefonu se elementi postavijo drug pod drugega. */
+@media (max-width: 700px) {
+    .recipe-detail .recipe-meta {
+        grid-template-columns: 1fr;
+    }
+
+    .recipe-detail-columns {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .recipe-detail-box {
+        padding: 20px;
+    }
+}
