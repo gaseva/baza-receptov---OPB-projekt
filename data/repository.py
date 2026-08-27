@@ -2,6 +2,7 @@
 # izvaja SQL poizvedbe
 # rezultate pretvarja v podatkovne razrede
 
+import os
 import psycopg2 # psycopg2 povezuje python s postgresql
 from . import auth_public as auth
 from .models import (
