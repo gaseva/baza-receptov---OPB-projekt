@@ -472,14 +472,39 @@ textarea.form-control {
     margin-top: 35px;
 }
 
-.home-search-row {
+/*
+   Prvi stolpec vsebuje iskalno polje in kategorijo.
+   Drugi stolpec vsebuje gumb Poišči.
+*/
+.home-search-main {
     display: grid;
-    grid-template-columns: 1.4fr 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: 12px;
-    align-items: center;
+    align-items: start;
 }
 
-.home-search .btn {
+/*
+   min-width: 0 prepreči, da bi dolgo vnosno polje
+   raztegnilo celotno stran.
+*/
+.home-search-field {
+    min-width: 0;
+}
+
+/* Kategorijo nekoliko odmaknemo od iskalnega polja. */
+.home-search-filter {
+    margin-top: 12px;
+}
+
+.home-search-filter .form-select {
+    width: 100%;
+}
+
+/*
+   Gumb je visok enako kot veliko Bootstrapovo
+   iskalno polje in ostane desno od njega.
+*/
+.home-search-button .btn {
     min-height: 48px;
     white-space: nowrap;
 }
@@ -549,12 +574,12 @@ textarea.form-control {
 }
 
 @media (max-width: 750px) {
-    .home-search-row {
-        grid-template-columns: 1fr;
+    .home-search-main {
+        gap: 8px;
     }
 
-    .home-search .btn {
-        width: 100%;
+    .home-search-button .btn {
+        padding-inline: 14px;
     }
 
     .popular-section {
