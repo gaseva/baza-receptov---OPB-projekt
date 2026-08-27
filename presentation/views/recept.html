@@ -41,7 +41,7 @@
     </table>
     
 
-     <h2>Sestavine</h2>
+<h2>Sestavine</h2>
 
     <ul>
         %for sestavina in sestavine:
@@ -51,6 +51,18 @@
         </li>
         %end
     </ul>
+
+<h2>Pripomočki</h2>
+
+    % if pripomocki:
+    <ul>
+        % for pripomocek in pripomocki:
+        <li>{{pripomocek.ime}}</li>
+        % end
+    </ul>
+    % else:
+    <p>Za ta recept ne potrebuješ posebnih pripomočkov.</p>
+    % end
 
     <p>
         <a href="/recepti">Nazaj na seznam receptov</a>
