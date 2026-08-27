@@ -73,6 +73,10 @@ def cookie_required(f):
 # POTI
 ##############################################################################
 
+##############
+# DOMAČA STRAN
+##############
+
 @get("/")
 def domaca_stran():
     oseba_id = dobi_prijavljeno_osebo_id()
@@ -87,7 +91,9 @@ def domaca_stran():
     )
 
 
-
+#########
+# PRIJAVA
+#########
 
 @get('/prijava')
 def prijava():
@@ -128,7 +134,9 @@ def prijava_post():
     return redirect('/')
 
 
-
+##############
+# REGISTRACIJA
+##############
 
 @get("/registracija", name="registracija")
 def registracija():
@@ -146,8 +154,7 @@ def registracija_post():
     geslo = request.forms.get('geslo')
     ponovno_geslo = request.forms.get('ponovno_geslo')
 
-    # Ob napaki ohranimo nesenzitivne podatke. Gesel zaradi varnosti
-    # nikoli ne pošiljamo nazaj v HTML.
+    # gesla ne shranimo, da ga v primeru napake ne pošljemo nazaj
     podatki = {
         "ime": (ime or "").strip(),
         "priimek": (priimek or "").strip(),
@@ -211,6 +218,11 @@ def registracija_post():
 
     return redirect('/')
 
+
+########
+# ODJAVA
+########
+
 @get("/odjava")
 def odjava():
     response.delete_cookie(
@@ -218,6 +230,11 @@ def odjava():
         path="/",
     )
     return redirect("/")
+
+
+######################
+# SEZNAM VSEH RECEPTOV
+######################
 
 @get("/recepti")
 def seznam_receptov():
@@ -237,6 +254,9 @@ def seznam_receptov():
         iskanje="",
         priljubljeni_idji=priljubljeni_idji,
     )
+
+
+
 
 @get("/recepti/iskanje")
 def iskanje_receptov():
@@ -272,6 +292,10 @@ def iskanje_receptov():
     )
 
 
+##################
+# POSAMEZEN RECEPT
+##################
+
 @get("/recept/<sladica_id:int>")
 def recept(sladica_id):
     sladica, sestavine, pripomocki = ss.dobi_recept(sladica_id)
@@ -298,6 +322,10 @@ def recept(sladica_id):
         je_priljubljena=je_priljubljena
     )
 
+
+###################
+# DODAJANJE RECEPTA
+###################
 
 @get("/dodaj_recept")
 @cookie_required
@@ -327,8 +355,6 @@ def dodaj_recept_post():
     kolicine = request.forms.getall("kolicina")
     pripomocek_ids = request.forms.getall("pripomocki")
 
-    # Začasno, dokler prijava uporabnika še ni povezana z dodajanjem recepta.
-    # Pozneje bo tukaj ID trenutno prijavljenega uporabnika iz piškotka/seje.
     avtor_id = dobi_prijavljeno_osebo_id()
 
     try:
@@ -359,8 +385,6 @@ def dodaj_recept_post():
         )
 
     return redirect(f"/recept/{sladica_id}")
-
-
 
 
 @post("/dodaj_sestavino")
@@ -429,6 +453,10 @@ def dodaj_pripomocek_post():
     )
 
 
+######################
+# PRILJUBLJENI RECEPTI
+######################
+
 @get("/priljubljeni_recepti")
 @cookie_required
 def priljubljeni_recepti():
@@ -473,21 +501,28 @@ def preklopi_priljubljeni_recept(sladica_id):
     # Klik na seznamu vseh receptov
     return redirect("/recepti")
 
+
+####################
+# USTVARJENI RECEPTI
+####################
+
 @get("/moji_recepti")
 @cookie_required
 def moji_recepti():
     oseba_id = dobi_prijavljeno_osebo_id()
 
-    recepti = ss.dobi_recepte_uporabnika(
-        oseba_id
-    )
+    recepti = ss.dobi_recepte_uporabnika(oseba_id)
 
     return template(
         "moji_recepti.html",
         recepti=recepti,
     )
     
-# naslednja stvar omogoča dostop do css (in slik in javascript)
+
+###############
+# DOSTOP DO CSS
+###############
+
 @get('/static/<filepath:path>')
 def staticne_datoteke(filepath):
     return static_file(
