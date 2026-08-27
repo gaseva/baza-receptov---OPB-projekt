@@ -1,14 +1,22 @@
 from data.repository import Repository
 
+# vmesni sloj med appom in repositorijem
 
+
+# v tem razredu zbrane funkcije povezane s sladicami, sestavinami, pripomočki, recepti uporabnika
 class SladiceService:
+
+    # ta funkcija odpre povezavo z bazo, pokliče istoimensko funkc v repo in vrne seznam veh sladic, potem zapre povezavo z bazo
     def dobi_vse_sladice(self):
         with Repository() as repository:
             return repository.dobi_vse_sladice()
 
+
+
+
     def dobi_recept(self, sladica_id):
         """
-        Vrne sladico ter vse sestavine in pripomočke, ki ji pripadajo.
+        glede na ID vrne ime, sestavine in pripomočke sladice
         """
         with Repository() as repository:
             sladica = repository.dobi_sladico(sladica_id)
@@ -21,9 +29,11 @@ class SladiceService:
 
             return sladica, sestavine, pripomocki
 
-    
+
+
+
     def poisci_sladice(self, iskanje, kategorija_id=None):
-        """Išče po imenu/sladici in po neobvezni kategoriji."""
+        """glede na podan niz filtrira sladice po imenu, sestavinah in kategoriji"""
 
         iskanje = (iskanje or "").strip()
 
@@ -47,14 +57,20 @@ class SladiceService:
 
             return repository.poisci_sladice(
                 iskanje,
-                kategorija_id,
+                kategorija_id
             )
+        
+
+
 
     def dobi_kategorije(self):
-        """Vrne kategorije za dropdown na domači strani."""
+        """pridobitev kategorij iz repozitorija za prikaz v dropdownu"""
     
         with Repository() as repository:
             return repository.dobi_kategorije()
+
+
+
 
     def dodaj_sladico(
             self,
@@ -67,9 +83,10 @@ class SladiceService:
             kategorija_id,
             sestavina_ids,
             kolicine,
-            pripomocek_ids,
+            pripomocek_ids
         ):
-            """Preveri podatke obrazca in doda celoten recept v bazo."""
+            """preveri podatke obrazca in doda v bazo"""
+            # funkcija prejme vse podatke iz obrazca, jih pregleda in popravi in potem shrani recept v bazo
 
             ime = (ime or "").strip() # odstranjevanje odvečnih presledkov
             cas_priprave = (cas_priprave or "").strip()
@@ -93,8 +110,6 @@ class SladiceService:
             if cas_priprave_minute <= 0:
                 raise ValueError("Čas priprave mora biti daljši od 0 minut.")
 
-
-            # to pomojem lahko zbriševa
             try:
                 avtor_id = int(avtor_id)
                 tezavnost_id = int(tezavnost_id)
@@ -156,19 +171,21 @@ class SladiceService:
                     tezavnost_id=tezavnost_id,
                     kategorija_id=kategorija_id,
                     sestavine=sestavine,
-                    pripomocki=pripomocki,
+                    pripomocki=pripomocki
                 )
 
 
+
+
     def dobi_vse_sestavine(self):
-        """Vrne vse sestavine za prikaz v dropdownu."""
+        """pridobitev sestavin iz repozitorija za prikaz v dropdownu"""
 
         with Repository() as repository:
             return repository.dobi_vse_sestavine()
 
 
     def dodaj_sestavino(self, ime: str, enota: str):
-        """Preveri podatke in doda novo sestavino."""
+        """preveri podatke in doda novo sestavino v bazo"""
 
         ime = (ime or "").strip() # odstrani pressledke na začetku in na koncu
         enota = (enota or "").strip()
@@ -190,14 +207,19 @@ class SladiceService:
             return repository.dodaj_sestavino(ime, enota) # dodamo sestavino in enoto v bazo preko repozitorija
 
 
+
+
     def dobi_vse_pripomocke(self):
-        """Vrne vse pripomočke za prikaz v dropdownu."""
+        """pridobitev pripomočkov za prikaz v dropdownu"""
 
         with Repository() as repository:
             return repository.dobi_vse_pripomocke()
+        
+
+
 
     def dodaj_pripomocek(self, ime: str):
-        """Preveri podatke in doda nov pripomoček."""
+        """preveri podatke in doda nov pripomoček v bazo"""
 
         ime = (ime or "").strip()
 
@@ -214,6 +236,9 @@ class SladiceService:
 
             return repository.dodaj_pripomocek(ime)
         
+
+
+        
     def dobi_najbolj_priljubljene_sladice(
         self,
         omejitev: int = 12
@@ -225,13 +250,16 @@ class SladiceService:
             return repository.dobi_najbolj_priljubljene_sladice(
                 omejitev
             )
+        
+
+
             
     def dobi_recepte_uporabnika(
         self,
         oseba_id: int
     ):
         """
-        Vrne recepte, ki jih je dodal izbrani uporabnik.
+        prejme ID uporabnika in vrne recepte katerih avtor je ta uporabnik
         """
 
         with Repository() as repository:
