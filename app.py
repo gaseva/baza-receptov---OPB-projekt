@@ -12,9 +12,8 @@ ss = SladiceService()
 us = UporabnikiService()
 
 # privzete nastavitve
-SERVER_PORT = int(os.environ.get("BOTTLE_PORT", "8080"))
-RELOADER = os.environ.get("BOTTLE_RELOADER", "True").lower() == "true"
-DEBUG = os.environ.get("BOTTLE_DEBUG", "True").lower() == "true"
+SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
+RELOADER = os.environ.get('BOTTLE_RELOADER', True)
 
 ##############################################################################
 # POMOŽNE FUNKCIJE IN PIŠKOTKI
@@ -531,4 +530,4 @@ def staticne_datoteke(filepath):
         root=os.path.join(os.path.dirname(__file__), 'presentation', 'static')
     )
 
-run(host='0.0.0.0', port=SERVER_PORT, reloader=RELOADER, debug=DEBUG)
+run(host='localhost', port=SERVER_PORT, reloader=RELOADER, debug=DEBUG)

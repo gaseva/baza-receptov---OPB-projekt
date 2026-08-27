@@ -1,5 +1,0 @@
-bottle
-psycopg2
-dataclasses_json
-bcrypt
-jupyter-server-proxy

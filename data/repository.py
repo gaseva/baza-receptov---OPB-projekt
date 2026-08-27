@@ -48,7 +48,7 @@ class Repository:
             host=auth.host,
             user=auth.user,
             password=auth.password,
-            port=int(os.environ.get("DB_PORT", auth.port))
+            port=auth.port
         )
 
 
