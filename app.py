@@ -530,4 +530,4 @@ def staticne_datoteke(filepath):
         root=os.path.join(os.path.dirname(__file__), 'presentation', 'static')
     )
 
-run(host='localhost', port=SERVER_PORT, reloader=RELOADER, debug=DEBUG)
+run(host='localhost', port=SERVER_PORT, reloader=RELOADER, debug=True)
