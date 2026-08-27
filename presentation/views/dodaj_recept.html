@@ -1,251 +1,208 @@
 %rebase('osnova.html', naslov='Dodaj recept')
 
-<style>
-    .form-wrapper {
-        max-width: 1000px;
-        margin: auto;
-    }
+%rebase('osnova.html', naslov='Dodaj recept')
 
-    .form-row {
-        display: grid;
-        grid-template-columns: 250px 1fr;
-        gap: 40px;
-        padding: 20px 0;
-        border-bottom: 1px solid #e5e5e5;
-    }
+<div class="add-recipe-page">
+    <h1>Dodaj recept</h1>
 
-    .left-side {
-        font-weight: bold;
-        font-size: 17px;
-        display: flex;
-        align-items: flex-start;
-        justify-content: flex-start;
-    }
+    <div class="form-wrapper">
+        <h2>Vnesi potrebne podatke o receptu</h2>
 
-    .right-side {
-        width: 100%;
-    }
-
-    .right-side input,
-    .right-side textarea,
-    .right-side select {
-        width: 100%;
-    }
-
-    h2 {
-        margin-bottom: 40px;
-    }
-
-    .sestavina-blok,
-    .pripomocek-blok {
-        margin-bottom: 15px;
-    }
-</style>
-
-<div class="form-wrapper">
-
-    <h2>Vnesi potrebne podatke o receptu</h2>
-
-    % if napaka_recepta:
-    <div class="alert alert-danger" role="alert">
-        {{napaka_recepta}}
-    </div>
-    % end
-
-    <form method="post" action="/dodaj_recept">
-
-        <div class="form-row">
-            <div class="left-side">Ime sladice</div>
-            <div class="right-side">
-                <input type="text" class="form-control" id="ime" name="ime" required placeholder="Vnesi ime sladice">
+        % if napaka_recepta:
+            <div class="alert alert-danger" role="alert">
+                {{napaka_recepta}}
             </div>
-        </div>
+        % end
 
-        <div class="form-row">
-            <div class="left-side">Čas priprave</div>
-            <div class="right-side">
-                <input type="number" class="form-control" id="cas_priprave" name="cas_priprave" required placeholder="Čas priprave v minutah">
+        <form method="post" action="/dodaj_recept">
+
+            <div class="form-row">
+                <div class="left-side">Ime sladice</div>
+                <div class="right-side">
+                    <input type="text" class="form-control" id="ime" name="ime" required placeholder="Vnesi ime sladice">
+                </div>
             </div>
-        </div>
 
-        <div class="form-row">
-            <div class="left-side">Težavnost</div>
-            <div class="right-side">
-                <select class="form-select" id="tezavnost" name="tezavnost" required>
-                    <option value="">Izberi težavnost</option>
-                    <option value="1">Enostavno</option>
-                    <option value="2">Srednje</option>
-                    <option value="3">Zahtevno</option>
-                </select>
+            <div class="form-row">
+                <div class="left-side">Čas priprave</div>
+                <div class="right-side">
+                    <input type="number" class="form-control" id="cas_priprave" name="cas_priprave" required placeholder="Čas priprave v minutah">
+                </div>
             </div>
-        </div>
 
-        <div class="form-row">
-            <div class="left-side">Kategorija</div>
-            <div class="right-side">
-                <select class="form-select" id="kategorija" name="kategorija" required>
-                    <option value="">Izberi kategorijo</option>
-                    <option value="1">Torte</option>
-                    <option value="2">Piškoti</option>
-                    <option value="3">Mafini</option>
-                    <option value="4">Drobno pecivo</option>
-                    <option value="5">Sladoled</option>
-                    <option value="6">Kreme</option>
-                    <option value="7">Napitki</option>
-                    <option value="8">Pite</option>
-                    <option value="9">Zavitki</option>
-                    <option value="10">Ostalo</option>
-                </select>
+            <div class="form-row">
+                <div class="left-side">Težavnost</div>
+                <div class="right-side">
+                    <select class="form-select" id="tezavnost" name="tezavnost" required>
+                        <option value="">Izberi težavnost</option>
+                        <option value="1">Enostavno</option>
+                        <option value="2">Srednje</option>
+                        <option value="3">Zahtevno</option>
+                    </select>
+                </div>
             </div>
-        </div>
-    
 
-        <div class="form-row">
-            <div class="left-side">Kratek opis</div>
-            <div class="right-side">
-                <textarea class="form-control" id="kratek_opis" name="kratek_opis" rows="3" required
-                    placeholder="Vnesi kratek opis"></textarea>
+            <div class="form-row">
+                <div class="left-side">Kategorija</div>
+                <div class="right-side">
+                    <select class="form-select" id="kategorija" name="kategorija" required>
+                        <option value="">Izberi kategorijo</option>
+                        <option value="1">Torte</option>
+                        <option value="2">Piškoti</option>
+                        <option value="3">Mafini</option>
+                        <option value="4">Drobno pecivo</option>
+                        <option value="5">Sladoled</option>
+                        <option value="6">Kreme</option>
+                        <option value="7">Napitki</option>
+                        <option value="8">Pite</option>
+                        <option value="9">Zavitki</option>
+                        <option value="10">Ostalo</option>
+                    </select>
+                </div>
             </div>
-        </div>
 
-        <div class="form-row">
-            <div class="left-side">Sestavine</div>
-            <div class="right-side">
-                <div id="sestavine-vsebnik">
-                    <div class="sestavina-blok">
-                        <select class="form-select mb-2" name="sestavine">
-                            <option value="">Izberi sestavino</option>
+            <div class="form-row">
+                <div class="left-side">Kratek opis</div>
+                <div class="right-side">
+                    <textarea class="form-control" id="kratek_opis" name="kratek_opis" rows="3" required
+                        placeholder="Vnesi kratek opis"></textarea>
+                </div>
+            </div>
 
-                            % for sestavina in sestavine:
-                            <option value="{{sestavina.id}}" data-enota="{{sestavina.enota}}">
-                                {{sestavina.ime}}
-                            </option>
-                            % end
-                        </select>
-                        <div class="input-group">
-                            <input type="number" class="form-control" name="kolicina" min="0"
-                                placeholder="Vnesi količino">
-                            <span class="input-group-text enota-oznaka">-</span>
+            <div class="form-row">
+                <div class="left-side">Sestavine</div>
+                <div class="right-side">
+                    <div id="sestavine-vsebnik">
+                        <div class="sestavina-blok">
+                            <select class="form-select mb-2" name="sestavine">
+                                <option value="">Izberi sestavino</option>
+
+                                % for sestavina in sestavine:
+                                    <option value="{{sestavina.id}}" data-enota="{{sestavina.enota}}">
+                                        {{sestavina.ime}}
+                                    </option>
+                                % end
+                            </select>
+
+                            <div class="input-group">
+                                <input type="number" class="form-control" name="kolicina" min="0"
+                                    placeholder="Vnesi količino">
+                                <span class="input-group-text enota-oznaka">-</span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <button type="button" id="gumb-dodaj-sestavino" class="btn btn-outline-primary btn-sm mt-2">
-                    + Dodaj sestavino
-                </button>
-
-                <div class="mt-4">
-                    <h5>Ali sestavine ni na seznamu?</h5>
-
-                    <div class="mb-2">
-                        <label for="ime_sestavine">Ime nove sestavine</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="ime_sestavine"
-                            name="ime_sestavine"
-                        >
-                    </div>
-                
-                    <div class="mb-2">
-                        <label for="enota_sestavine">Merska enota (na primer: g, ml, kos)</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="enota_sestavine"
-                            name="enota_sestavine"
-                        >
-                    </div>
-                
-                    <button
-                        type="button"
-                        id="gumb-ustvari-sestavino"
-                        class="btn btn-outline-primary btn-sm mt-2"
-                    >
-                        Ustvari sestavino
+                    <button type="button" id="gumb-dodaj-sestavino" class="btn btn-outline-primary btn-sm mt-2">
+                        + Dodaj sestavino
                     </button>
 
-                    <p id="sporocilo-sestavine" class="mt-2" aria-live="polite"></p>
+                    <details class="new-item-box mt-4">
+                        <summary>Ali sestavine ni na seznamu?</summary>
+
+                        <div class="new-item-content">
+                            <div class="mb-2">
+                                <label for="ime_sestavine">Ime nove sestavine</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="ime_sestavine"
+                                    name="ime_sestavine"
+                                >
+                            </div>
+
+                            <div class="mb-2">
+                                <label for="enota_sestavine">Merska enota (na primer: g, ml, kos)</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="enota_sestavine"
+                                    name="enota_sestavine"
+                                >
+                            </div>
+
+                            <button
+                                type="button"
+                                id="gumb-ustvari-sestavino"
+                                class="btn btn-outline-primary btn-sm mt-2"
+                            >
+                                Ustvari sestavino
+                            </button>
+
+                            <p id="sporocilo-sestavine" class="mt-2" aria-live="polite"></p>
+                        </div>
+                    </details>
                 </div>
-
-
-                
-            </div>
-        </div>
-<div class="form-row">
-    <div class="left-side">Pripomočki</div>
-
-    <div class="right-side">
-
-        <div id="pripomocki-vsebnik">
-
-            <div class="pripomocek-blok mb-2">
-
-                <select class="form-select" name="pripomocki">
-                    <option value="">Izberi pripomoček</option>
-
-                        % for pripomocek in pripomocki:
-                        <option value="{{pripomocek.id}}">
-                            {{pripomocek.ime}}
-                        </option>
-                        % end
-                </select>
-
             </div>
 
-        </div>
+            <div class="form-row">
+                <div class="left-side">Pripomočki</div>
+                <div class="right-side">
+                    <div id="pripomocki-vsebnik">
+                        <div class="pripomocek-blok mb-2">
+                            <select class="form-select" name="pripomocki">
+                                <option value="">Izberi pripomoček</option>
 
-        <button type="button"
-                id="gumb-dodaj-pripomocek"
-                class="btn btn-outline-primary btn-sm mt-2">
+                                % for pripomocek in pripomocki:
+                                    <option value="{{pripomocek.id}}">
+                                        {{pripomocek.ime}}
+                                    </option>
+                                % end
+                            </select>
+                        </div>
+                    </div>
 
-            + Dodaj pripomoček
-
-        </button>
-
-
-        <div class="mt-4">
-            <h5>Ali pripomočka ni na seznamu?</h5>
-
-                <div class="mb-2">
-                    <label for="ime_pripomocka">Ime novega pripomočka</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="ime_pripomocka"
-                        name="ime_pripomocka"
+                    <button
+                        type="button"
+                        id="gumb-dodaj-pripomocek"
+                        class="btn btn-outline-primary btn-sm mt-2"
                     >
+                        + Dodaj pripomoček
+                    </button>
+
+                    <details class="new-item-box mt-4">
+                        <summary>Ali pripomočka ni na seznamu?</summary>
+
+                        <div class="new-item-content">
+                            <div class="mb-2">
+                                <label for="ime_pripomocka">Ime novega pripomočka</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="ime_pripomocka"
+                                    name="ime_pripomocka"
+                                >
+                            </div>
+
+                            <button
+                                type="button"
+                                id="gumb-ustvari-pripomocek"
+                                class="btn btn-outline-primary btn-sm mt-2"
+                            >
+                                Ustvari pripomoček
+                            </button>
+
+                            <p id="sporocilo-pripomocka" class="mt-2" aria-live="polite"></p>
+                        </div>
+                    </details>
                 </div>
-            
-                <button type="button" id="gumb-ustvari-pripomocek" class="btn btn-outline-primary btn-sm mt-2">
-                    Ustvari pripomoček
+            </div>
+
+            <div class="form-row">
+                <div class="left-side">Postopek</div>
+                <div class="right-side">
+                    <textarea class="form-control" id="postopek" name="postopek" rows="6" required
+                        placeholder="Vnesi postopek"></textarea>
+                </div>
+            </div>
+
+            <div class="form-submit mt-4">
+                <button type="submit" class="btn btn-primary">
+                    Dodaj recept
                 </button>
-
-                <p id="sporocilo-pripomocka" class="mt-2" aria-live="polite"></p>
-        </div>
-
+            </div>
+        </form>
 
     </div>
-</div>
-
-        <div class="form-row">
-            <div class="left-side">Postopek</div>
-            <div class="right-side">
-                <textarea class="form-control" id="postopek" name="postopek" rows="6" required
-                    placeholder="Vnesi postopek"></textarea>
-            </div>
-        </div>
-
-        <div class="mt-4">
-            <button type="submit" class="btn btn-primary">Dodaj recept</button>
-        </div>
-
-    </form>
-
-
-    <p>
-        <a href="/">Nazaj na domačo stran</a>
-    </p>
 </div>
 
 

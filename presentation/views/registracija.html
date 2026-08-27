@@ -1,98 +1,92 @@
 %rebase('osnova.html', naslov='Registracija')
-
 % podatki = podatki if defined("podatki") else {}
 
+<div class="registration-page">
+    <h1>Registracija</h1>
 
-<div class="form-wrapper">
+    <div class="form-wrapper">
+        <form method="post" action="{{url('registracija')}}">
 
-    <h2>Registracija</h2>
+            % if defined("napaka") and napaka:
+                <div class="alert alert-danger">
+                    {{napaka}}
+                </div>
+            % end
 
-    <form method="post" action="{{url('registracija')}}">
-
-        % if defined("napaka") and napaka:
-            <div class="alert alert-danger">
-                {{napaka}}
+            <div class="form-row">
+                <div class="left-side">Ime</div>
+                <div class="right-side">
+                    <input type="text" class="form-control" id="ime" name="ime" required placeholder="Vnesi svoje ime" value="{{podatki.get('ime', '')}}">
+                </div>
             </div>
-        % end
 
-        <div class="form-row">
-            <div class="left-side">Ime</div>
-            <div class="right-side">
-                <input type="text" class="form-control" id="ime" name="ime" required placeholder="Vnesi svoje ime" value="{{podatki.get('ime', '')}}">
+            <div class="form-row">
+                <div class="left-side">Priimek</div>
+                <div class="right-side">
+                    <input type="text" class="form-control" id="priimek" name="priimek" required placeholder="Vnesi svoj priimek" value="{{podatki.get('priimek', '')}}">
+                </div>
             </div>
-        </div>
 
-        <div class="form-row">
-            <div class="left-side">Priimek</div>
-            <div class="right-side">
-                <input type="text" class="form-control" id="priimek" name="priimek" required placeholder="Vnesi svoj priimek" value="{{podatki.get('priimek', '')}}">
+            <div class="form-row">
+                <div class="left-side">Elektronski naslov</div>
+                <div class="right-side">
+                    <input type="email" class="form-control" id="elektronski_naslov" name="elektronski_naslov" required placeholder="Vnesi elektronski naslov" value="{{podatki.get('elektronski_naslov', '')}}">
+                </div>
             </div>
-        </div>
 
-        <div class="form-row">
-            <div class="left-side">Elektronski naslov</div>
-            <div class="right-side">
-                <input type="email" class="form-control" id="elektronski_naslov" name="elektronski_naslov" required placeholder="Vnesi elektronski naslov" value="{{podatki.get('elektronski_naslov', '')}}">
+            <div class="form-row">
+                <div class="left-side">Uporabniško ime</div>
+                <div class="right-side">
+                    <input type="text" class="form-control" id="uporabnisko_ime" name="uporabnisko_ime" required placeholder="Vnesi uporabniško ime" value="{{podatki.get('uporabnisko_ime', '')}}">
+                </div>
             </div>
-        </div>
 
-        <div class="form-row">
-            <div class="left-side">Uporabniško ime</div>
-            <div class="right-side">
-                <input type="text" class="form-control" id="uporabnisko_ime" name="uporabnisko_ime" required placeholder="Vnesi uporabniško ime" value="{{podatki.get('uporabnisko_ime', '')}}">
+            <div class="form-row">
+                <div class="left-side">Geslo</div>
+                <div class="right-side">
+                    <input type="password" class="form-control" id="geslo" name="geslo" required minlength="8" placeholder="Vnesi geslo">
+
+                    <div class="form-check mt-2">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="prikazi_geslo"
+                        >
+                        <label class="form-check-label" for="prikazi_geslo">
+                            Prikaži geslo
+                        </label>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="form-row">
-            <div class="left-side">Geslo</div>
-            <div class="right-side">
-                <input type="password" class="form-control" id="geslo" name="geslo" required minlength="8" placeholder="Vnesi geslo">
+            <div class="form-row">
+                <div class="left-side">Ponovno geslo</div>
+                <div class="right-side">
+                    <input type="password" class="form-control" id="ponovno_geslo" name="ponovno_geslo" required minlength="8" placeholder="Ponovno vnesi geslo">
+
+                    <div class="form-check mt-2">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="prikazi_ponovno_geslo"
+                        >
+                        <label class="form-check-label" for="prikazi_ponovno_geslo">
+                            Prikaži geslo
+                        </label>
+                    </div>
+                </div>
             </div>
-            <div class="form-check mt-2">
-            <input
-                class="form-check-input"
-                type="checkbox"
-                id="prikazi_geslo">
 
-            <label class="form-check-label" for="prikazi_geslo">
-                Prikaži geslo
-            </label>
-        </div>
-        </div>
+            <button type="submit" class="btn btn-primary mt-4">
+                Registracija
+            </button>
+        </form>
 
-        <div class="form-row">
-            <div class="left-side">Ponovno geslo</div>
-            <div class="right-side">
-                <input type="password" class="form-control" id="ponovno_geslo" name="ponovno_geslo" required minlength="8" placeholder="Ponovno vnesi geslo">
-            </div>
-            <div class="form-check mt-2">
-            <input
-                class="form-check-input"
-                type="checkbox"
-                id="prikazi_ponovno_geslo">
+        <p class="mt-3">
+            Si že registriran? <a href="/prijava">Prijavi se</a>
+        </p>
 
-            <label class="form-check-label" for="prikazi_ponovno_geslo">
-                Prikaži geslo
-            </label>
-        </div>
-        </div>
-
-
-        <button type="submit" class="btn btn-primary">Registracija</button>
-
-    </form>
-
-
-<p class="mt-3">
-    Si že registriran? <a href="/prijava">Prijavi se</a>
-  </p>
-  
-  <p>
-    Nazaj na domačo stran: <a href="/">Domov</a>
-  </p>
-
-
-  
+    </div>
 </div>
 
 <script>

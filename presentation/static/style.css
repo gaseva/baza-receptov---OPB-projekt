@@ -882,3 +882,148 @@ textarea.form-control {
         padding: 20px;
     }
 }
+
+/* =========================================================
+   17. PRIJAVA
+   ========================================================= */
+
+.auth-page {
+    max-width: 520px;
+    margin-inline: auto;
+}
+
+.auth-page h1 {
+    color: var(--barva-glavna-temna);
+}
+
+.auth-page .auth-form {
+    max-width: none;
+    margin: 0;
+}
+
+.auth-page .form-check-label {
+    font-weight: normal;
+}
+
+/* =========================================================
+   18. REGISTRACIJA
+   ========================================================= */
+
+.registration-page {
+    max-width: 800px;
+    margin-inline: auto;
+}
+
+.registration-page h1 {
+    color: var(--barva-glavna-temna);
+}
+
+.registration-page .form-wrapper {
+    max-width: none;
+    margin: 0;
+}
+
+.registration-page .form-check-label {
+    font-weight: normal;
+}
+
+
+.registration-page .form-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 0;
+}
+
+.registration-page .form-check-input {
+    float: none;
+    flex-shrink: 0;
+
+    width: 1em;
+    height: 1em;
+    margin: 0;
+}
+
+.registration-page .form-check-label {
+    font-weight: normal;
+}
+
+/* =========================================================
+   19. DODAJANJE RECEPTA
+   ========================================================= */
+
+.add-recipe-page {
+    max-width: 900px;
+    margin-inline: auto;
+}
+
+.add-recipe-page > h1 {
+    color: var(--barva-glavna-temna);
+}
+
+.add-recipe-page .form-wrapper {
+    max-width: none;
+    margin: 0;
+}
+
+.add-recipe-page .form-wrapper > h2 {
+    margin-bottom: 25px;
+    font-size: 1.4rem;
+}
+
+.new-item-box {
+    max-width: 500px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.new-item-box summary {
+    color: var(--barva-nezna);
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.new-item-box summary:hover {
+    color: var(--barva-glavna);
+}
+
+.new-item-content {
+    margin-top: 12px;
+    padding: 14px;
+
+    border: 1px solid var(--barva-obrobe);
+    border-radius: 10px;
+    background-color: #fffaf6;
+}
+
+.new-item-content .form-control {
+    min-height: 40px;
+    font-size: 0.95rem;
+}
+
+.new-item-content label {
+    font-size: 0.9rem;
+}
+
+/* Modre Bootstrapove gumbe prilagodimo barvam aplikacije. */
+.add-recipe-page .btn-outline-primary {
+    border-color: var(--barva-glavna);
+    color: var(--barva-glavna);
+}
+
+.add-recipe-page .btn-outline-primary:hover {
+    border-color: var(--barva-glavna);
+    background-color: var(--barva-glavna);
+    color: #ffffff;
+}
+
+.form-submit {
+    text-align: right;
+}
+
+@media (max-width: 700px) {
+    .form-submit {
+        text-align: left;
+    }
+}
