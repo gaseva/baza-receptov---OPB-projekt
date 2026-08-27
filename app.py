@@ -1,4 +1,4 @@
-from presentation.bottleext import get, post, run, request, template, redirect, static_file, url, response, template_user
+from presentation.bottleext import get, post, run, request, template, redirect, url, response
 import os
 from services.sladice_service import SladiceService
 from services.uporabniki_service import UporabnikiService
@@ -253,7 +253,7 @@ def iskanje_receptov():
 
 @get("/recept/<sladica_id:int>")
 def recept(sladica_id):
-    sladica, sestavine = ss.dobi_recept(sladica_id)
+    sladica, sestavine, pripomocki = ss.dobi_recept(sladica_id)
 
     if sladica is None:
         response.status = 404
@@ -276,7 +276,8 @@ def recept(sladica_id):
         "recept.html",
         sladica=sladica,
         sestavine=sestavine,
-        je_priljubljena=je_priljubljena,
+        pripomocki=pripomocki,
+        je_priljubljena=je_priljubljena
     )
 
 
@@ -290,8 +291,6 @@ def dodaj_recept():
         "dodaj_recept.html",
         sestavine=sestavine,
         pripomocki=pripomocki,
-        napaka_sestavine=None,
-        napaka_pripomocka=None,
         napaka_recepta=None
     )
 
@@ -341,7 +340,7 @@ def dodaj_recept_post():
             napaka_recepta=str(napaka)
         )
 
-    redirect(f"/recept/{sladica_id}")
+    return redirect(f"/recept/{sladica_id}")
 
 
 

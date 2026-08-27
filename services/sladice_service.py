@@ -8,17 +8,18 @@ class SladiceService:
 
     def dobi_recept(self, sladica_id):
         """
-        Vrne sladico in vse sestavine, ki pripadajo tej sladici.
+        Vrne sladico ter vse sestavine in pripomočke, ki ji pripadajo.
         """
         with Repository() as repository:
             sladica = repository.dobi_sladico(sladica_id)
 
             if sladica is None:
-                return None, []
+                return None, [], []
 
             sestavine = repository.dobi_sestavine_za_sladico(sladica_id)
+            pripomocki = repository.dobi_pripomocke_sladice(sladica_id)
 
-            return sladica, sestavine
+            return sladica, sestavine, pripomocki
 
     
     def poisci_sladice(self, iskanje, kategorija_id=None):
@@ -85,10 +86,9 @@ class SladiceService:
                 raise ValueError("Vnesti moraš kratek opis.")
 
             try:
-                ure, minute = map(int, cas_priprave.split(":")) # pretvorba časa v minute
-                cas_priprave_minute = ure * 60 + minute
+                cas_priprave_minute = int(cas_priprave)
             except (TypeError, ValueError):
-                raise ValueError("Čas priprave ni v pravilni obliki.")
+                raise ValueError("Čas priprave mora biti celo število.")
 
             if cas_priprave_minute <= 0:
                 raise ValueError("Čas priprave mora biti daljši od 0 minut.")

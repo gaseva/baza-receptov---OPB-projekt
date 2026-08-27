@@ -1,8 +1,7 @@
-"""Podatkovni razredi, ki jih uporablja aplikacija.
 
-Razredi v tej datoteki samo opisujejo obliko podatkov. Ne odpirajo povezave
-z bazo in ne izvajajo SQL-poizvedb; za to skrbi razred Repository.
-"""
+# tukaj so podatkovni razredi, ki predstavljajo obliko podatkov
+# en dataclass predstavlja eno entiteto
+# ne povezuje se direktno z bazo, to dela repository
 
 from dataclasses import dataclass
 

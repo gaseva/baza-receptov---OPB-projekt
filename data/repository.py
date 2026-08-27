@@ -1,10 +1,9 @@
-"""Dostop do podatkov v PostgreSQL bazi."""
+# vmesnik med aplikacijo in bazo
+# izvaja SQL poizvedbe
+# rezultate pretvarja v podatkovne razrede
 
 import psycopg2
-import psycopg2.extras                                         #a to rabiva?
-
 from . import auth_public as auth
-
 from .models import (
     Kategorija,
     Oseba,
@@ -18,13 +17,6 @@ from .models import (
 
 class Repository:
     """Vse poizvedbe za dostop do baze.
-
-    Primer uporabe::
-
-        with Repository() as repo:
-            sladice = repo.dobi_vse_sladice()
-
-    Ko se blok with konča, se povezava samodejno zapre.
     """
 
     # Osnovni SELECT za pridobivanje vseh podatkov o sladicah
@@ -66,29 +58,6 @@ class Repository:
     # OSEBE
     # =====================================================================
 
-    def dobi_osebo(self, oseba_id: int) -> Oseba | None:
-        """Vrne osebo z danim ID-jem ali None, če oseba ne obstaja."""
-
-        # with self.conn predstavlja transakcijo. Ob uspehu se izvede COMMIT,
-        # ob napaki pa ROLLBACK. Cursor se po notranjem bloku sam zapre.
-        with self.conn:
-            with self.conn.cursor() as cur:
-                cur.execute(
-                    """
-                    SELECT id, ime, priimek, elektronski_naslov,
-                           uporabnisko_ime, geslo_hash, rola
-                    FROM oseba
-                    WHERE id = %s
-                    """,
-                    (oseba_id,),
-                )
-                vrstica = cur.fetchone()
-
-        if vrstica is None:
-            return None
-
-        # Zvezdica razpakira šest vrednosti v konstruktor razreda Oseba.
-        return Oseba(*vrstica)
 
     def dobi_osebo_po_uporabniskem_imenu(self, uporabnisko_ime: str) -> Oseba | None:
         """Poišče osebo po uporabniškem imenu (za prijavo)"""
@@ -124,23 +93,6 @@ class Repository:
 
         return None if vrstica is None else Oseba(*vrstica)
 
-# to nevem če zares rabima
-    def dobi_vse_osebe(self) -> list[Oseba]:
-        """Vrne vse osebe, urejene po priimku in imenu."""
-
-        with self.conn:
-            with self.conn.cursor() as cur:
-                cur.execute(
-                    """
-                    SELECT id, ime, priimek, elektronski_naslov,
-                           uporabnisko_ime, geslo_hash, rola
-                    FROM oseba
-                    ORDER BY priimek, ime
-                    """
-                )
-                vrstice = cur.fetchall()
-
-        return [Oseba(*vrstica) for vrstica in vrstice]
 
     def dodaj_osebo(
         self,
@@ -406,15 +358,6 @@ class Repository:
 
         return [Kategorija(*vrstica) for vrstica in vrstice]
 
-    def dobi_tezavnosti(self) -> list[Tezavnost]:
-        """Vrne težavnosti; besedilo stolpca tezavnost postane ime."""
-
-        with self.conn:
-            with self.conn.cursor() as cur:
-                cur.execute("SELECT id, ime FROM tezavnost ORDER BY id")
-                vrstice = cur.fetchall()
-
-        return [Tezavnost(*vrstica) for vrstica in vrstice]
 
     def dobi_vse_sestavine(self) -> list[Sestavina]:
         """Vrne ID, ime in enoto vseh sestavin, urejenih po imenu."""
@@ -467,27 +410,6 @@ class Repository:
 
         return Sestavina(*vrstica)
 
-    
-    def dobi_sestavine_sladice(
-        self, sladica_id: int
-    ) -> list[SestavinaRecepta]:
-        """Vrne imena, količine in enote sestavin izbranega recepta."""
-
-        with self.conn:
-            with self.conn.cursor() as cur:
-                cur.execute(
-                    """
-                    SELECT se.id, se.ime, v.kolicina_sestavine, se.enota
-                    FROM vsebuje AS v
-                    JOIN sestavina AS se ON se.id = v.sestavina
-                    WHERE v.sladica = %s
-                    ORDER BY se.ime
-                    """,
-                    (sladica_id,),
-                )
-                vrstice = cur.fetchall()
-
-        return [SestavinaRecepta(*vrstica) for vrstica in vrstice]
 
     def dobi_vse_pripomocke(self) -> list[Pripomocek]:
         """Vrne vse pripomočke, urejene po imenu."""
