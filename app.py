@@ -472,5 +472,13 @@ def moji_recepti():
         "moji_recepti.html",
         recepti=recepti,
     )
+    
+# naslednja stvar omogoča dostop do css (in slik in javascript)
+@get('/static/<filepath:path>')
+def staticne_datoteke(filepath):
+    return static_file(
+        filepath,
+        root=os.path.join(os.path.dirname(__file__), 'static')
+    )
 
 run(host='localhost', port=SERVER_PORT, reloader=RELOADER, debug=True)
