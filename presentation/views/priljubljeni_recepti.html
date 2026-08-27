@@ -3,53 +3,53 @@
 <div>
     % if priljubljeno == None or len(priljubljeno) == 0:
         <h1>Trenutno še nimate priljubljenih receptov.</h1>
-        <p class="lead text-secondary mb-15">Dodajte recepte med priljubljene, da jih boste lahko hitro našli.</p>
+
+        <p class="lead text-secondary mb-15">
+            Dodajte recepte med priljubljene, da jih boste lahko hitro našli.
+        </p>
+
         <a href="/recepti" class="btn btn-primary">
-        Pojdi na vse recepte
+            Pojdi na vse recepte
         </a>
     % else:
-        <h1 class="display-4 fw-bold">Vaši priljubljeni recepti</h1>
-        %for sladica in priljubljeno:
-            <h1><a href="/recept/{{sladica.id}}">{{sladica.ime}}</a></h1>
+        <h1 class="display-4 fw-bold">
+            Vaši priljubljeni recepti
+        </h1>
 
-            <table>
-                <tr>
-                    <td>
-                        <p>
-                            {{sladica.kratek_opis}}
-                        </p>
-                        <p><strong>Kategorija:</strong> {{sladica.kategorija}}</p>
-                        <p><strong>Čas priprave:</strong> {{sladica.cas_priprave}} min</p>
-                        <p><strong>Težavnost:</strong> {{sladica.tezavnost}}</p>
-                    </td>
-                </tr>
-            </table>
-        %end
+        <div class="recipe-grid">
+            %for sladica in priljubljeno:
+                <article class="recipe-card">
+                    <div class="recipe-card-header">
+                        <h2>
+                            <a href="/recept/{{sladica.id}}">
+                                {{sladica.ime}}
+                            </a>
+                        </h2>
+                    </div>
+
+                    <p class="recipe-description">
+                        {{sladica.kratek_opis}}
+                    </p>
+
+                    <div class="recipe-meta">
+                        <div class="recipe-meta-item">
+                            <strong>Kategorija:</strong>
+                            <span>{{sladica.kategorija}}</span>
+                        </div>
+
+                        <div class="recipe-meta-item">
+                            <strong>Čas priprave:</strong>
+                            <span>{{sladica.cas_priprave}} min</span>
+                        </div>
+
+                        <div class="recipe-meta-item">
+                            <strong>Težavnost:</strong>
+                            <span>{{sladica.tezavnost}}</span>
+                        </div>
+                    </div>
+                </article>
+            %end
+        </div>
     %end
 
-    <a href="/" class="btn btn-primary">
-    Nazaj na domačo stran
-    </a>
-    
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

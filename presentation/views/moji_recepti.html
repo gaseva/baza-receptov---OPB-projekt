@@ -29,46 +29,47 @@
             </a>
         </div>
 
-        % for sladica in recepti:
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h2 class="card-title">
-                        <a href="/recept/{{sladica.id}}">
-                            {{sladica.ime}}
-                        </a>
-                    </h2>
+        <div class="recipe-grid">
+            % for sladica in recepti:
+                <article class="recipe-card">
+                    <div class="recipe-card-header">
+                        <h2>
+                            <a href="/recept/{{sladica.id}}">
+                                {{sladica.ime}}
+                            </a>
+                        </h2>
+                    </div>
 
-                    <p class="card-text">
+                    <p class="recipe-description">
                         {{sladica.kratek_opis}}
                     </p>
 
-                    <p class="mb-1">
-                        <strong>Kategorija:</strong>
-                        {{sladica.kategorija}}
-                    </p>
+                    <div class="recipe-meta">
+                        <div class="recipe-meta-item">
+                            <strong>Kategorija:</strong>
+                            <span>{{sladica.kategorija}}</span>
+                        </div>
 
-                    <p class="mb-1">
-                        <strong>Čas priprave:</strong>
-                        {{sladica.cas_priprave}} min
-                    </p>
+                        <div class="recipe-meta-item">
+                            <strong>Čas priprave:</strong>
+                            <span>{{sladica.cas_priprave}} min</span>
+                        </div>
 
-                    <p class="mb-3">
-                        <strong>Težavnost:</strong>
-                        {{sladica.tezavnost}}
-                    </p>
+                        <div class="recipe-meta-item">
+                            <strong>Težavnost:</strong>
+                            <span>{{sladica.tezavnost}}</span>
+                        </div>
+                    </div>
 
                     <a
                         href="/recept/{{sladica.id}}"
-                        class="btn btn-outline-primary"
+                        class="btn btn-outline-primary recipe-details-button"
                     >
                         Poglej recept
                     </a>
-                </div>
-            </div>
-        % end
+                </article>
+            % end
+        </div>
     % end
 
-    <p class="mt-4">
-        <a href="/">Nazaj na domačo stran</a>
-    </p>
 </div>
