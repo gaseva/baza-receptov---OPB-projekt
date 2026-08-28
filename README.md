@@ -18,6 +18,7 @@ Knjižnjice, potrebne za nemoteno delovanje aplikacije, so napisane v `requireme
 - dodajanje novih receptov,
 - dodajanje, odstranjevanje in pregled priljubljenih receptov za prijavljene uporabnike,
 - pregled receptov, ki jih je dodal prijavljeni uporabnik
+- izbris recepta (to možnost imajo možnost le admini)
 
 ## Struktura spletne aplikacije
 
