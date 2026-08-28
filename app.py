@@ -101,8 +101,8 @@ def prijava():
 
 @post('/prijava')
 def prijava_post():
-    uporabnisko_ime = request.forms.get('username')
-    geslo = request.forms.get('password')
+    uporabnisko_ime = request.forms.getunicode('username')
+    geslo = request.forms.getunicode('password')
     
     if not uporabnisko_ime or not geslo:
         return template(
@@ -147,12 +147,12 @@ def registracija():
 
 @post('/registracija')
 def registracija_post():
-    ime = request.forms.get('ime')
-    priimek = request.forms.get('priimek')
+    ime = request.forms.getunicode('ime')
+    priimek = request.forms.getunicode('priimek')
     elektronski_naslov = request.forms.get('elektronski_naslov')
-    uporabnisko_ime = request.forms.get('uporabnisko_ime')
-    geslo = request.forms.get('geslo')
-    ponovno_geslo = request.forms.get('ponovno_geslo')
+    uporabnisko_ime = request.forms.getunicode('uporabnisko_ime')
+    geslo = request.forms.getunicode('geslo')
+    ponovno_geslo = request.forms.getunicode('ponovno_geslo')
 
     # gesla ne shranimo, da ga v primeru napake ne pošljemo nazaj
     podatki = {
@@ -344,12 +344,12 @@ def dodaj_recept():
 @post("/dodaj_recept")
 @cookie_required
 def dodaj_recept_post():
-    ime = request.forms.get("ime")
+    ime = request.forms.getunicode("ime")
     cas_priprave = request.forms.get("cas_priprave")
     tezavnost_id = request.forms.get("tezavnost")
     kategorija_id = request.forms.get("kategorija")
-    kratek_opis = request.forms.get("kratek_opis")
-    postopek = request.forms.get("postopek")
+    kratek_opis = request.forms.getunicode("kratek_opis")
+    postopek = request.forms.getunicode("postopek")
 
     sestavina_ids = request.forms.getall("sestavine")
     kolicine = request.forms.getall("kolicina")
@@ -390,8 +390,8 @@ def dodaj_recept_post():
 @post("/dodaj_sestavino")
 @cookie_required
 def dodaj_sestavino_post():
-    ime = request.forms.get("ime_sestavine")
-    enota = request.forms.get("enota_sestavine")
+    ime = request.forms.getunicode("ime_sestavine")
+    enota = request.forms.getunicode("enota_sestavine")
 
     try:
         sestavina = ss.dodaj_sestavino(ime, enota)
@@ -424,7 +424,7 @@ def dodaj_sestavino_post():
 @post("/dodaj_pripomocek")
 @cookie_required
 def dodaj_pripomocek_post():
-    ime = request.forms.get("ime_pripomocka") # prebere ime iz obrazca
+    ime = request.forms.getunicode("ime_pripomocka") # prebere ime iz obrazca
 
     try:
         pripomocek = ss.dodaj_pripomocek(ime)
