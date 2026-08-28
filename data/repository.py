@@ -72,6 +72,31 @@ class Repository:
     # OSEBE 
     #######
 
+    def dobi_osebo_po_id(self, oseba_id: int) -> Oseba | None:
+        """poišče osebo po ID"""
+
+        with self.conn:
+            with self.conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT
+                        id,
+                        ime,
+                        priimek,
+                        elektronski_naslov,
+                        uporabnisko_ime,
+                        geslo_hash,
+                        rola
+                    FROM oseba
+                    WHERE id = %s
+                    """,
+                    (oseba_id,)
+                )
+
+                vrstica = cur.fetchone()
+
+        return None if vrstica is None else Oseba(*vrstica)
+
     def dobi_osebo_po_uporabniskem_imenu(self, uporabnisko_ime: str) -> Oseba | None:
         """poišče osebo z določenim uporabniškim imenom"""
         # uporablja se pri prijavi in preverjanju zasedenosti uporabniškega imena
@@ -380,7 +405,44 @@ class Repository:
                     for vrstica in vrstice
                 ]
 
+    def izbrisi_sladico(self, sladica_id: int) -> bool:
+        """izbriše sladico iz baze"""
 
+        with self.conn:
+            with self.conn.cursor() as cur:
+                cur.execute(
+                    """
+                    DELETE FROM priljubljeno
+                    WHERE sladica = %s
+                    """,
+                    (sladica_id,)
+                )
+
+                cur.execute(
+                    """
+                    DELETE FROM potrebujes
+                    WHERE sladica = %s
+                    """,
+                    (sladica_id,)
+                )
+
+                cur.execute(
+                    """
+                    DELETE FROM vsebuje
+                    WHERE sladica = %s
+                    """,
+                    (sladica_id,)
+                )
+
+                cur.execute(
+                    """
+                    DELETE FROM sladica
+                    WHERE id = %s
+                    """,
+                    (sladica_id,)
+                )
+
+                return cur.rowcount > 0
 
 
     ###########################################################

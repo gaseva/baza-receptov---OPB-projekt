@@ -85,4 +85,18 @@
             {{sladica.postopek}}
         </p>
     </div>
+
+    % if defined("je_admin") and je_admin:
+        <form
+            action="/recept/{{sladica.id}}/izbrisi"
+            method="POST"
+            class="admin-delete-form"
+            onsubmit="return confirm('Ali res želiš izbrisati ta recept?');"
+        >
+            <button type="submit" class="btn btn-danger">
+                Izbriši recept
+            </button>
+        </form>
+    % end
+    
 </div>

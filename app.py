@@ -44,13 +44,30 @@ def dobi_prijavljeno_osebo_id():
         return int(oseba_id)
     except (TypeError, ValueError):
         return None
+    
+def dobi_prijavljeno_osebo():
+    """Vrne prijavljenega uporabnika ali None."""
+
+    oseba_id = dobi_prijavljeno_osebo_id()
+
+    if oseba_id is None:
+        return None
+
+    return us.dobi_uporabnika(oseba_id)
 
 def template(*args, **kwargs):
-    # Vsaki HTML-predlogi samodejno povemo,
-    # ali je uporabnik trenutno prijavljen.
+    # Vsaki HTML-predlogi povemo, ali je uporabnik
+    # prijavljen in ali ima administratorsko vlogo.
+    uporabnik = dobi_prijavljeno_osebo()
+
     kwargs.setdefault(
         "prijavljen",
-        dobi_prijavljeno_osebo_id() is not None
+        uporabnik is not None
+    )
+
+    kwargs.setdefault(
+        "je_admin",
+        uporabnik is not None and uporabnik.rola == "admin"
     )
 
     return osnovni_template(*args, **kwargs)
@@ -64,6 +81,24 @@ def cookie_required(f):
 
         if oseba_id is None:
             return redirect("/prijava")
+
+        return f(*args, **kwargs)
+
+    return decorated
+
+
+
+def admin_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        uporabnik = dobi_prijavljeno_osebo()
+
+        if uporabnik is None:
+            return redirect("/prijava")
+
+        if uporabnik.rola != "admin":
+            response.status = 403
+            return "Za to dejanje nimaš dovoljenja."
 
         return f(*args, **kwargs)
 
@@ -517,6 +552,22 @@ def moji_recepti():
         "moji_recepti.html",
         recepti=recepti,
     )
+    
+################
+# IZBRIS RECEPTA
+################
+
+@post("/recept/<sladica_id:int>/izbrisi")
+@admin_required
+def izbrisi_recept(sladica_id):
+    try:
+        ss.izbrisi_sladico(sladica_id)
+
+    except ValueError as napaka:
+        response.status = 404
+        return str(napaka)
+
+    return redirect("/recepti")
     
 
 ###############

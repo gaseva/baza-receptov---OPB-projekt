@@ -266,3 +266,24 @@ class SladiceService:
             return repository.dobi_sladice_avtorja(
                 oseba_id
             )
+            
+            
+            
+    def izbrisi_sladico(self, sladica_id: int) -> None:
+        """če sladica obstaja jo izbriše iz baze"""
+
+        try:
+            sladica_id = int(sladica_id)
+        except (TypeError, ValueError):
+            raise ValueError("ID recepta ni veljaven.")
+
+        with Repository() as repository:
+            sladica = repository.dobi_sladico(sladica_id)
+
+            if sladica is None:
+                raise ValueError("Recept ne obstaja.")
+
+            uspesno = repository.izbrisi_sladico(sladica_id)
+
+            if not uspesno:
+                raise ValueError("Recepta ni bilo mogoče izbrisati.")

@@ -63,6 +63,15 @@ class UporabnikiService:
                     raise ValueError("Uporabniško ime ali geslo je napačno.")
 
                 return user
+
+    def dobi_uporabnika(self, oseba_id: int) -> Oseba | None:
+        """vrne prijavljenega uporabnika po ID"""
+
+        if oseba_id is None:
+            return None
+
+        with Repository() as repository:
+            return repository.dobi_osebo_po_id(oseba_id)
             
             
     def priljubljeni_recepti(self, oseba_id: int):
