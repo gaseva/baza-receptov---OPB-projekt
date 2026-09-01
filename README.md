@@ -9,15 +9,15 @@ Uporabniki lahko pregledujejo recepte, jih iščejo in filtrirajo ter si ogledaj
 Knjižnjice, potrebne za nemoteno delovanje aplikacije, so napisane v `requirements.txt`.
 
 ## Aplikacija omogoča:
-- pregled vseh receptov,
-- ogled posameznega recepta,
-- iskanje receptov,
-- filtriranje receptov po kategorijah,
-- registracijo uporabnika,
-- prijavo in odjavo uporabnika,
-- dodajanje novih receptov za prijavljene uporabnike,
-- dodajanje, odstranjevanje in pregled priljubljenih receptov za prijavljene uporabnike,
-- pregled receptov, ki jih je dodal prijavljeni uporabnik,
+- pregled vseh receptov
+- ogled posameznega recepta
+- iskanje receptov
+- filtriranje receptov po kategorijah
+- registracijo uporabnika
+- prijavo in odjavo uporabnika
+- dodajanje novih receptov za prijavljene uporabnike
+- dodajanje, odstranjevanje in pregled priljubljenih receptov za prijavljene uporabnike
+- pregled receptov, ki jih je dodal prijavljeni uporabnik
 - izbris recepta (to možnost imajo le admini)
 
 ## Struktura spletne aplikacije
